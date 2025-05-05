@@ -6,32 +6,32 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 
-public final class CanalEntity{
+public final class UnidadEntity {
 
 	private UUID id;
 	private String nombre;
 
-	public CanalEntity(){
+	public UnidadEntity() {
 		setId(UtilUUID.obtenerValorDefecto());
 		setNombre(UtilTexto.getInstance().obtenerValorDefecto());
 	}
 
-	public CanalEntity(final UUID id) {
+	public UnidadEntity(final UUID id) {
 		setId(id);
 		setNombre(UtilTexto.getInstance().obtenerValorDefecto());
 	}
 
-	public CanalEntity(final UUID id, final String nombre) {
+	public UnidadEntity(final UUID id, final String nombre) {
 		setId(id);
 		setNombre(nombre);
 	}
 
-	public static CanalEntity obtenerValorDefecto() {
-		return new CanalEntity();
+	public static UnidadEntity obtenerValorDefecto() {
+		return new UnidadEntity();
 	}
 
-	public static CanalEntity obtenerValorDefecto(final CanalEntity canal) {
-		return UtilObjeto.getInstance().obtenerValorDefecto(canal, obtenerValorDefecto());
+	public static UnidadEntity obtenerValorDefecto(final UnidadEntity unidad) {
+		return UtilObjeto.getInstance().obtenerValorDefecto(unidad, obtenerValorDefecto());
 	}
 
 	public UUID getId() {
