@@ -11,11 +11,11 @@ public final class TokenConfirmacionEntity {
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaExpiracion;
 	private boolean usado;
-	private NotificacionEntity notificacion;
+	private NotificacionEntity notificacion; 
 
 	public TokenConfirmacionEntity() {
 		setId(UtilUUID.obtenerValorDefecto());
-		setToken(UtilTexto.BLANCO);
+		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.obtenerFechaHoraActual());
 		setUsado(false);
@@ -24,7 +24,7 @@ public final class TokenConfirmacionEntity {
 
 	public TokenConfirmacionEntity(final UUID id) {
 		setId(id);
-		setToken(UtilTexto.BLANCO);
+		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.obtenerFechaHoraActual());
 		setUsado(false);
@@ -62,7 +62,7 @@ public final class TokenConfirmacionEntity {
 	}
 
 	public void setToken(final String token) {
-		this.token = UtilTexto.aplicarTrim(token);
+		this.token = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(token);
 	}
 
 	public LocalDateTime getFechaSolicitud() {

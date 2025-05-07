@@ -2,6 +2,7 @@ package co.edu.uco.terraxs.entity;
 
 import java.util.UUID;
 
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
@@ -33,6 +34,14 @@ public final class CiudadEntity {
 		setId(id);
 		setNombre(nombre);
 		setDepartamento(departamento);
+	}
+	
+	public static CiudadEntity obtenerValorDefecto() {
+		return new CiudadEntity();
+	}
+	
+	public static CiudadEntity obtenerValorDefecto(final CiudadEntity ciudad) {
+		return UtilObjeto.getInstance().obtenerValorDefecto(ciudad, obtenerValorDefecto());
 	}
 
 	public UUID getId() {

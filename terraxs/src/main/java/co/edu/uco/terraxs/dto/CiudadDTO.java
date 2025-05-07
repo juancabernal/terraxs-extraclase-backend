@@ -2,6 +2,7 @@ package co.edu.uco.terraxs.dto;
 
 import java.util.UUID;
 
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
@@ -27,6 +28,14 @@ public final class CiudadDTO {
 		setId(id);
 		setNombre(nombre);
 		setDepartamento(departamento);
+	}
+	
+	public static CiudadDTO obtenerValorDefecto() {
+		return new CiudadDTO();
+	}
+	
+	public static CiudadDTO obtenerValorDefecto(final CiudadDTO ciudad) {
+		return UtilObjeto.getInstance().obtenerValorDefecto(ciudad, obtenerValorDefecto());
 	}
 
 	public UUID getId() {
