@@ -5,7 +5,6 @@ import java.util.UUID;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
-import co.edu.uco.terraxs.entity.UsuarioEntity;
 
 public class UsuarioDTO {
 
