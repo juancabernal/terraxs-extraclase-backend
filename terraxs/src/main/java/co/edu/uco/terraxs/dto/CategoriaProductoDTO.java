@@ -4,8 +4,6 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
-import co.edu.uco.terraxs.entity.CategoriaProductoDTO;
-import co.edu.uco.terraxs.entity.CategoriaProductoEntity.Builder;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 
 public final class CategoriaProductoDTO{
