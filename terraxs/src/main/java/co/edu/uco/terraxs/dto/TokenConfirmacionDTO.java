@@ -17,8 +17,8 @@ public final class TokenConfirmacionDTO {
 	public TokenConfirmacionDTO() {
 		setId(UtilUUID.obtenerValorDefecto());
 		setToken(UtilTexto.VACIO);
-		setFechaSolicitud(UtilFecha.obtenerFechaHoraActual());
-		setFechaExpiracion(UtilFecha.obtenerFechaHoraActual());
+		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
+		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setUsado(false);
 		setNotificacion(NotificacionDTO.obtenerValorDefecto());
 	}
@@ -26,8 +26,8 @@ public final class TokenConfirmacionDTO {
 	public TokenConfirmacionDTO(final UUID id) {
 		setId(id);
 		setToken(UtilTexto.VACIO);
-		setFechaSolicitud(UtilFecha.obtenerFechaHoraActual());
-		setFechaExpiracion(UtilFecha.obtenerFechaHoraActual());
+		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
+		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setUsado(false);
 		setNotificacion(NotificacionDTO.obtenerValorDefecto());
 	}
@@ -71,7 +71,7 @@ public final class TokenConfirmacionDTO {
 	}
 
 	public void setFechaSolicitud(final LocalDateTime fechaSolicitud) {
-		this.fechaSolicitud = UtilFecha.obtenerValorDefecto(fechaSolicitud);
+		this.fechaSolicitud = UtilFecha.getInstance().obtenerValorDefecto(fechaSolicitud);
 	}
 
 	public LocalDateTime getFechaExpiracion() {
@@ -79,9 +79,8 @@ public final class TokenConfirmacionDTO {
 	}
 
 	public void setFechaExpiracion(final LocalDateTime fechaExpiracion) {
-		this.fechaExpiracion = UtilFecha.obtenerValorDefecto(fechaExpiracion);
+		this.fechaExpiracion = UtilFecha.getInstance().obtenerValorDefecto(fechaExpiracion);
 	}
-
 	public boolean isUsado() {
 		return usado;
 	}

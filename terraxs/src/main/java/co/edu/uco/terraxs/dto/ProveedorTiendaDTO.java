@@ -18,14 +18,14 @@ public final class ProveedorTiendaDTO {
 		setId(UtilUUID.obtenerValorDefecto());
 		setProveedor(ProveedorDTO.obtenerValorDefecto());
 		setTienda(TiendaDTO.obtenerValorDefecto());
-		setFechaAsociacion(UtilFecha.obtenerFechaActual());
+		setFechaAsociacion(UtilFecha.getInstance().obtenerFechaActual());
 	}
 	
 	public ProveedorTiendaDTO(final UUID id) {
 		setId(id);
 		setProveedor(ProveedorDTO.obtenerValorDefecto());
 		setTienda(TiendaDTO.obtenerValorDefecto());
-		setFechaAsociacion(UtilFecha.obtenerFechaActual());
+		setFechaAsociacion(UtilFecha.getInstance().obtenerFechaActual());
 	}
 
 	public ProveedorTiendaDTO(final UUID id, final ProveedorDTO proveedor, final TiendaDTO tienda, final LocalDate fechaAsociacion) {
@@ -75,7 +75,7 @@ public final class ProveedorTiendaDTO {
 	}
 
 	public ProveedorTiendaDTO setFechaAsociacion(final LocalDate fechaAsociacion) {
-		this.fechaAsociacion = UtilFecha.obtenerValorDefecto(fechaAsociacion);
+		this.fechaAsociacion = UtilFecha.getInstance().obtenerValorDefecto(fechaAsociacion);
 		return this;
 	}
 }

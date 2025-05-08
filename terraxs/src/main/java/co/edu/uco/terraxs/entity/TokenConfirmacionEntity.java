@@ -16,8 +16,8 @@ public final class TokenConfirmacionEntity {
 	public TokenConfirmacionEntity() {
 		setId(UtilUUID.obtenerValorDefecto());
 		setToken(UtilTexto.VACIO);
-		setFechaSolicitud(UtilFecha.obtenerFechaHoraActual());
-		setFechaExpiracion(UtilFecha.obtenerFechaHoraActual());
+		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
+		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setUsado(false);
 		setNotificacion(NotificacionEntity.obtenerValorDefecto());
 	}
@@ -25,8 +25,8 @@ public final class TokenConfirmacionEntity {
 	public TokenConfirmacionEntity(final UUID id) {
 		setId(id);
 		setToken(UtilTexto.VACIO);
-		setFechaSolicitud(UtilFecha.obtenerFechaHoraActual());
-		setFechaExpiracion(UtilFecha.obtenerFechaHoraActual());
+		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
+		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setUsado(false);
 		setNotificacion(NotificacionEntity.obtenerValorDefecto());
 	}
@@ -70,7 +70,7 @@ public final class TokenConfirmacionEntity {
 	}
 
 	public void setFechaSolicitud(final LocalDateTime fechaSolicitud) {
-		this.fechaSolicitud = UtilFecha.obtenerValorDefecto(fechaSolicitud);
+		this.fechaSolicitud = UtilFecha.getInstance().obtenerValorDefecto(fechaSolicitud);
 	}
 
 	public LocalDateTime getFechaExpiracion() {
@@ -78,7 +78,7 @@ public final class TokenConfirmacionEntity {
 	}
 
 	public void setFechaExpiracion(final LocalDateTime fechaExpiracion) {
-		this.fechaExpiracion = UtilFecha.obtenerValorDefecto(fechaExpiracion);
+		this.fechaExpiracion = UtilFecha.getInstance().obtenerValorDefecto(fechaExpiracion);
 	}
 
 	public boolean isUsado() {

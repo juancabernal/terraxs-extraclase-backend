@@ -6,9 +6,6 @@ import java.util.UUID;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilFecha;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
-import co.edu.uco.terraxs.entity.ClienteEntity;
-import co.edu.uco.terraxs.entity.ClienteTiendaEntity;
-import co.edu.uco.terraxs.entity.TiendaEntity;
 
 public final class ClienteTiendaDTO {
 
@@ -21,14 +18,14 @@ public final class ClienteTiendaDTO {
 		setId(UtilUUID.obtenerValorDefecto());
 		setCliente(ClienteDTO.obtenerValorDefecto());
 		setTienda(TiendaDTO.obtenerValorDefecto());
-		setFechaRegistro(UtilFecha.obtenerFechaActual());
+		setFechaRegistro(UtilFecha.getInstance().obtenerFechaActual());
 	}
 	
 	public ClienteTiendaDTO(final UUID id) {
 		setId(id);
 		setCliente(ClienteDTO.obtenerValorDefecto());
 		setTienda(TiendaDTO.obtenerValorDefecto());
-		setFechaRegistro(UtilFecha.obtenerFechaActual());
+		setFechaRegistro(UtilFecha.getInstance().obtenerFechaActual());
 	}
 	
 	public ClienteTiendaDTO(final UUID id, final ClienteDTO cliente, final TiendaDTO tienda, final LocalDate fechaRegistro) {
@@ -60,7 +57,7 @@ public final class ClienteTiendaDTO {
 	}
 
 	public ClienteTiendaDTO setCliente(final ClienteDTO cliente) {
-		this.cliente = UtilObjeto.getInstance().obtenerValorDefecto(cliente, ClienteDTO.crear());
+		this.cliente = UtilObjeto.getInstance().obtenerValorDefecto(cliente, ClienteDTO.obtenerValorDefecto());
 		return this;
 	}
 
@@ -69,7 +66,7 @@ public final class ClienteTiendaDTO {
 	}
 
 	public ClienteTiendaDTO setTienda(final TiendaDTO tienda) {
-		this.tienda = UtilObjeto.getInstance().obtenerValorDefecto(tienda, TiendaDTO.crear());
+		this.tienda = UtilObjeto.getInstance().obtenerValorDefecto(tienda, TiendaDTO.obtenerValorDefecto());
 		return this;
 	}
 
@@ -78,6 +75,6 @@ public final class ClienteTiendaDTO {
 	}
 
 	public void setFechaRegistro(final LocalDate fechaRegistro) {
-		this.fechaRegistro = UtilFecha.obtenerValorDefecto(fechaRegistro);
+		this.fechaRegistro = UtilFecha.getInstance().obtenerValorDefecto(fechaRegistro);
 	}
 }

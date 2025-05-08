@@ -18,14 +18,14 @@ public final class ProveedorTiendaEntity {
 		setId(UtilUUID.obtenerValorDefecto());
 		setProveedor(ProveedorEntity.obtenerValorDefecto());
 		setTienda(TiendaEntity.obtenerValorDefecto());
-		setFechaAsociacion(UtilFecha.obtenerFechaActual());
+		setFechaAsociacion(UtilFecha.getInstance().obtenerFechaActual());
 	}
 	
 	public ProveedorTiendaEntity(final UUID id) {
 		setId(id);
 		setProveedor(ProveedorEntity.obtenerValorDefecto());
 		setTienda(TiendaEntity.obtenerValorDefecto());
-		setFechaAsociacion(UtilFecha.obtenerFechaActual());
+		setFechaAsociacion(UtilFecha.getInstance().obtenerFechaActual());
 	}
 
 	public ProveedorTiendaEntity(final UUID id, final ProveedorEntity proveedor, final TiendaEntity tienda, final LocalDate fechaAsociacion) {
@@ -72,6 +72,6 @@ public final class ProveedorTiendaEntity {
 	}
 
 	public void setFechaAsociacion(final LocalDate fechaAsociacion) {
-		this.fechaAsociacion = UtilFecha.obtenerValorDefecto(fechaAsociacion);
+		this.fechaAsociacion = UtilFecha.getInstance().obtenerValorDefecto(fechaAsociacion);
 	}
 }

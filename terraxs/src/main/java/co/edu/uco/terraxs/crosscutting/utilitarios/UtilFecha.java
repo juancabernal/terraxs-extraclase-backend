@@ -20,19 +20,19 @@ public final class UtilFecha {
 		return INSTANCIA;
 	}
 
-	public static LocalDateTime obtenerValorDefecto(final LocalDateTime fecha) {
+	public LocalDateTime obtenerValorDefecto(final LocalDateTime fecha) {
 		return UtilObjeto.getInstance().obtenerValorDefecto(fecha, FECHA_DEFECTO);
 	}
 
-	public static LocalDate obtenerValorDefecto(final LocalDate fecha) {
+	public LocalDate obtenerValorDefecto(final LocalDate fecha) {
 		return UtilObjeto.getInstance().obtenerValorDefecto(fecha, FECHA_SOLO_DIA_DEFECTO);
 	}
 
-	public static LocalDateTime obtenerFechaHoraActual() {
+	public LocalDateTime obtenerFechaHoraActual() {
 		return LocalDateTime.now();
 	}
 
-	public static LocalDate obtenerFechaActual() {
+	public LocalDate obtenerFechaActual() {
 		return LocalDate.now();
 	}
 

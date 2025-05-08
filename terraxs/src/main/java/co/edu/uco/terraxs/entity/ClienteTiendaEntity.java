@@ -18,14 +18,14 @@ public class ClienteTiendaEntity {
 		setId(UtilUUID.obtenerValorDefecto());
 		setCliente(ClienteEntity.obtenerValorDefecto());
 		setTienda(TiendaEntity.obtenerValorDefecto());
-		setFechaRegistro(UtilFecha.obtenerFechaActual());
+		setFechaRegistro(UtilFecha.getInstance().obtenerFechaActual());
 	}
 
 	public ClienteTiendaEntity(final UUID id) {
 		setId(id);
 		setCliente(ClienteEntity.obtenerValorDefecto());
 		setTienda(TiendaEntity.obtenerValorDefecto());
-		setFechaRegistro(UtilFecha.obtenerFechaActual());
+		setFechaRegistro(UtilFecha.getInstance().obtenerFechaActual());
 	}
 	
 	public ClienteTiendaEntity(final UUID id, final ClienteEntity cliente, final TiendaEntity tienda, final LocalDate fechaRegistro) {
@@ -72,6 +72,6 @@ public class ClienteTiendaEntity {
 	}
 
 	public void setFechaRegistro(LocalDate fechaRegistro) {
-		this.fechaRegistro = UtilFecha.obtenerValorDefecto(fechaRegistro);
+		this.fechaRegistro = UtilFecha.getInstance().obtenerValorDefecto(fechaRegistro);
 	}
 }
