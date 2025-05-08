@@ -1,7 +1,6 @@
 package co.edu.uco.terraxs.dto;
 
 import java.util.UUID;
-
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
@@ -26,8 +25,7 @@ public final class CanalNotificacionDTO {
 		setEstado(EstadoDTO.obtenerValorDefecto());
 	}
 
-	public CanalNotificacionDTO(final UUID id, final NotificacionDTO notificacion,
-			final CanalDTO canal, final EstadoDTO estado) {
+	public CanalNotificacionDTO(final UUID id, final NotificacionDTO notificacion, final CanalDTO canal, final EstadoDTO estado) {
 		setId(id);
 		setNotificacion(notificacion);
 		setCanal(canal);
@@ -54,23 +52,26 @@ public final class CanalNotificacionDTO {
 		return notificacion;
 	}
 
-	public void setNotificacion(final NotificacionDTO notificacion) {
+	public CanalNotificacionDTO setNotificacion(final NotificacionDTO notificacion) {
 		this.notificacion = NotificacionDTO.obtenerValorDefecto(notificacion);
+		return this;
 	}
 
 	public CanalDTO getCanal() {
 		return canal;
 	}
 
-	public void setCanal(final CanalDTO canal) {
+	public CanalNotificacionDTO setCanal(final CanalDTO canal) {
 		this.canal = CanalDTO.obtenerValorDefecto(canal);
+		return this;
 	}
 
 	public EstadoDTO getEstado() {
 		return estado;
 	}
 
-	public void setEstado(final EstadoDTO estado) {
+	public CanalNotificacionDTO setEstado(final EstadoDTO estado) {
 		this.estado = EstadoDTO.obtenerValorDefecto(estado);
+		return this;
 	}
 }

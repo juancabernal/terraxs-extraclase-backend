@@ -20,7 +20,7 @@ public final class TiendaEntity {
 		setCorreo(UtilTexto.getInstance().obtenerValorDefecto());
 	}
 
-	public TiendaEntity(UUID id, TipoDocumentoEntity tipoDocumento, String numeroDocumento, String correo) {
+	public TiendaEntity(final UUID id, final TipoDocumentoEntity tipoDocumento, final String numeroDocumento, final String correo) {
 		setId(id);
 		setTipoDocumento(tipoDocumento);
 		setNumeroDocumento(numeroDocumento);
@@ -47,8 +47,9 @@ public final class TiendaEntity {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(TipoDocumentoEntity tipoDocumento) {
+	public TiendaEntity setTipoDocumento(TipoDocumentoEntity tipoDocumento) {
 		this.tipoDocumento = TipoDocumentoEntity.obtenerValorDefecto(tipoDocumento);
+		return this;
 	}
 
 	public String getNumeroDocumento() {

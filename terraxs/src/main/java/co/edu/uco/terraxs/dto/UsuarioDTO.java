@@ -85,62 +85,55 @@ public class UsuarioDTO {
 		return numeroIdentificacion;
 	}
 
-	public UsuarioDTO setNumeroIdentificacion(String numeroIdentificacion) {
+	public void setNumeroIdentificacion(String numeroIdentificacion) {
 		this.numeroIdentificacion = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(numeroIdentificacion);
-		return this;
 	}
 
 	public String getNombres() {
 		return nombres;
 	}
 
-	public UsuarioDTO setNombres(String nombres) {
+	public void setNombres(String nombres) {
 		this.nombres = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(nombres);
-		return this;
 	}
 
 	public String getApellidos() {
 		return apellidos;
 	}
 
-	public UsuarioDTO setApellidos(String apellidos) {
+	public void setApellidos(String apellidos) {
 		this.apellidos = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(apellidos);
-		return this;
 	}
 
 	public String getCorreo() {
 		return correo;
 	}
 
-	public UsuarioDTO setCorreo(String correo) {
+	public void setCorreo(String correo) {
 		this.correo = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(correo);
-		return this;
 	}
 
 	public String getTelefono() {
 		return telefono;
 	}
 
-	public UsuarioDTO setTelefono(String telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(telefono);
-		return this;
 	}
 
 	public boolean isCorreoConfirmado() {
 		return correoConfirmado;
 	}
 
-	public UsuarioDTO setCorreoConfirmado(boolean correoConfirmado) {
+	public void setCorreoConfirmado(boolean correoConfirmado) {
 		this.correoConfirmado = correoConfirmado;
-		return this;
 	}
 
 	public boolean isTelefonoConfirmado() {
 		return telefonoConfirmado;
 	}
 
-	public UsuarioDTO setTelefonoConfirmado(boolean telefonoConfirmado) {
+	public void setTelefonoConfirmado(boolean telefonoConfirmado) {
 		this.telefonoConfirmado = telefonoConfirmado;
-		return this;
 	}
 }

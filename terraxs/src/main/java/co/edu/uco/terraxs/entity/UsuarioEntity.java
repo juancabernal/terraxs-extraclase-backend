@@ -2,8 +2,9 @@ package co.edu.uco.terraxs.entity;
 
 import java.util.UUID;
 
-import co.edu.uco.terraxs.crosscutting.utilitarios.*;
-import co.edu.uco.terraxs.dto.TipoDocumentoDTO;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
 public class UsuarioEntity {
 
@@ -75,8 +76,9 @@ public class UsuarioEntity {
 		return tipoDocumento;
 	}
 
-	public void setTipoDocumento(TipoDocumentoEntity tipoDocumento) {
+	public UsuarioEntity setTipoDocumento(TipoDocumentoEntity tipoDocumento) {
 		this.tipoDocumento = TipoDocumentoEntity.obtenerValorDefecto(tipoDocumento);
+		return this;
 	}
 
 	public String getNumeroIdentificacion() {

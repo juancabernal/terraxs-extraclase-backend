@@ -6,7 +6,9 @@ import java.time.format.DateTimeFormatter;
 
 public final class UtilFecha {
 
+	private static final UtilFecha INSTANCIA = new UtilFecha();
 	private static final LocalDateTime FECHA_DEFECTO = LocalDateTime.MIN;
+	private static final LocalDate FECHA_SOLO_DIA_DEFECTO = LocalDate.MIN;
 	private static final String FORMATO_FECHA_HORA = "yyyy-MM-dd HH:mm:ss";
 	private static final String FORMATO_FECHA = "yyyy-MM-dd";
 
@@ -14,12 +16,16 @@ public final class UtilFecha {
 		super();
 	}
 
+	public static UtilFecha getInstance() {
+		return INSTANCIA;
+	}
+
 	public static LocalDateTime obtenerValorDefecto(final LocalDateTime fecha) {
-		return fecha != null ? fecha : FECHA_DEFECTO;
+		return UtilObjeto.getInstance().obtenerValorDefecto(fecha, FECHA_DEFECTO);
 	}
 
 	public static LocalDate obtenerValorDefecto(final LocalDate fecha) {
-		return fecha != null ? fecha : LocalDate.MIN;
+		return UtilObjeto.getInstance().obtenerValorDefecto(fecha, FECHA_SOLO_DIA_DEFECTO);
 	}
 
 	public static LocalDateTime obtenerFechaHoraActual() {
@@ -30,35 +36,41 @@ public final class UtilFecha {
 		return LocalDate.now();
 	}
 
-	public static String convertirEnTexto(final LocalDateTime fecha) {
-		return fecha != null ? fecha.format(DateTimeFormatter.ofPattern(FORMATO_FECHA_HORA)) : "";
+	public String convertirEnTexto(final LocalDateTime fecha) {
+		return UtilObjeto.getInstance().esNulo(fecha)
+			? UtilTexto.getInstance().obtenerValorDefecto()
+			: fecha.format(DateTimeFormatter.ofPattern(FORMATO_FECHA_HORA));
 	}
 
-	public static String convertirEnTexto(final LocalDate fecha) {
-		return fecha != null ? fecha.format(DateTimeFormatter.ofPattern(FORMATO_FECHA)) : "";
+	public String convertirEnTexto(final LocalDate fecha) {
+		return UtilObjeto.getInstance().esNulo(fecha)
+			? UtilTexto.getInstance().obtenerValorDefecto()
+			: fecha.format(DateTimeFormatter.ofPattern(FORMATO_FECHA));
 	}
 
-	public static LocalDateTime construirLocalDateTimeDesdeTexto(final String fechaTexto) {
+	public LocalDateTime construirLocalDateTimeDesdeTexto(final String fechaTexto) {
 		try {
-			return LocalDateTime.parse(fechaTexto, DateTimeFormatter.ofPattern(FORMATO_FECHA_HORA));
+			return LocalDateTime.parse(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(fechaTexto),
+					DateTimeFormatter.ofPattern(FORMATO_FECHA_HORA));
 		} catch (final Exception e) {
 			return FECHA_DEFECTO;
 		}
 	}
 
-	public static LocalDate construirLocalDateDesdeTexto(final String fechaTexto) {
+	public LocalDate construirLocalDateDesdeTexto(final String fechaTexto) {
 		try {
-			return LocalDate.parse(fechaTexto, DateTimeFormatter.ofPattern(FORMATO_FECHA));
+			return LocalDate.parse(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(fechaTexto),
+					DateTimeFormatter.ofPattern(FORMATO_FECHA));
 		} catch (final Exception e) {
-			return LocalDate.MIN;
+			return FECHA_SOLO_DIA_DEFECTO;
 		}
 	}
 
-	public static boolean estaExpirada(final LocalDateTime fechaExpiracion) {
-		return fechaExpiracion != null && fechaExpiracion.isBefore(LocalDateTime.now());
+	public boolean estaExpirada(final LocalDateTime fechaExpiracion) {
+		return !UtilObjeto.getInstance().esNulo(fechaExpiracion) && fechaExpiracion.isBefore(obtenerFechaHoraActual());
 	}
 
-	public static boolean esFutura(final LocalDateTime fecha) {
-		return fecha != null && fecha.isAfter(LocalDateTime.now());
+	public boolean esFutura(final LocalDateTime fecha) {
+		return !UtilObjeto.getInstance().esNulo(fecha) && fecha.isAfter(obtenerFechaHoraActual());
 	}
 }

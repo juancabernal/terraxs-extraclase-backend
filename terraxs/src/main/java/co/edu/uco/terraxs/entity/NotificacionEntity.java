@@ -3,6 +3,7 @@ package co.edu.uco.terraxs.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilFecha;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
@@ -21,7 +22,7 @@ public final class NotificacionEntity {
 		setCodigoReferencia(UtilTexto.getInstance().obtenerValorDefecto());
 		setTipoNotificacion(TipoNotificacionEntity.obtenerValorDefecto());
 		setMensajeAdicional(UtilTexto.getInstance().obtenerValorDefecto());
-		setFechaHoraEnvio(LocalDateTime.now());
+		setFechaHoraEnvio(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setUsuarioReceptor(UsuarioEntity.obtenerValorDefecto());
 	}
 
@@ -89,7 +90,7 @@ public final class NotificacionEntity {
 	}
 
 	public void setFechaHoraEnvio(final LocalDateTime fechaHoraEnvio) {
-		this.fechaHoraEnvio = UtilObjeto.getInstance().obtenerValorDefecto(fechaHoraEnvio, LocalDateTime.now());
+		this.fechaHoraEnvio = UtilFecha.getInstance().obtenerValorDefecto(fechaHoraEnvio);
 	}
 
 	public UsuarioEntity getUsuarioReceptor() {

@@ -23,12 +23,6 @@ public final class EstadoDTO {
 		setTipoEstado(TipoEstadoDTO.obtenerValorDefecto());
 	}
 
-	public EstadoDTO(final UUID id, final String nombre) {
-		setId(id);
-		setNombre(nombre);
-		setTipoEstado(TipoEstadoDTO.obtenerValorDefecto());
-	}
-
 	public EstadoDTO(final UUID id, final String nombre, final TipoEstadoDTO tipoEstado) {
 		setId(id);
 		setNombre(nombre);
