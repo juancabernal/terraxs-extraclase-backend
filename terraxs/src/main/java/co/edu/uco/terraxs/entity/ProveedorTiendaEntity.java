@@ -8,6 +8,7 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
 public final class ProveedorTiendaEntity {
+	
 
 	private UUID id;
 	private ProveedorEntity proveedor;
