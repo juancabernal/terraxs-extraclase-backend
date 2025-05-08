@@ -29,7 +29,7 @@ public class UsuarioDTO {
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
 	}
-	
+
 	public UsuarioDTO(final UUID id) {
 		setId(id);
 		setTipoDocumento(TipoDocumentoDTO.obtenerValorDefecto());
@@ -41,9 +41,10 @@ public class UsuarioDTO {
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
 	}
-	
-	public UsuarioDTO(final UUID id, final TipoDocumentoDTO tipoDocumento, final String numeroIdentificacion, final String nombres,
-			final String apellidos, final String correo, final String telefono, final boolean correoConfirmado, final boolean telefonoConfirmado) {
+
+	public UsuarioDTO(final UUID id, final TipoDocumentoDTO tipoDocumento, final String numeroIdentificacion,
+			final String nombres, final String apellidos, final String correo, final String telefono,
+			final boolean correoConfirmado, final boolean telefonoConfirmado) {
 		setId(id);
 		setTipoDocumento(tipoDocumento);
 		setNumeroIdentificacion(numeroIdentificacion);
@@ -55,14 +56,26 @@ public class UsuarioDTO {
 		setTelefonoConfirmado(telefonoConfirmado);
 	}
 
+	private UsuarioDTO(final Builder builder) {
+		setId(builder.id);
+		setTipoDocumento(builder.tipoDocumento);
+		setNumeroIdentificacion(builder.numeroIdentificacion);
+		setNombres(builder.nombres);
+		setApellidos(builder.apellidos);
+		setCorreo(builder.correo);
+		setTelefono(builder.telefono);
+		setCorreoConfirmado(builder.correoConfirmado);
+		setTelefonoConfirmado(builder.telefonoConfirmado);
+	}
+
 	public static UsuarioDTO obtenerValorDefecto() {
 		return new UsuarioDTO();
 	}
-	
+
 	public static UsuarioDTO obtenerValorDefecto(final UsuarioDTO usuario) {
 		return UtilObjeto.getInstance().obtenerValorDefecto(usuario, obtenerValorDefecto());
 	}
-	
+
 	public UUID getId() {
 		return id;
 	}
@@ -135,5 +148,66 @@ public class UsuarioDTO {
 
 	public void setTelefonoConfirmado(boolean telefonoConfirmado) {
 		this.telefonoConfirmado = telefonoConfirmado;
+	}
+
+	public static class Builder {
+		private UUID id;
+		private TipoDocumentoDTO tipoDocumento;
+		private String numeroIdentificacion;
+		private String nombres;
+		private String apellidos;
+		private String correo;
+		private String telefono;
+		private boolean correoConfirmado;
+		private boolean telefonoConfirmado;
+
+		public Builder id(final UUID id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder tipoDocumento(final TipoDocumentoDTO tipoDocumento) {
+			this.tipoDocumento = tipoDocumento;
+			return this;
+		}
+
+		public Builder numeroIdentificacion(final String numeroIdentificacion) {
+			this.numeroIdentificacion = numeroIdentificacion;
+			return this;
+		}
+
+		public Builder nombres(final String nombres) {
+			this.nombres = nombres;
+			return this;
+		}
+
+		public Builder apellidos(final String apellidos) {
+			this.apellidos = apellidos;
+			return this;
+		}
+
+		public Builder correo(final String correo) {
+			this.correo = correo;
+			return this;
+		}
+
+		public Builder telefono(final String telefono) {
+			this.telefono = telefono;
+			return this;
+		}
+
+		public Builder correoConfirmado(final boolean correoConfirmado) {
+			this.correoConfirmado = correoConfirmado;
+			return this;
+		}
+
+		public Builder telefonoConfirmado(final boolean telefonoConfirmado) {
+			this.telefonoConfirmado = telefonoConfirmado;
+			return this;
+		}
+
+		public UsuarioDTO crear() {
+			return new UsuarioDTO(this);
+		}
 	}
 }

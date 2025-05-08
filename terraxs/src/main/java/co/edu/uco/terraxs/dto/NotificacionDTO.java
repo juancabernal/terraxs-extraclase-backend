@@ -31,7 +31,7 @@ public final class NotificacionDTO {
 		setCodigoReferencia(UtilTexto.getInstance().obtenerValorDefecto());
 		setTipoNotificacion(TipoNotificacionDTO.obtenerValorDefecto());
 		setMensajeAdicional(UtilTexto.getInstance().obtenerValorDefecto());
-		setFechaHoraEnvio(LocalDateTime.now());
+		setFechaHoraEnvio(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setUsuarioReceptor(UsuarioDTO.obtenerValorDefecto());
 	}
 
@@ -43,6 +43,15 @@ public final class NotificacionDTO {
 		setMensajeAdicional(mensajeAdicional);
 		setFechaHoraEnvio(fechaHoraEnvio);
 		setUsuarioReceptor(usuarioReceptor);
+	}
+
+	private NotificacionDTO(final Builder builder) {
+		setId(builder.id);
+		setCodigoReferencia(builder.codigoReferencia);
+		setTipoNotificacion(builder.tipoNotificacion);
+		setMensajeAdicional(builder.mensajeAdicional);
+		setFechaHoraEnvio(builder.fechaHoraEnvio);
+		setUsuarioReceptor(builder.usuarioReceptor);
 	}
 
 	public static NotificacionDTO obtenerValorDefecto() {
@@ -99,5 +108,48 @@ public final class NotificacionDTO {
 
 	public void setUsuarioReceptor(final UsuarioDTO usuarioReceptor) {
 		this.usuarioReceptor = UsuarioDTO.obtenerValorDefecto(usuarioReceptor);
+	}
+
+	public static class Builder {
+		private UUID id;
+		private String codigoReferencia;
+		private TipoNotificacionDTO tipoNotificacion;
+		private String mensajeAdicional;
+		private LocalDateTime fechaHoraEnvio;
+		private UsuarioDTO usuarioReceptor;
+
+		public Builder id(final UUID id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder codigoReferencia(final String codigoReferencia) {
+			this.codigoReferencia = codigoReferencia;
+			return this;
+		}
+
+		public Builder tipoNotificacion(final TipoNotificacionDTO tipoNotificacion) {
+			this.tipoNotificacion = tipoNotificacion;
+			return this;
+		}
+
+		public Builder mensajeAdicional(final String mensajeAdicional) {
+			this.mensajeAdicional = mensajeAdicional;
+			return this;
+		}
+
+		public Builder fechaHoraEnvio(final LocalDateTime fechaHoraEnvio) {
+			this.fechaHoraEnvio = fechaHoraEnvio;
+			return this;
+		}
+
+		public Builder usuarioReceptor(final UsuarioDTO usuarioReceptor) {
+			this.usuarioReceptor = usuarioReceptor;
+			return this;
+		}
+
+		public NotificacionDTO crear() {
+			return new NotificacionDTO(this);
+		}
 	}
 }
