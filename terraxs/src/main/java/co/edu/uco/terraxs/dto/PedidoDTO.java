@@ -74,7 +74,7 @@ public final class PedidoDTO {
         return this;
     }
 
-    public EstadoPedidoDTO getEstado() {
+    public EstadoDTO getEstado() {
         return estado;
     }
 
