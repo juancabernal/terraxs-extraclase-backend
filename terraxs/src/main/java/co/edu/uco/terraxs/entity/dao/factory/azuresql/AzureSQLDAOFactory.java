@@ -65,7 +65,7 @@ public class AzureSQLDAOFactory extends DAOFactory {
 	}
 
 	@Override
-	public CiudadDAO getCiudadDAO() {
+	public PaisDAO getCiudadDAO() {
 		return new CiudadAzureSQLDAO(conexion);
 	}
 

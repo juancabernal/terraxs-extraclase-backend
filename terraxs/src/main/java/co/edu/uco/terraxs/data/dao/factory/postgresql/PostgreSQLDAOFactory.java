@@ -1,15 +1,17 @@
-package co.edu.uco.terraxs.data.dao.factory.azuresql;
+package co.edu.uco.terraxs.data.dao.factory.postgresql;
 
 
 import java.sql.Connection;
 
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 
-public class AzureSQLDAOFactory extends DAOFactory {
+
+public class PostgreSQLDAOFactory extends DAOFactory {
 	
 	private Connection conexion;
 	
-	public AzureSQLDAOFactory() {
+	public PostgreSQLDAOFactory() {
 		abrirConexion();
 	}
 	
@@ -50,17 +52,17 @@ public class AzureSQLDAOFactory extends DAOFactory {
 
 	@Override
 	public PaisDAO getPaisDAO() {
-		return new PaisAzureSQLDAO(conexion);
+		return new PaisPostgreSQLDAO(conexion);
 	}
 
 	@Override
 	public DepartamentoDAO getDepartamentoDAO() {
-		return new DepartamentoAzureSQLDAO(conexion);
+		return new DepartamentoPostgreSQLDAO(conexion);
 	}
 
 	@Override
-	public CiudadDAO getCiudadDAO() {
-		return new CiudadAzureSQLDAO(conexion);
+	public PaisDAO getCiudadDAO() {
+		return new CiudadPostgreSQLDAO(conexion);
 	}
 
 }

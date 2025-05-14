@@ -1,16 +1,16 @@
 package co.edu.uco.terraxs.data.dao.factory;
 
 import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
-import co.edu.co.onlinetest.data.dao.entity.departamento.DepartamentoDAO;
-import co.edu.co.onlinetest.data.dao.entity.pais.PaisDAO;
-import co.edu.co.onlinetest.data.dao.factory.azuresql.AzureSQLDAOFactory;
+import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
+import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
+import co.edu.uco.terraxs.data.dao.factory.postgresql.PostgreSQLDAOFactory;
 
 public abstract class DAOFactory {
 	
 	public static DAOFactory getFactory(Factory factory) {
 		switch (factory) {
-		case AZURE_SQL: {
-			return new AzureSQLDAOFactory();
+		case POSTGRE_SQL: {
+			return new PostgreSQLDAOFactory();
 			
 		}
 		default:

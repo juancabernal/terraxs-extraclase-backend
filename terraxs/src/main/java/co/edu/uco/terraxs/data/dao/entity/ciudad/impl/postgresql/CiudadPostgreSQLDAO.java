@@ -1,19 +1,22 @@
-package co.edu.co.onlinetest.data.dao.entity.ciudad.impl.azuresql;
+package co.edu.uco.terraxs.data.dao.entity.ciudad.impl.postgresql;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.UUID;
+import java.sql.Connection;
 
-import co.edu.co.onlinetest.data.dao.entity.ciudad.CiudadDAO;
-import co.edu.co.onlinetest.entity.CiudadEntity;
 
-public class CiudadAzureSQLDAO implements PaisDAO {
+import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
+import co.edu.uco.terraxs.entity.CiudadEntity;
+
+public class CiudadPostgreSQLDAO implements CiudadDAO {
+	
 	
 	private Connection conexion;
 	
-	public CiudadAzureSQLDAO(Connection conexion) {
+	public CiudadPostgreSQLDAO(Connection conexion) {
 		this.conexion=conexion;
 	}
+
 
 	@Override
 	public void create(CiudadEntity entity) {
@@ -50,9 +53,5 @@ public class CiudadAzureSQLDAO implements PaisDAO {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-	
 
 }

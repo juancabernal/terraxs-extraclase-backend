@@ -10,7 +10,7 @@ public abstract class DAOFactory {
 	public static DAOFactory getFactory(Factory factory) {
 		switch (factory) {
 		case AZURE_SQL: {
-			return new AzureSQLDAOFactory();
+			return new PostgreSQLDAOFactory();
 			
 		}
 		default:
@@ -33,7 +33,7 @@ public abstract class DAOFactory {
 	
 	public abstract DepartamentoDAO getDepartamentoDAO();
 	
-	public abstract CiudadDAO getCiudadDAO();
+	public abstract PaisDAO getCiudadDAO();
 
 
 	
