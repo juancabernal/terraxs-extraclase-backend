@@ -4,6 +4,12 @@ package co.edu.uco.terraxs.data.dao.factory.postgresql;
 import java.sql.Connection;
 
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
+import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
+import co.edu.uco.terraxs.data.dao.entity.ciudad.impl.postgresql.CiudadPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
+import co.edu.uco.terraxs.data.dao.entity.departamento.impl.postgresql.DepartamentoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
+import co.edu.uco.terraxs.data.dao.entity.pais.impl.postgresql.PaisPostgreSQLDAO;
 
 
 
@@ -61,7 +67,7 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 	}
 
 	@Override
-	public PaisDAO getCiudadDAO() {
+	public CiudadDAO getCiudadDAO() {
 		return new CiudadPostgreSQLDAO(conexion);
 	}
 
