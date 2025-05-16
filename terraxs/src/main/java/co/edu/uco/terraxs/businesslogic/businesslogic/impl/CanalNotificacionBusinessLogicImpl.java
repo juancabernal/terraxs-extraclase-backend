@@ -5,8 +5,16 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.CanalNotificacionBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CanalNotificacionDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class CanalNotificacionBusinessLogicImpl implements CanalNotificacionBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public CanalNotificacionBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void crearNotificacionPorCanal(CanalNotificacionDomain canalNotificaion) {

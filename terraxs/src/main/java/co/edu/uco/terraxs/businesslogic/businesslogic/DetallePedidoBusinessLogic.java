@@ -7,7 +7,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePedidoDomain
 
 public interface DetallePedidoBusinessLogic {
 	
-void registrarNuevoDetallePedido(DetallePedidoDomain detallePedido);
+	void registrarNuevoDetallePedido(DetallePedidoDomain detallePedido);
 	
 	DetallePedidoDomain consultarDetallePedidoPorId(UUID id);
 

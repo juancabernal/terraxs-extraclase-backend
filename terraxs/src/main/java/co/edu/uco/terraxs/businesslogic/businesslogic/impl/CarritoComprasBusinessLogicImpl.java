@@ -7,8 +7,16 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.CarritoComprasBusinessLogi
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CarritoComprasDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.EstadoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ProductoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class CarritoComprasBusinessLogicImpl implements CarritoComprasBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public CarritoComprasBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void crearCarritoCompras(CarritoComprasDomain carritoCompras) {

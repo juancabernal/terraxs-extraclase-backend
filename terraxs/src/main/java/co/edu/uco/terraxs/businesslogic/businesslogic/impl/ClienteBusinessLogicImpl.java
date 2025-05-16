@@ -8,8 +8,16 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ClienteDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoDocumentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class ClienteBusinessLogicImpl implements ClienteBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public ClienteBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void registrarCliente(ClienteDomain cliente) {

@@ -6,8 +6,16 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.DetallePagoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePagoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.MetodoPagoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class DetallePagoBusinessLogicImpl implements DetallePagoBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public DetallePagoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void registrarNuevoDetallePago(DetallePagoDomain detallePago) {

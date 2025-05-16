@@ -6,8 +6,16 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.DepartamentoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DepartamentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class DepartamentoBusinessLogicImpl implements DepartamentoBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public DepartamentoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void registrarNuevoDepartamento(DepartamentoDomain departamento) {

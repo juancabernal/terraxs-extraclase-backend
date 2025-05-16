@@ -5,8 +5,16 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.EstadoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.EstadoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class EstadoBusinessLogicImpl implements EstadoBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public EstadoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public EstadoDomain consultarEstadoPorId(UUID id) {

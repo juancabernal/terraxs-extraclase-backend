@@ -8,8 +8,16 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ProveedorDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoDocumentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public ProveedorBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void registrarProveedor(ProveedorDomain proveedor) {

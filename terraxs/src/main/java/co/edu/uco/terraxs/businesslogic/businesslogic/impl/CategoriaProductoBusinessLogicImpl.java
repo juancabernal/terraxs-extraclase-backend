@@ -5,8 +5,16 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.CategoriaProductoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CategoriaProductoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class CategoriaProductoBusinessLogicImpl implements CategoriaProductoBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public CategoriaProductoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void crearNuevaCategoria(CategoriaProductoDomain categoria) {

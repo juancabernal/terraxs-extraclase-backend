@@ -7,8 +7,16 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.AdministradorBusinessLogic
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.AdministradorDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoDocumentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class AdministradorBusinessLogicImpl implements AdministradorBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public AdministradorBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void registrarAdministrador(AdministradorDomain administrador) {

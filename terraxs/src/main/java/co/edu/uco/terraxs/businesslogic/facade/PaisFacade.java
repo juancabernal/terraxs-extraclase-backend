@@ -3,7 +3,6 @@ package co.edu.uco.terraxs.businesslogic.facade;
 import java.util.List;
 import java.util.UUID;
 
-import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
 import co.edu.uco.terraxs.dto.PaisDTO;
 
 public interface PaisFacade {

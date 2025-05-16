@@ -6,8 +6,16 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.CiudadBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DepartamentoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class CiudadBusinessLogicImpl implements CiudadBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public CiudadBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
+
 
 	@Override
 	public void registrarNuevaCiudad(CiudadDomain ciudad) {
