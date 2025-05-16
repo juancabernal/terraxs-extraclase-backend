@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePedidoDomain;
-import co.edu.uco.terraxs.businesslogic.businesslogic.domain.MetodoPagoDomain;
 
 public interface DetallePedidoBusinessLogic {
 	
