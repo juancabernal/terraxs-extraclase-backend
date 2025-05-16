@@ -6,7 +6,7 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 
-public final class Domain{
+public final class CanalDomain{
 
 	private UUID id;
 	private String nombre;
