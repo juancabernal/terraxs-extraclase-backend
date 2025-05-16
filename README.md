@@ -23,7 +23,7 @@ La carga inicial incluye:
 - **Spring Boot**
 - **Maven**
 - Preparado para integración con:
-  - Base de datos (MySQL, PostgreSQL, etc.)
+  - Base de datos PostgreSQL
 
 ---
 
