@@ -15,9 +15,7 @@ public interface PedidoBusinessLogic {
 	EstadoDomain consultarEstadoPedido(UUID id);
 	
 	EstadoDomain ActualizarEstadoPedido(UUID id);
-	
-	DetallePedidoDomain verDetallesPedido(UUID id,DetallePedidoDomain detallesPedido);
-		
+			
 	void cancelarPedido(UUID id);
 	
 }

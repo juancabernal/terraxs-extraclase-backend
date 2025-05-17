@@ -33,11 +33,6 @@ public class PedidoBusinessLogicImpl implements PedidoBusinessLogic{
 		return null;
 	}
 
-	@Override
-	public DetallePedidoDomain verDetallesPedido(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void cancelarPedido(UUID id) {

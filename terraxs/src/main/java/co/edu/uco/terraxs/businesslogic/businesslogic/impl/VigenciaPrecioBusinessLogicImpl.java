@@ -1,9 +1,7 @@
 package co.edu.uco.terraxs.businesslogic.businesslogic.impl;
 
-import java.util.List;
 import java.util.UUID;
 
-import co.edu.uco.terraxs.businesslogic.businesslogic.CategoriaProductoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.VigenciaPrecioBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.VigenciaPrecioDomain;
 
@@ -26,5 +24,6 @@ public class VigenciaPrecioBusinessLogicImpl implements VigenciaPrecioBusinessLo
 		// TODO Auto-generated method stub
 		return null;
 	}
+}
 
 
