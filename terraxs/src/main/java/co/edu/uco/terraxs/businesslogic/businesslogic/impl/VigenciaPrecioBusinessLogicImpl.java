@@ -4,8 +4,15 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.VigenciaPrecioBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.VigenciaPrecioDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class VigenciaPrecioBusinessLogicImpl implements VigenciaPrecioBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public VigenciaPrecioBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public void crearVigencia(VigenciaPrecioDomain vigenciaPrecio) {

@@ -5,8 +5,15 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.TiendaBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TiendaDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.UsuarioDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class TiendaBusinessLogicImpl implements TiendaBusinessLogic{
+	
+	private DAOFactory factory;
+	
+	public TiendaBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public void ingresarTienda(UsuarioDomain usuario) {
