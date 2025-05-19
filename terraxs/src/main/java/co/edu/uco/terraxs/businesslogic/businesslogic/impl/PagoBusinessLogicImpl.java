@@ -6,8 +6,15 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.PagoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePagoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.EstadoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PagoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class PagoBusinessLogicImpl implements PagoBusinessLogic{
+
+	private DAOFactory factory;
+	
+	public PagoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public void realizarPago(PagoDomain pago) {

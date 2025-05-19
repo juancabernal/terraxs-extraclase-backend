@@ -5,8 +5,14 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.MetodoPagoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.MetodoPagoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class MetodoPagoBusinessLogicImpl implements MetodoPagoBusinessLogic{
+	private DAOFactory factory;
+
+	public MetodoPagoBusinessLogicImpl( DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public MetodoPagoDomain consultarMetodoPagoPorId(UUID id) {

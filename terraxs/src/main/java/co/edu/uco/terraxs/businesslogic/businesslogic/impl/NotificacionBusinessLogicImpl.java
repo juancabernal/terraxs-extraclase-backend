@@ -4,8 +4,14 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.NotificacionBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.NotificacionDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class NotificacionBusinessLogicImpl implements NotificacionBusinessLogic{
+	private DAOFactory factory;
+	
+	public NotificacionBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public void crearNotificacion(NotificacionDomain notificacion) {

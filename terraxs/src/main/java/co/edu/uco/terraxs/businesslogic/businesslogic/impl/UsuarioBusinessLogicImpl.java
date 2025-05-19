@@ -7,8 +7,15 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.UsuarioBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoDocumentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.UsuarioDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class UsuarioBusinessLogicImpl implements UsuarioBusinessLogic{
+
+	private DAOFactory factory;
+	
+	public UsuarioBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public void registrarUsuario(UsuarioDomain usuario) {

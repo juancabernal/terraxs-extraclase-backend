@@ -5,9 +5,15 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.ProductoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ProductoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class ProductoBusinessLogicImpl implements ProductoBusinessLogic{
 
+	private DAOFactory factory;
+	
+	public ProductoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 	@Override
 	public ProductoDomain consultarCostoProducto(UUID id) {
 		// TODO Auto-generated method stub

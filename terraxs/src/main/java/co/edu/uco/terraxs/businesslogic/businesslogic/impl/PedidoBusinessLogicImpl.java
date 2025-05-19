@@ -3,11 +3,17 @@ package co.edu.uco.terraxs.businesslogic.businesslogic.impl;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.PedidoBusinessLogic;
-import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePedidoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.EstadoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PedidoDomain;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class PedidoBusinessLogicImpl implements PedidoBusinessLogic{
+
+	private DAOFactory factory;
+	
+	public PedidoBusinessLogicImpl(DAOFactory factory) {
+		this.factory=factory;
+	}
 
 	@Override
 	public void realizarPedido(PedidoDomain pedido) {
