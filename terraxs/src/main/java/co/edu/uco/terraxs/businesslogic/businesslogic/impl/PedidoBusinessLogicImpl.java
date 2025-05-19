@@ -5,6 +5,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.PedidoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.EstadoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PedidoDomain;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class PedidoBusinessLogicImpl implements PedidoBusinessLogic{
@@ -28,13 +29,13 @@ public class PedidoBusinessLogicImpl implements PedidoBusinessLogic{
 	}
 
 	@Override
-	public EstadoDomain consultarEstadoPedido(UUID id) {
+	public PedidoDomain consultarEstadoPedido(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public EstadoDomain ActualizarEstadoPedido(UUID id) {
+	public PedidoDomain actualizarEstadoPedido(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

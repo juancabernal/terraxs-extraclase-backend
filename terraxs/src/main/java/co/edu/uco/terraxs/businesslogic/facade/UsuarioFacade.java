@@ -12,15 +12,12 @@ public interface UsuarioFacade {
 	void registrarUsuario(UsuarioDTO usuario);
 	
 	boolean confirmarDatos(UsuarioDTO usuario,TokenConfirmacionDTO token);
-	s
+	
 	void elegirTipoDocumento(List<TipoDocumentoDTO> documento);
 	
 	UsuarioDTO consultarInformacionUsuario(UUID id);
 	
-	void modificarDatos(UUID id,UsuarioDTO usuario);
-	
-
-	
+	void modificarDatos(UUID id,UsuarioDTO usuario);	
 
 }
 

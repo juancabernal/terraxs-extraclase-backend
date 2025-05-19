@@ -1,5 +1,6 @@
 package co.edu.uco.terraxs.data.dao.factory;
 
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
 import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
 import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
@@ -7,7 +8,7 @@ import co.edu.uco.terraxs.data.dao.factory.postgresql.PostgreSQLDAOFactory;
 
 public abstract class DAOFactory {
 	
-	public static DAOFactory getFactory(Factory factory) {
+	public static DAOFactory getFactory(Factory factory) throws TerraxsException {
 		switch (factory) {
 		case POSTGRE_SQL: {
 			return new PostgreSQLDAOFactory();
@@ -19,21 +20,21 @@ public abstract class DAOFactory {
 	}
 	
 	
-	protected abstract void abrirConexion();
+	protected abstract void abrirConexion() throws TerraxsException;
 	
-	public abstract void iniciarTransaccion();
+	public abstract void iniciarTransaccion() throws TerraxsException;
 	
-	public abstract void confirmarTransaccion();
+	public abstract void confirmarTransaccion() throws TerraxsException;
 	
-	public abstract void cancelarTransaccion();
+	public abstract void cancelarTransaccion() throws TerraxsException;
 	
-	public abstract void cerrarConexion();
+	public abstract void cerrarConexion() throws TerraxsException;
 
-	public abstract PaisDAO getPaisDAO();
+	public abstract PaisDAO getPaisDAO() throws TerraxsException;
 	
-	public abstract DepartamentoDAO getDepartamentoDAO();
+	public abstract DepartamentoDAO getDepartamentoDAO() throws TerraxsException;
 	
-	public abstract CiudadDAO getCiudadDAO();
+	public abstract CiudadDAO getCiudadDAO() throws TerraxsException;
 
 
 	

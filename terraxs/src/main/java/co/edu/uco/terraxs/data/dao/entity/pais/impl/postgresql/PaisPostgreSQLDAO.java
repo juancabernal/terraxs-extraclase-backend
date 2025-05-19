@@ -31,6 +31,7 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 			
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
+
     		var mensajeUsuario="Se ha presentado un problema tratando de registrar la información del nuevo país";
     		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un INSERT en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);

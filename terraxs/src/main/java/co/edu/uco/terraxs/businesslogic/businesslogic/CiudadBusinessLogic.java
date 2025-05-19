@@ -5,19 +5,20 @@ import java.util.List;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DepartamentoDomain;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 
 public interface CiudadBusinessLogic {
 	
-	void registrarNuevaCiudad(CiudadDomain ciudad);
+	void registrarNuevaCiudad(CiudadDomain ciudad) throws TerraxsException;
 
-	void modificarCiduadExistente(UUID id, CiudadDomain ciudad);
+	void modificarCiduadExistente(UUID id, CiudadDomain ciudad) throws TerraxsException;
 
-	void darBajaDefinitivamenteCiudadExistente(UUID id);
+	void darBajaDefinitivamenteCiudadExistente(UUID id) throws TerraxsException;
 
-	CiudadDomain consultarCiudadPorId(UUID id);
+	CiudadDomain consultarCiudadPorId(UUID id) throws TerraxsException;
 
-	List<CiudadDomain> consultarCiudades(CiudadDomain filtro);
+	List<CiudadDomain> consultarCiudades(CiudadDomain filtro) throws TerraxsException;
 	
-	void elegirDepartamento(List<DepartamentoDomain> pais);
+	void elegirDepartamento(List<DepartamentoDomain> pais) throws TerraxsException;
 
 }

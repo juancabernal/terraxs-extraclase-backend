@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.PaisBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.entity.PaisEntity;
 
@@ -17,13 +18,13 @@ public class PaisBusinessLogicImpl implements PaisBusinessLogic {
 	}
 
 	@Override
-	public void registrarNuevoPais(PaisDomain pais) {
+	public void registrarNuevoPais(PaisDomain pais) throws TerraxsException {
 		PaisEntity paisEntity=null;      //Magia de traducir de domain a entity
 		factory.getPaisDAO().create(paisEntity);
 	}
 
 	@Override
-	public void modificarPaisExistente(UUID id, PaisDomain pais) {
+	public void modificarPaisExistente(UUID id, PaisDomain pais) throws TerraxsException {
 		PaisEntity paisEntity=null;
 		factory.getPaisDAO().update(id,paisEntity);
 
@@ -31,20 +32,20 @@ public class PaisBusinessLogicImpl implements PaisBusinessLogic {
 	}
 
 	@Override
-	public void darBajaDefinitivamentePaisExistente(UUID id) {
+	public void darBajaDefinitivamentePaisExistente(UUID id) throws TerraxsException {
 
 		factory.getPaisDAO().delete(id);
 
 	}
 
 	@Override
-	public PaisDomain consultarPaisPorId(UUID id) {
+	public PaisDomain consultarPaisPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<PaisDomain> consultarPaises(PaisDomain filtro) {
+	public List<PaisDomain> consultarPaises(PaisDomain filtro) throws TerraxsException {
 		
 		PaisEntity paisFilter=null;   //Magia de traducir de domain a entity
 		List<PaisEntity>paisEntities= factory.getPaisDAO().listByFilter(paisFilter)	;
