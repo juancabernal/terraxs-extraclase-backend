@@ -63,3 +63,4 @@ public class UsuarioFacadeImpl implements UsuarioFacade{
 		// TODO Auto-generated method stub
 		
 	}
+}

@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePedidoDomain;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 
 public interface DetallePedidoBusinessLogic {
 	
-	void registrarNuevoDetallePedido(DetallePedidoDomain detallePedido);
+	void registrarNuevoDetallePedido(DetallePedidoDomain detallePedido) throws TerraxsException;
 	
-	DetallePedidoDomain consultarDetallePedidoPorId(UUID id);
+	DetallePedidoDomain consultarDetallePedidoPorId(UUID id) throws TerraxsException;
 
-	List<DetallePedidoDomain> consultarDetallesPedido(DetallePedidoDomain filtro);
+	List<DetallePedidoDomain> consultarDetallesPedido(DetallePedidoDomain filtro) throws TerraxsException;
 
 }

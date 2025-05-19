@@ -56,7 +56,7 @@ public class ClienteBusinessLogicImpl implements ClienteBusinessLogic{
 	}
 
 	@Override
-	public void elegirMunicipio(List<CiudadDomain> ciudad) {
+	public void elegirCiudad(List<CiudadDomain> ciudad) {
 		// TODO Auto-generated method stub
 		
 	}
