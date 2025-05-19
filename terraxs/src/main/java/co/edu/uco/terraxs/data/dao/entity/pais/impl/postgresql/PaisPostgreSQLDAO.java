@@ -31,12 +31,12 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 			
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
-    		var mensajeUsuario="Se ha presentado un problema tratando de registrar un pais .";
-    		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un insert en la tabla pais. Para tener más detalles revise el log de errores.";
+    		var mensajeUsuario="Se ha presentado un problema tratando de registrar la información del nuevo país";
+    		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un INSERT en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}catch(Exception exception) {
-    		var mensajeUsuario="Se ha presentado un problema inesperado  tratando de registrar un pais .";
-    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de iniciar la transacción sobre la conexión con la base de datos. Para tener más detalles revise el log de errores.";
+    		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de registrar la información del nuevo país";
+    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un INSERT en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}
 		
@@ -76,12 +76,12 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 			
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
-    		var mensajeUsuario="Se ha presentado un problema inesperado  tratando de realizar una busqueda dentro la tabla pais.";
-    		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un SELECT en la tabla pais. Para tener más detalles revise el log de errores.";
+    		var mensajeUsuario="Se ha presentado un problema tratando de consultar la información del país con el identificador deseado";
+    		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un SELECT en la tabla pais por id. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}catch(Exception exception) {
-    		var mensajeUsuario="Se ha presentado un problema inesperado  tratando de realizar una busqueda dentro la tabla pais.";
-    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un SELECT en la tabla pais. Para tener más detalles revise el log de errores.";
+    		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de consultar la información del país con el identificador deseado";
+    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un SELECT en la tabla pais por id. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}
 		return paisEntityRetorno;
@@ -103,12 +103,12 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 			
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
-    		var mensajeUsuario="Se ha presentado un problema tratando de actualizar un pais .";
+    		var mensajeUsuario="Se ha presentado un problema tratando de modificar la información del nuevo país";
     		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un UPDATE en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}catch(Exception exception) {
-    		var mensajeUsuario="Se ha presentado un problema INESPERADO  tratando de actualizar un pais .";
-    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de realizar un UPDATE en la tabla pais. Para tener más detalles revise el log de errores.";
+    		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de modificar la información del nuevo país";
+    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un UPDATE en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}
 
@@ -125,12 +125,12 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 			
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
-    		var mensajeUsuario="Se ha presentado un problema tratando de eliminar un pais .";
+    		var mensajeUsuario="Se ha presentado un problema tratando de eliminar la información del nuevo país";
     		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un DELETE en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}catch(Exception exception) {
-    		var mensajeUsuario="Se ha presentado un problema inesperado  tratando de eliminar un pais .";
-    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un DELETE en la tabla pais en la base de datos. Para tener más detalles revise el log de errores.";
+    		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de eliminar la información del nuevo país";
+    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un DELETE en la tabla pais. Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}
 
