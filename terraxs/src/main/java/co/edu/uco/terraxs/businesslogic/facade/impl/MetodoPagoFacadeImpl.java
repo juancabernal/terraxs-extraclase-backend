@@ -9,6 +9,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.impl.CanalBusinessLogicImp
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.MetodoPagoBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.CanalFacade;
 import co.edu.uco.terraxs.businesslogic.facade.MetodoPagoFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.dto.CanalDTO;
 import co.edu.uco.terraxs.dto.MetodoPagoDTO;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
@@ -20,21 +21,21 @@ public class MetodoPagoFacadeImpl implements MetodoPagoFacade{
 	private MetodoPagoBusinessLogic metodoPagoBusinessLogic;
 	
 	
-	public MetodoPagoFacadeImpl() {
+	public MetodoPagoFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		metodoPagoBusinessLogic = new MetodoPagoBusinessLogicImpl(daoFactory);
 	}
 
 
 	@Override
-	public MetodoPagoDTO consultarMetodoPagoPorId(UUID id) {
+	public MetodoPagoDTO consultarMetodoPagoPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public List<MetodoPagoDTO> consultarMetodosPago(MetodoPagoDTO filtro) {
+	public List<MetodoPagoDTO> consultarMetodosPago(MetodoPagoDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -7,6 +7,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.ClienteTiendaBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.ClienteTiendaBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.ClienteTiendaFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.dto.ClienteTiendaDTO;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
@@ -17,19 +18,19 @@ public class ClienteTiendaFacadeImpl implements ClienteTiendaFacade {
 	private ClienteTiendaBusinessLogic clienteTiendaBusinessLogic;
 	
 	
-	public ClienteTiendaFacadeImpl() {
+	public ClienteTiendaFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		clienteTiendaBusinessLogic = new ClienteTiendaBusinessLogicImpl(daoFactory);
 	}
 
 	@Override
-	public LocalDate consultarFechaIngreso(UUID id) {
+	public LocalDate consultarFechaIngreso(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ClienteTiendaDTO> consultarClientesTienda(ClienteTiendaDTO filtro) {
+	public List<ClienteTiendaDTO> consultarClientesTienda(ClienteTiendaDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}

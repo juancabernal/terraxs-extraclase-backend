@@ -29,7 +29,7 @@ public class CanalFacadeImpl implements CanalFacade{
 	}
 
 	@Override
-	public List<CanalDTO> consultarCanales(CanalDTO filtro) {
+	public List<CanalDTO> consultarCanales(CanalDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}

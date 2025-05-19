@@ -6,6 +6,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.PaisBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.PaisBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.PaisFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.PaisDTO;
@@ -16,31 +17,31 @@ public class PaisFacadeImpl implements PaisFacade {
 	private PaisBusinessLogic paisBusinessLogic;
 	
 	
-	public PaisFacadeImpl() {
+	public PaisFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		paisBusinessLogic= new PaisBusinessLogicImpl(daoFactory);
 	}
 
 	@Override
-	public void registrarNuevoPais(PaisDTO pais) {
+	public void registrarNuevoPais(PaisDTO pais) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void modificarPaisExistente(UUID id, PaisDTO pais) {
+	public void modificarPaisExistente(UUID id, PaisDTO pais) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void darBajaDefinitivamentePaisExistente(UUID id) {
+	public void darBajaDefinitivamentePaisExistente(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public PaisDTO consultarPaisPorId(UUID id) {
+	public PaisDTO consultarPaisPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}

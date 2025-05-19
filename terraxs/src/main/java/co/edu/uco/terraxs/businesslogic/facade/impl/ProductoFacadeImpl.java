@@ -9,6 +9,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.impl.AdministradorBusiness
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.ProductoBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.AdministradorFacade;
 import co.edu.uco.terraxs.businesslogic.facade.ProductoFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.AdministradorDTO;
@@ -22,56 +23,56 @@ public class ProductoFacadeImpl implements ProductoFacade{
 	private ProductoBusinessLogic productoBusinessLogic;
 	
 	
-	public ProductoFacadeImpl() {
-		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
+	public ProductoFacadeImpl() throws TerraxsException{
+		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL) ;
 		productoBusinessLogic = new ProductoBusinessLogicImpl(daoFactory);
 	}
 
 
 	@Override
-	public ProductoDTO consultarCostoProducto(UUID id) {
+	public ProductoDTO consultarCostoProducto(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public void publicarProducto(ProductoDTO producto) {
+	public void publicarProducto(ProductoDTO producto) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public List<ProductoDTO> categorizarProducto(ProductoDTO filtro) {
+	public List<ProductoDTO> categorizarProducto(ProductoDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public ProductoDTO visualizarDescripcionProducto(UUID id) {
+	public ProductoDTO visualizarDescripcionProducto(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public void actualizarDetallesProducto(UUID id, ProductoDTO producto) {
+	public void actualizarDetallesProducto(UUID id, ProductoDTO producto) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public boolean autorizarCambiosProducto(UUID id) {
+	public boolean autorizarCambiosProducto(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
 	@Override
-	public void eliminarProducto(UUID id) {
+	public void eliminarProducto(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}

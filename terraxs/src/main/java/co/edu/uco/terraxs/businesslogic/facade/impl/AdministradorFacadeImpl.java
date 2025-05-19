@@ -6,6 +6,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.AdministradorBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.AdministradorBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.AdministradorFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.AdministradorDTO;
@@ -18,43 +19,43 @@ public class AdministradorFacadeImpl implements AdministradorFacade{
 	private AdministradorBusinessLogic administradorBusinessLogic;
 	
 	
-	public AdministradorFacadeImpl() {
+	public AdministradorFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		administradorBusinessLogic = new AdministradorBusinessLogicImpl(daoFactory);
 	}
 
 	@Override
-	public void registrarAdministrador(AdministradorDTO administrador) {
+	public void registrarAdministrador(AdministradorDTO administrador) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public boolean confirmarDatosAdministrador(AdministradorDTO administrador, TokenConfirmacionDTO token) {
+	public boolean confirmarDatosAdministrador(AdministradorDTO administrador, TokenConfirmacionDTO token) throws TerraxsException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void elegirTipoDocumento(List<TipoDocumentoDTO> tipoDocumento) {
+	public void elegirTipoDocumento(List<TipoDocumentoDTO> tipoDocumento) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public AdministradorDTO consultarAdministradorPorId(UUID id) {
+	public AdministradorDTO consultarAdministradorPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<AdministradorDTO> consultarAdministradores(AdministradorDTO filtro) {
+	public List<AdministradorDTO> consultarAdministradores(AdministradorDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void modificarDatosAdministrador(UUID id, AdministradorDTO administrador) {
+	public void modificarDatosAdministrador(UUID id, AdministradorDTO administrador) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}

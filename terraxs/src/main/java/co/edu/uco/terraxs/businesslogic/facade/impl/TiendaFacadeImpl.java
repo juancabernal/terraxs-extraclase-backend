@@ -6,6 +6,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.TiendaBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.TiendaBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.CanalFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.CanalDTO;
@@ -16,7 +17,7 @@ public class TiendaFacadeImpl implements CanalFacade{
 	private TiendaBusinessLogic tiendaBusinessLogic;
 	
 	
-	public TiendaFacadeImpl() {
+	public TiendaFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		tiendaBusinessLogic = new TiendaBusinessLogicImpl(daoFactory);
 	}
@@ -25,14 +26,14 @@ public class TiendaFacadeImpl implements CanalFacade{
 
 
 	@Override
-	public CanalDTO consultarCanalPorId(UUID id) {
+	public CanalDTO consultarCanalPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public List<CanalDTO> consultarCanales(CanalDTO filtro) {
+	public List<CanalDTO> consultarCanales(CanalDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}

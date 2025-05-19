@@ -9,6 +9,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.impl.AdministradorBusiness
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.UsuarioBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.AdministradorFacade;
 import co.edu.uco.terraxs.businesslogic.facade.UsuarioFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.AdministradorDTO;
@@ -22,7 +23,7 @@ public class UsuarioFacadeImpl implements UsuarioFacade{
 	private UsuarioBusinessLogic usuarioBusinessLogic;
 	
 	
-	public UsuarioFacadeImpl() {
+	public UsuarioFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		usuarioBusinessLogic = new UsuarioBusinessLogicImpl(daoFactory);
 
@@ -31,35 +32,35 @@ public class UsuarioFacadeImpl implements UsuarioFacade{
 
 
 	@Override
-	public void registrarUsuario(UsuarioDTO usuario) {
+	public void registrarUsuario(UsuarioDTO usuario) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public boolean confirmarDatos(UsuarioDTO usuario, TokenConfirmacionDTO token) {
+	public boolean confirmarDatos(UsuarioDTO usuario, TokenConfirmacionDTO token) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
 	@Override
-	public void elegirTipoDocumento(List<TipoDocumentoDTO> documento) {
+	public void elegirTipoDocumento(List<TipoDocumentoDTO> documento) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public UsuarioDTO consultarInformacionUsuario(UUID id) {
+	public UsuarioDTO consultarInformacionUsuario(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public void modificarDatos(UUID id, UsuarioDTO usuario) {
+	public void modificarDatos(UUID id, UsuarioDTO usuario) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}

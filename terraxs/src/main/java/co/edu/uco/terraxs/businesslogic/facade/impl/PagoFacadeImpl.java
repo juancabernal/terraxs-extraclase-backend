@@ -9,6 +9,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.impl.AdministradorBusiness
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.PagoBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.AdministradorFacade;
 import co.edu.uco.terraxs.businesslogic.facade.PagoFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.AdministradorDTO;
@@ -24,49 +25,40 @@ public class PagoFacadeImpl implements PagoFacade{
 	private PagoBusinessLogic pagoBusinessLogic;
 	
 	
-	public PagoFacadeImpl() {
+	public PagoFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		pagoBusinessLogic = new PagoBusinessLogicImpl(daoFactory);
 	}
 
 
 	@Override
-	public void realizarPago(PagoDTO pago) {
+	public void realizarPago(PagoDTO pago) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public PagoDTO consultarInformacionPago(UUID id) {
+	public PagoDTO consultarInformacionPago(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public EstadoDTO actualizarEstadoPago(UUID id) {
+	public void actualizarEstadoPago(UUID id, PagoDTO pago) throws TerraxsException{
 		// TODO Auto-generated method stub
-		return null;
 	}
 
-
 	@Override
-	public DetallePagoDTO verDetallesPago(UUID id, DetallePagoDTO detallePago) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean confirmarPago(UUID id) {
+	public boolean confirmarPago(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
 	@Override
-	public void cancelarPago(UUID id) {
+	public void cancelarPago(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}

@@ -6,6 +6,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.ProveedorBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.ProveedorBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.ProveedorFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.dto.CiudadDTO;
 import co.edu.uco.terraxs.dto.ProveedorDTO;
 import co.edu.uco.terraxs.dto.TipoDocumentoDTO;
@@ -19,49 +20,49 @@ public class ProveedorFacadeImpl implements ProveedorFacade{
 	private ProveedorBusinessLogic proveedorBusinessLogic;
 	
 	
-	public ProveedorFacadeImpl() {
+	public ProveedorFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		proveedorBusinessLogic = new ProveedorBusinessLogicImpl(daoFactory);
 	}
 
 	@Override
-	public void registrarProveedor(ProveedorDTO proveedor) {
+	public void registrarProveedor(ProveedorDTO proveedor) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public boolean confirmarDatosProveedor(ProveedorDTO proveedor, TokenConfirmacionDTO token) {
+	public boolean confirmarDatosProveedor(ProveedorDTO proveedor, TokenConfirmacionDTO token) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void elegirTipoDocumento(List<TipoDocumentoDTO> tipoDocumento) {
+	public void elegirTipoDocumento(List<TipoDocumentoDTO> tipoDocumento) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public ProveedorDTO consultarProveedorPorId(UUID id) {
+	public ProveedorDTO consultarProveedorPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ProveedorDTO> consultarProveedores(ProveedorDTO filtro) {
+	public List<ProveedorDTO> consultarProveedores(ProveedorDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void modificarDatosProveedor(UUID id, ProveedorDTO proveedor) {
+	public void modificarDatosProveedor(UUID id, ProveedorDTO proveedor) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void elegirCiudad(List<CiudadDTO> ciudad) {
+	public void elegirCiudad(List<CiudadDTO> ciudad) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}

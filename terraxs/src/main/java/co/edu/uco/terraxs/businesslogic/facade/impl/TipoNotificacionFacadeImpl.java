@@ -9,6 +9,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.impl.AdministradorBusiness
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.TipoNotificacionBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.AdministradorFacade;
 import co.edu.uco.terraxs.businesslogic.facade.TipoNotificacionFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.AdministradorDTO;
@@ -22,21 +23,21 @@ public class TipoNotificacionFacadeImpl implements TipoNotificacionFacade{
 	private TipoNotificacionBusinessLogic tipoNotificacionBusinessLogic;
 	
 	
-	public TipoNotificacionFacadeImpl() {
+	public TipoNotificacionFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		tipoNotificacionBusinessLogic = new TipoNotificacionBusinessLogicImpl(daoFactory);
 	}
 
 
 	@Override
-	public TipoNotificacionDTO consultarTipoNotificacionPorId(UUID id) {
+	public TipoNotificacionDTO consultarTipoNotificacionPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public List<TipoNotificacionDTO> consultarTiposNotificacion(TipoNotificacionDTO filtro) {
+	public List<TipoNotificacionDTO> consultarTiposNotificacion(TipoNotificacionDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}

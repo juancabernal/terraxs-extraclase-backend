@@ -6,6 +6,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.CiudadBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.CiudadBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.CiudadFacade;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.CiudadDTO;
@@ -17,43 +18,43 @@ public class CiudadFacadeImpl implements CiudadFacade {
 	private CiudadBusinessLogic ciudadBusinessLogic;
 	
 	
-	public CiudadFacadeImpl() {
+	public CiudadFacadeImpl() throws TerraxsException {
 		daoFactory=DAOFactory.getFactory(Factory.POSTGRE_SQL);
 		ciudadBusinessLogic = new CiudadBusinessLogicImpl(daoFactory);
 	}
 
 	@Override
-	public void registrarNuevaCiudad(CiudadDTO ciudad) {
+	public void registrarNuevaCiudad(CiudadDTO ciudad) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void modificarCiduadExistente(UUID id, CiudadDTO ciudad) {
+	public void modificarCiduadExistente(UUID id, CiudadDTO ciudad) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void darBajaDefinitivamenteCiudadExistente(UUID id) {
+	public void darBajaDefinitivamenteCiudadExistente(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public CiudadDTO consultarCiudadPorId(UUID id) {
+	public CiudadDTO consultarCiudadPorId(UUID id) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CiudadDTO> consultarCiudades(CiudadDTO filtro) {
+	public List<CiudadDTO> consultarCiudades(CiudadDTO filtro) throws TerraxsException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void elegirDepartamento(List<DepartamentoDTO> pais) {
+	public void elegirDepartamento(List<DepartamentoDTO> pais) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
