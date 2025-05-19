@@ -12,6 +12,7 @@ import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
 import co.edu.uco.terraxs.entity.CiudadEntity;
+import co.edu.uco.terraxs.entity.DepartamentoEntity;
 
 public class CiudadPostgreSQLDAO implements CiudadDAO {
 
@@ -68,6 +69,11 @@ public class CiudadPostgreSQLDAO implements CiudadDAO {
                 if (cursorResultados.next()) {
                     ciudadEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
                     ciudadEntityRetorno.setNombre(cursorResultados.getString("nombre"));
+                    
+                    //Create a DepartamentoEntity and set the id.
+                    DepartamentoEntity departamento = new DepartamentoEntity();
+                    departamento.setId(UtilUUID.convertirAUUID(cursorResultados.getString("departamento_id")));
+                    ciudadEntityRetorno.setDepartamento(departamento); // Set departamento
     
 
                 }
