@@ -43,17 +43,83 @@ public class UnidadPostgreSQLDAO implements UnidadDAO {
     }
 
     @Override
-    public List<UnidadEntity> listByFilter(UnidadEntity filter) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<UnidadEntity> listALL() throws TerraxsException {
+        var sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("SELECT id, nombre FROM Unidad");
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+            try (ResultSet cursorResultados = sentenciaPreparada.executeQuery()) {
+                List<UnidadEntity> listaResultados = new java.util.ArrayList<>();
+
+                while (cursorResultados.next()) {
+                	UnidadEntity entity = new UnidadEntity();
+                    entity.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+                    entity.setNombre(cursorResultados.getString("nombre"));
+                  
+
+                    listaResultados.add(entity);
+                }
+
+                return listaResultados;
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar todas las unidades.";
+            var mensajeTecnico = "Se presentó una SQLException ejecutando un SELECT general en la tabla Unidad.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO consultando todas las unidades.";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA ejecutando un SELECT general en la tabla Unidad.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
     }
 
     @Override
-    public List<UnidadEntity> listALL() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public List<UnidadEntity> listByFilter(UnidadEntity filter) throws TerraxsException {
+        var sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("SELECT id, nombre FROM Unidad WHERE 1=1 ");
 
+        List<Object> parametros = new java.util.ArrayList<>();
+
+        if (filter.getId() != null) {
+            sentenciaSQL.append("AND id = ? ");
+            parametros.add(filter.getId());
+        }
+        if (filter.getNombre() != null && !filter.getNombre().isBlank()) {
+			sentenciaSQL.append(" AND nombre ILIKE ?");
+			parametros.add("%" + filter.getNombre().trim() + "%");
+		}
+      
+        
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+            for (int i = 0; i < parametros.size(); i++) {
+                sentenciaPreparada.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet cursorResultados = sentenciaPreparada.executeQuery()) {
+                List<UnidadEntity> listaResultados = new java.util.ArrayList<>();
+
+                while (cursorResultados.next()) {
+                	UnidadEntity entity = new UnidadEntity();
+                    entity.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+                    entity.setNombre(cursorResultados.getString("nombre"));
+                
+
+                    listaResultados.add(entity);
+                }
+
+                return listaResultados;
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar las unidades por filtro.";
+            var mensajeTecnico = "Se presentó una SQLException ejecutando un SELECT filtrado en la tabla Unidad.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO consultando las unidades por filtro.";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA ejecutando un SELECT filtrado en la tabla Unidad.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
+    }
     @Override
     public UnidadEntity listById(UUID id) throws TerraxsException {
         UnidadEntity unidadEntityRetorno = new UnidadEntity();

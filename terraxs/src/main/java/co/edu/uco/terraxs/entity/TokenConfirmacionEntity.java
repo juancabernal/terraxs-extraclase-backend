@@ -11,6 +11,7 @@ public final class TokenConfirmacionEntity {
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaExpiracion;
 	private boolean usado;
+	private EstadoEntity estado;
 	private NotificacionEntity notificacion; 
 
 	public TokenConfirmacionEntity() {
@@ -95,5 +96,13 @@ public final class TokenConfirmacionEntity {
 
 	public void setNotificacion(final NotificacionEntity notificacion) {
 		this.notificacion = NotificacionEntity.obtenerValorDefecto(notificacion);
+	}
+
+	public EstadoEntity getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoEntity estado) {
+		this.estado = estado;
 	}
 }

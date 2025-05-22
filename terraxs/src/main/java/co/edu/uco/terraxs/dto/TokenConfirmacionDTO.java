@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.crosscutting.utilitarios.*;
+import co.edu.uco.terraxs.entity.EstadoEntity;
 
 public final class TokenConfirmacionDTO {
 
@@ -12,6 +13,7 @@ public final class TokenConfirmacionDTO {
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaExpiracion;
 	private boolean usado;
+	private EstadoEntity estado;
 	private NotificacionDTO notificacion;
 
 	public TokenConfirmacionDTO() {
@@ -113,6 +115,14 @@ public final class TokenConfirmacionDTO {
 				+ ", fechaExpiracion=" + fechaExpiracion + ", usado=" + usado + ", notificacion=" + notificacion + "]";
 	}
 
+	public EstadoEntity getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoEntity estado) {
+		this.estado = estado;
+	}
+
 	public static class Builder {
 
 		private UUID id;
@@ -120,6 +130,7 @@ public final class TokenConfirmacionDTO {
 		private LocalDateTime fechaSolicitud;
 		private LocalDateTime fechaExpiracion;
 		private boolean usado;
+		private EstadoDTO estado;
 		private NotificacionDTO notificacion;
 
 		public Builder id(final UUID id) {
@@ -144,6 +155,10 @@ public final class TokenConfirmacionDTO {
 
 		public Builder usado(final boolean usado) {
 			this.usado = usado;
+			return this;
+		}
+		public Builder estado(final EstadoDTO estado) {
+			this.estado = estado;
 			return this;
 		}
 

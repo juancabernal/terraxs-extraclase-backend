@@ -26,7 +26,7 @@ public class VigenciaPrecioPostreSQLDAO implements VigenciaPrecioDAO {
     @Override
     public void create(VigenciaPrecioEntity entity) throws TerraxsException {
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("INSERT INTO VigenciaPrecio(id, precio, fechaInicio, fechaFin, productoProveedor_id) VALUES (?, ?, ?, ?, ?)");
+        sentenciaSQL.append("INSERT INTO VigenciaPrecio(id, precio, fechaInicio, fechaFin, producto) VALUES (?, ?, ?, ?, ?)");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setObject(1, entity.getId());
@@ -48,22 +48,109 @@ public class VigenciaPrecioPostreSQLDAO implements VigenciaPrecioDAO {
     }
 
     @Override
-    public List<VigenciaPrecioEntity> listByFilter(VigenciaPrecioEntity filter) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<VigenciaPrecioEntity> listALL() throws TerraxsException {
+        var sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("SELECT id, precio, fechaInicio, fechaFin, producto FROM VigenciaPrecio");
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+            try (ResultSet cursorResultados = sentenciaPreparada.executeQuery()) {
+                List<VigenciaPrecioEntity> listaResultados = new java.util.ArrayList<>();
+
+                while (cursorResultados.next()) {
+                    VigenciaPrecioEntity entity = new VigenciaPrecioEntity();
+                    entity.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+                    entity.setPrecio(cursorResultados.getDouble("precio"));
+                    entity.setFechaInicio(cursorResultados.getDate("fechaInicio").toLocalDate());
+                    entity.setFechaFin(cursorResultados.getDate("fechaFin").toLocalDate());
+
+                    ProductoProveedorEntity productoProveedor = new ProductoProveedorEntity();
+                    productoProveedor.setId(UtilUUID.convertirAUUID(cursorResultados.getString("producto")));
+                    entity.setProductoProveedor(productoProveedor);
+
+                    listaResultados.add(entity);
+                }
+
+                return listaResultados;
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar todas las vigencias de precios.";
+            var mensajeTecnico = "Se presentó una SQLException ejecutando un SELECT general en la tabla VigenciaPrecio.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO consultando todas las vigencias de precios.";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA ejecutando un SELECT general en la tabla VigenciaPrecio.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
     }
 
     @Override
-    public List<VigenciaPrecioEntity> listALL() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<VigenciaPrecioEntity> listByFilter(VigenciaPrecioEntity filter) throws TerraxsException {
+        var sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("SELECT id, precio, fechaInicio, fechaFin, producto FROM VigenciaPrecio WHERE 1=1 ");
+
+        List<Object> parametros = new java.util.ArrayList<>();
+
+        if (filter.getId() != null) {
+            sentenciaSQL.append("AND id = ? ");
+            parametros.add(filter.getId());
+        }
+        if (filter.getPrecio() > 0) {
+            sentenciaSQL.append("AND precio = ? ");
+            parametros.add(filter.getPrecio());
+        }
+        if (filter.getFechaInicio() != null) {
+            sentenciaSQL.append("AND fechaInicio = ? ");
+            parametros.add(Date.valueOf(filter.getFechaInicio()));
+        }
+        if (filter.getFechaFin() != null) {
+            sentenciaSQL.append("AND fechaFin = ? ");
+            parametros.add(Date.valueOf(filter.getFechaFin()));
+        }
+        if (filter.getProductoProveedor() != null && filter.getProductoProveedor().getId() != null) {
+            sentenciaSQL.append("AND producto = ? ");
+            parametros.add(filter.getProductoProveedor().getId());
+        }
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+            for (int i = 0; i < parametros.size(); i++) {
+                sentenciaPreparada.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet cursorResultados = sentenciaPreparada.executeQuery()) {
+                List<VigenciaPrecioEntity> listaResultados = new java.util.ArrayList<>();
+
+                while (cursorResultados.next()) {
+                    VigenciaPrecioEntity entity = new VigenciaPrecioEntity();
+                    entity.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+                    entity.setPrecio(cursorResultados.getDouble("precio"));
+                    entity.setFechaInicio(cursorResultados.getDate("fechaInicio").toLocalDate());
+                    entity.setFechaFin(cursorResultados.getDate("fechaFin").toLocalDate());
+
+                    ProductoProveedorEntity productoProveedor = new ProductoProveedorEntity();
+                    productoProveedor.setId(UtilUUID.convertirAUUID(cursorResultados.getString("producto")));
+                    entity.setProductoProveedor(productoProveedor);
+
+                    listaResultados.add(entity);
+                }
+
+                return listaResultados;
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar vigencias de precios por filtro.";
+            var mensajeTecnico = "Se presentó una SQLException ejecutando un SELECT filtrado en la tabla VigenciaPrecio.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO consultando vigencias de precios por filtro.";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA ejecutando un SELECT filtrado en la tabla VigenciaPrecio.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
     }
 
     @Override
     public VigenciaPrecioEntity listById(UUID id) throws TerraxsException {
         VigenciaPrecioEntity vigenciaPrecioEntityRetorno = new VigenciaPrecioEntity();
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("SELECT id, precio, fechaInicio, fechaFin, productoProveedor_id FROM VigenciaPrecio WHERE id = ?");
+        sentenciaSQL.append("SELECT id, precio, fechaInicio, fechaFin, producto FROM VigenciaPrecio WHERE id = ?");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setObject(1, id);
@@ -76,7 +163,7 @@ public class VigenciaPrecioPostreSQLDAO implements VigenciaPrecioDAO {
                     vigenciaPrecioEntityRetorno.setFechaFin(cursorResultados.getDate("fechaFin").toLocalDate());
 
                     ProductoProveedorEntity productoProveedor = new ProductoProveedorEntity();
-                    productoProveedor.setId(UtilUUID.convertirAUUID(cursorResultados.getString("productoProveedor_id")));
+                    productoProveedor.setId(UtilUUID.convertirAUUID(cursorResultados.getString("producto")));
                     vigenciaPrecioEntityRetorno.setProductoProveedor(productoProveedor);
                 }
             }
@@ -95,7 +182,7 @@ public class VigenciaPrecioPostreSQLDAO implements VigenciaPrecioDAO {
     @Override
     public void update(UUID id, VigenciaPrecioEntity entity) throws TerraxsException {
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("UPDATE VigenciaPrecio SET precio = ?, fechaInicio = ?, fechaFin = ?, productoProveedor_id = ? WHERE id = ?");
+        sentenciaSQL.append("UPDATE VigenciaPrecio SET precio = ?, fechaInicio = ?, fechaFin = ?, producto = ? WHERE id = ?");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setDouble(1, entity.getPrecio());

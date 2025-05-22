@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
 import co.edu.uco.terraxs.entity.CiudadEntity;
 import co.edu.uco.terraxs.entity.DepartamentoEntity;
+import co.edu.uco.terraxs.entity.PaisEntity;
 
 public class CiudadPostgreSQLDAO implements CiudadDAO {
 
@@ -45,16 +47,121 @@ public class CiudadPostgreSQLDAO implements CiudadDAO {
     }
 
     @Override
-    public List<CiudadEntity> listByFilter(CiudadEntity filter) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<CiudadEntity> listByFilter(final CiudadEntity filter) throws TerraxsException {
+
+        var sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("""
+            SELECT c.id AS ciudad_id, c.nombre AS ciudad_nombre,
+                   d.id AS departamento_id, d.nombre AS departamento_nombre,
+                   p.id AS pais_id, p.nombre AS pais_nombre
+            FROM ciudad c
+            JOIN departamento d ON c.departamento = d.id
+            JOIN pais p ON d.pais = p.id
+            WHERE 1=1
+        """);
+
+        final List<CiudadEntity> ciudades = new ArrayList<>();
+        final List<Object> parametros = new ArrayList<>();
+
+        if (filter != null) {
+            if (filter.getId() != null) {
+                sentenciaSQL.append(" AND c.id = ?");
+                parametros.add(filter.getId());
+            }
+            if (filter.getNombre() != null && !filter.getNombre().isBlank()) {
+                sentenciaSQL.append(" AND c.nombre ILIKE ?");
+                parametros.add("%" + filter.getNombre().trim() + "%");
+            }
+            if (filter.getDepartamento() != null && filter.getDepartamento().getId() != null) {
+                sentenciaSQL.append(" AND d.id = ?");
+                parametros.add(filter.getDepartamento().getId());
+            }
+        }
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+            for (int i = 0; i < parametros.size(); i++) {
+                sentenciaPreparada.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet resultado = sentenciaPreparada.executeQuery()) {
+                while (resultado.next()) {
+                    var pais = new PaisEntity();
+                    pais.setId(UtilUUID.convertirAUUID(resultado.getString("pais_id")));
+                    pais.setNombre(resultado.getString("pais_nombre"));
+
+                    var departamento = new DepartamentoEntity();
+                    departamento.setId(UtilUUID.convertirAUUID(resultado.getString("departamento_id")));
+                    departamento.setNombre(resultado.getString("departamento_nombre"));
+                    departamento.setPais(pais);
+
+                    var ciudad = new CiudadEntity();
+                    ciudad.setId(UtilUUID.convertirAUUID(resultado.getString("ciudad_id")));
+                    ciudad.setNombre(resultado.getString("ciudad_nombre"));
+                    ciudad.setDepartamento(departamento);
+
+                    ciudades.add(ciudad);
+                }
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar las ciudades con los filtros deseados";
+            var mensajeTecnico = "Se presentó una SQLException al consultar la tabla ciudad usando filtros. Revise la sintaxis SQL o los parámetros.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar las ciudades con los filtros deseados";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception al consultar la tabla ciudad usando filtros.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
+
+        return ciudades;
     }
 
     @Override
-    public List<CiudadEntity> listALL() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<CiudadEntity> listALL() throws TerraxsException {
+
+        final List<CiudadEntity> ciudades = new ArrayList<>();
+        final String sentenciaSQL = """
+            SELECT c.id AS ciudad_id, c.nombre AS ciudad_nombre,
+                   d.id AS departamento_id, d.nombre AS departamento_nombre,
+                   p.id AS pais_id, p.nombre AS pais_nombre
+            FROM ciudad c
+            JOIN departamento d ON c.departamento = d.id
+            JOIN pais p ON d.pais = p.id
+        """;
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
+             ResultSet resultado = sentenciaPreparada.executeQuery()) {
+
+            while (resultado.next()) {
+                var pais = new PaisEntity();
+                pais.setId(UtilUUID.convertirAUUID(resultado.getString("pais_id")));
+                pais.setNombre(resultado.getString("pais_nombre"));
+
+                var departamento = new DepartamentoEntity();
+                departamento.setId(UtilUUID.convertirAUUID(resultado.getString("departamento_id")));
+                departamento.setNombre(resultado.getString("departamento_nombre"));
+                departamento.setPais(pais);
+
+                var ciudad = new CiudadEntity();
+                ciudad.setId(UtilUUID.convertirAUUID(resultado.getString("ciudad_id")));
+                ciudad.setNombre(resultado.getString("ciudad_nombre"));
+                ciudad.setDepartamento(departamento);
+
+                ciudades.add(ciudad);
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar todas las ciudades";
+            var mensajeTecnico = "Se presentó una SQLException al ejecutar SELECT * en la tabla ciudad.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar todas las ciudades";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA al consultar todas las ciudades.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
+
+        return ciudades;
     }
+
+
 
     @Override
     public CiudadEntity listById(UUID id) throws TerraxsException {
