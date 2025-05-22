@@ -12,8 +12,8 @@ public class ProveedorEntity extends UsuarioEntity {
 	}
 
 	public ProveedorEntity(UUID id, TipoDocumentoEntity tipoDocumento, String numeroIdentificacion, String nombres,
-			String apellidos, String correo, String telefono, boolean correoConfirmado, boolean telefonoConfirmado, CiudadEntity ciudad) {
-		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado);
+			String apellidos, String correo, String telefono, boolean correoConfirmado, boolean telefonoConfirmado, CiudadEntity ciudad, String password) {
+		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);
 		setCiudad(ciudad);
 	}
 
