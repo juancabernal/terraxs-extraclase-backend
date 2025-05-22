@@ -6,10 +6,10 @@ import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 
 public interface RetrieveDAO<E, ID> {
 	
-	List<E> listByFilter(E filter);
+	List<E> listByFilter(E filter) throws TerraxsException;
 	
 	
-	List<E> listALL();
+	List<E> listALL() throws TerraxsException;
 
 	E listById(ID id) throws TerraxsException;
 
