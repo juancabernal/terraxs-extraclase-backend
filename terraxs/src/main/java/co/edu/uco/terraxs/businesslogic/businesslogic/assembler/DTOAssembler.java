@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DTOAssembler<T,D> {
 	
-	T toDto(D domain);
+	T toDTO(D domain);
 	
 	D toDomain(T dto);
 	

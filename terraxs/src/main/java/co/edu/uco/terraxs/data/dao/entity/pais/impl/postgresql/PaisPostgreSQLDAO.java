@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.crosscutting.excepciones.DataTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
 import co.edu.uco.terraxs.entity.PaisEntity;
@@ -25,14 +26,16 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 
 	@Override
 	public void create(PaisEntity entity) throws TerraxsException {
-		var sentenciaSQL= new StringBuilder();
-		sentenciaSQL.append("INSERT INTO Pais(id,nombre) VALUES (?,?)");
-		
-		try(var sentenciaPreparada=conexion.prepareStatement(sentenciaSQL.toString())){
+		var sentenciaSQL = new StringBuilder();
+
+		sentenciaSQL.append("INSERT INTO pais (id, nombre) VALUES (?,?)");
+
+		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
 			sentenciaPreparada.setObject(1, entity.getId());
-			sentenciaPreparada.setObject(2, entity.getNombre());
-			
+			sentenciaPreparada.setString(2, entity.getNombre());
+
 			sentenciaPreparada.executeUpdate();
+
 		}catch(SQLException exception) {
 
     		var mensajeUsuario="Se ha presentado un problema tratando de registrar la información del nuevo país";
@@ -51,37 +54,38 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 	@Override
 	public List<PaisEntity> listByFilter(final PaisEntity filter) throws TerraxsException {
 			
-			var sentenciaSQL = new StringBuilder();
-			
-			sentenciaSQL.append("SELECT id, nombre FROM pais WHERE 1=1");
-			
-			final List<PaisEntity> paises = new ArrayList<>();
-			final List<Object> parametros = new ArrayList<>();
+		final List<PaisEntity> listaResultados = new ArrayList<>();
+	    final StringBuilder sentenciaSQL = new StringBuilder();
+	    final List<Object> parametros = new ArrayList<>();
 
-			if (filter != null) {
-				if (filter.getId() != null) {
-					sentenciaSQL.append(" AND id = ?");
-					parametros.add(filter.getId());
-				}
-				if (filter.getNombre() != null && !filter.getNombre().isBlank()) {
-					sentenciaSQL.append(" AND nombre ILIKE ?");
-					parametros.add("%" + filter.getNombre().trim() + "%");
-				}
-			}
+	    sentenciaSQL.append("SELECT id, nombre FROM pais WHERE 1=1");
 
-			try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
-				for (int i = 0; i < parametros.size(); i++) {
-					sentenciaPreparada.setObject(i + 1, parametros.get(i));
-				}
+	    if (!UtilUUID.esValorDefecto(filter.getId())) {
+	        sentenciaSQL.append(" AND id = ?");
+	        parametros.add(filter.getId());
+	    }
 
-				try (ResultSet resultado = sentenciaPreparada.executeQuery()) {
-					while (resultado.next()) {
-						var pais = new PaisEntity();
-						pais.setId(UtilUUID.convertirAUUID(resultado.getString("id")));
-						pais.setNombre(resultado.getString("nombre"));
-						paises.add(pais);
-					}
-				}
+	    if (!UtilTexto.getInstance().estaVacia(filter.getNombre())) {
+	        sentenciaSQL.append(" AND LOWER(nombre) LIKE LOWER(?)");
+	        parametros.add("%" + UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(filter.getNombre()) + "%");
+	    }
+
+	    sentenciaSQL.append(" ORDER BY nombre ASC");
+
+	    try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+
+	        for (int i = 0; i < parametros.size(); i++) {
+	            sentenciaPreparada.setObject(i + 1, parametros.get(i));
+	        }
+
+	        try (var cursorResultados = sentenciaPreparada.executeQuery()) {
+	            while (cursorResultados.next()) {
+	                var paisEntityRetorno = new PaisEntity();
+	                paisEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+	                paisEntityRetorno.setNombre(cursorResultados.getString("nombre"));
+	                listaResultados.add(paisEntityRetorno);
+	            }
+	        }
 			} catch (SQLException exception) {
 				var mensajeUsuario = "Se ha presentado un problema tratando de consultar los países con los filtros deseados";
 				var mensajeTecnico = "Se presentó una SQLException al consultar la tabla pais usando filtros. Revise la sintaxis SQL o los parámetros.";
@@ -92,7 +96,7 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 				throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
 			}
 
-			return paises;
+			return listaResultados;
 
 			
 		}
@@ -102,17 +106,25 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 	
 	public List<PaisEntity> listALL() throws TerraxsException {
 		
-		final List<PaisEntity> paises = new ArrayList<>();
-		final String sentenciaSQL = "SELECT id, nombre FROM pais";
+		var listaResultados = new ArrayList<PaisEntity>();
+		var sentenciaSQL = new StringBuilder();
+		sentenciaSQL.append("SELECT id, nombre FROM pais ORDER BY nombre ASC");
 
-		try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
-		     ResultSet resultado = sentenciaPreparada.executeQuery()) {
+		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
 
-			while (resultado.next()) {
-				var pais = new PaisEntity();
-				pais.setId(UtilUUID.convertirAUUID(resultado.getString("id")));
-				pais.setNombre(resultado.getString("nombre"));
-				paises.add(pais);
+			try (var cursorResultados = sentenciaPreparada.executeQuery()) {
+
+				while (cursorResultados.next()) {
+
+					var paisEntityRetorno = new PaisEntity();
+
+					paisEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+					paisEntityRetorno.setNombre(cursorResultados.getString("nombre"));
+
+					listaResultados.add(paisEntityRetorno);
+
+				}
+
 			}
 		} catch (SQLException exception) {
 			var mensajeUsuario = "Se ha presentado un problema tratando de consultar todos los países";
@@ -124,7 +136,7 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
 		}
 
-		return paises;
+		return listaResultados;
 		
 		
 		
@@ -134,22 +146,24 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 	@Override
 	public PaisEntity listById(UUID id) throws TerraxsException {
 		
-		var paisEntityRetorno=new PaisEntity();
-		var sentenciaSQL= new StringBuilder();
-		sentenciaSQL.append("SELECT id,nombre FROM Pais WHERE id=?");
-		
-		try(var sentenciaPreparada=conexion.prepareStatement(sentenciaSQL.toString())){
-			sentenciaPreparada.setObject(1,id);
-			try(var cursorResultados=sentenciaPreparada.executeQuery()){
-				
-				if(cursorResultados.next()) {
+		var paisEntityRetorno = new PaisEntity();
+		var sentenciaSQL = new StringBuilder();
+
+		sentenciaSQL.append("SELECT id, nombre FROM pais WHERE id = ?");
+
+		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+
+			sentenciaPreparada.setObject(1, id.toString());
+
+			try (var cursorResultados = sentenciaPreparada.executeQuery()) {
+
+				if (cursorResultados.next()) {
 					paisEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
 					paisEntityRetorno.setNombre(cursorResultados.getString("nombre"));
-					
 				}
+
 			}
 			
-			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
     		var mensajeUsuario="Se ha presentado un problema tratando de consultar la información del país con el identificador deseado";
     		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de hacer un SELECT en la tabla pais por id. Para tener más detalles revise el log de errores.";
@@ -168,14 +182,14 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 
 	@Override
 	public void update(UUID id, PaisEntity entity) throws TerraxsException {
-		var sentenciaSQL= new StringBuilder();
-		sentenciaSQL.append("UPDATE Pais SET nombre = ? WHERE id =?");
-		
-		try(var sentenciaPreparada=conexion.prepareStatement(sentenciaSQL.toString())){
-			sentenciaPreparada.setObject(2, entity.getNombre());
-			sentenciaPreparada.setObject(1, id);
+		var sentenciaSQL = new StringBuilder();
 
-			
+		sentenciaSQL.append("UPDATE pais SET nombre = ? WHERE id = ?");
+
+		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+			sentenciaPreparada.setString(1, entity.getNombre());
+			sentenciaPreparada.setObject(2, id.toString());
+
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
     		var mensajeUsuario="Se ha presentado un problema tratando de modificar la información del nuevo país";
@@ -192,12 +206,13 @@ public class PaisPostgreSQLDAO implements PaisDAO {
 
 	@Override
 	public void delete(UUID id) throws TerraxsException {
-		var sentenciaSQL= new StringBuilder();
-		sentenciaSQL.append("DELETE FROM Pais WHERE id = ? ");
-		
-		try(var sentenciaPreparada=conexion.prepareStatement(sentenciaSQL.toString())){
-			sentenciaPreparada.setObject(1,id);
-			
+		var sentenciaSQL = new StringBuilder();
+
+		sentenciaSQL.append("DELETE FROM pais WHERE id = ?");
+
+		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+			sentenciaPreparada.setObject(1, id.toString());
+
 			sentenciaPreparada.executeUpdate();
 		}catch(SQLException exception) {
     		var mensajeUsuario="Se ha presentado un problema tratando de eliminar la información del nuevo país";

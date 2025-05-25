@@ -1,4 +1,4 @@
-package co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais;
+package co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;

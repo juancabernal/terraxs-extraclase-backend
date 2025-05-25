@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.PaisBusinessLogic;
-import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.PaisEntityAssembler;
+import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.entity.PaisEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
 import co.edu.uco.terraxs.crosscutting.excepciones.Business_logicTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;

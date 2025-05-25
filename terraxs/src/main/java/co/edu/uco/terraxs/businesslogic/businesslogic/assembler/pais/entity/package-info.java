@@ -1,1 +1,0 @@
-package co.edu.co.onlinetest.businesslogic.businesslogic.assembler.pais.entity;
