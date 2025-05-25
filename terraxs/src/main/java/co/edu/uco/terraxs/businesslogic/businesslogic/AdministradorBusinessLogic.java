@@ -21,6 +21,7 @@ public interface AdministradorBusinessLogic {
 	List<AdministradorDomain> consultarAdministradores(AdministradorDomain filtro) throws TerraxsException;
 	
 	void modificarDatosAdministrador(UUID id, AdministradorDomain administrador) throws TerraxsException;
+	
 
 }
 
