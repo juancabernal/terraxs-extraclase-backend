@@ -108,7 +108,7 @@ public class DepartamentoPostgreSQLDAO implements DepartamentoDAO {
 	public List<DepartamentoEntity> listALL() throws TerraxsException {
 
 	    final List<DepartamentoEntity> departamentos = new ArrayList<>();
-	    final String sentenciaSQL = "SELECT d.id, d.nombre, p.id AS pais_id, p.nombre AS pais_nombre FROM departamento d JOIN pais p ON d.id_pais = p.id ";
+	    final String sentenciaSQL = "SELECT d.id, d.nombre, p.nombre FROM departamento d JOIN pais p ON d.pais_id = p.id ";
 
 	    try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
 	         ResultSet resultado = sentenciaPreparada.executeQuery()) {

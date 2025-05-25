@@ -13,8 +13,8 @@ public class ClienteEntity extends UsuarioEntity {
 
 	public ClienteEntity(final UUID id, final TipoDocumentoEntity tipoDocumento, final String numeroIdentificacion, final String nombres,
 			final String apellidos, final String correo, final String telefono, final boolean correoConfirmado, final boolean telefonoConfirmado,
-			final CiudadEntity ciudad) {
-		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado);
+			final CiudadEntity ciudad, String password) {
+		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);
 		setCiudad(ciudad);
 	}
 
