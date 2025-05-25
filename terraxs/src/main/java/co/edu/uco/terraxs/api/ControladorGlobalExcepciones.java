@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import co.edu.co.onlinetest.crosscutting.excepciones.OnlineTestException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 
 @ControllerAdvice
