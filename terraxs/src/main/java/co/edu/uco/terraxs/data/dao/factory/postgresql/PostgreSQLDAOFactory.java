@@ -46,7 +46,7 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 	@Override
     protected void abrirConexion()  throws TerraxsException{
 		
-		var baseDatos="ONLINETESTDB";
+		var baseDatos="DOOTERRAXSDB";
 		var servidor="ORION.UCO.EDU.CO";
 		
     	try {

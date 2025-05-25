@@ -1,4 +1,5 @@
 package co.edu.uco.terraxs.entity;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -104,5 +105,10 @@ public final class TokenConfirmacionEntity {
 
 	public void setEstado(EstadoEntity estado) {
 		this.estado = estado;
+	}
+
+	public void setFechaSolicitud(LocalDate localDate) {
+		// TODO Auto-generated method stub
+		
 	}
 }
