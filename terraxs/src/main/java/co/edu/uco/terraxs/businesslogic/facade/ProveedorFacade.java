@@ -11,7 +11,7 @@ import co.edu.uco.terraxs.dto.TokenConfirmacionDTO;
 
 public interface ProveedorFacade {
 	
-void registrarProveedor(ProveedorDTO proveedor) throws TerraxsException;
+	void registrarProveedor(ProveedorDTO proveedor) throws TerraxsException;
 	
 	boolean confirmarDatosProveedor(ProveedorDTO proveedor, TokenConfirmacionDTO token) throws TerraxsException;
 	
@@ -24,6 +24,8 @@ void registrarProveedor(ProveedorDTO proveedor) throws TerraxsException;
 	void modificarDatosProveedor(UUID id, ProveedorDTO proveedor) throws TerraxsException;
 	
 	void elegirCiudad(List<CiudadDTO> ciudad) throws TerraxsException;
+	
+	void eliminarProveedor(UUID id) throws TerraxsException;
 
 
 }
