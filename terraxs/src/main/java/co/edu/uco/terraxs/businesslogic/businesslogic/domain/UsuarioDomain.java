@@ -17,6 +17,8 @@ public class UsuarioDomain {
 	private String telefono;
 	private boolean correoConfirmado;
 	private boolean telefonoConfirmado;
+	private String password;
+
 
 	public UsuarioDomain() {
 		setId(UtilUUID.obtenerValorDefecto());
@@ -28,6 +30,8 @@ public class UsuarioDomain {
 		setTelefono(UtilTexto.getInstance().obtenerValorDefecto());
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
+		setPassword(UtilTexto.getInstance().obtenerValorDefecto());
+
 	}
 	
 	public UsuarioDomain(final UUID id) {
@@ -40,11 +44,13 @@ public class UsuarioDomain {
 		setTelefono(UtilTexto.getInstance().obtenerValorDefecto());
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
+		setPassword(UtilTexto.getInstance().obtenerValorDefecto());
+
 	}
 
 	public UsuarioDomain(UUID id, TipoDocumentoDomain tipoDocumento, String numeroIdentificacion,
 			String nombres, String apellidos, String correo, String telefono,
-			boolean correoConfirmado, boolean telefonoConfirmado) {
+			boolean correoConfirmado, boolean telefonoConfirmado,String password) {
 		setId(id);
 		setTipoDocumento(tipoDocumento);
 		setNumeroIdentificacion(numeroIdentificacion);
@@ -54,6 +60,8 @@ public class UsuarioDomain {
 		setTelefono(telefono);
 		setCorreoConfirmado(correoConfirmado);
 		setTelefonoConfirmado(telefonoConfirmado);
+		setPassword(password);
+
 	}
 
 	public static UsuarioDomain obtenerValorDefecto() {
@@ -136,4 +144,12 @@ public class UsuarioDomain {
 	public void setTelefonoConfirmado(boolean telefonoConfirmado) {
 		this.telefonoConfirmado = telefonoConfirmado;
 	}
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(password);
+	}
+	
 }
