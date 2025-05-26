@@ -4,6 +4,9 @@ public final class UtilTexto {
 
 	private static UtilTexto instancia = new UtilTexto();
 	private static final String PATRON_SOLO_LETRAS_ESPACIOS="^[a-zA-ZáéÉíÍóÓúÚñÑ ]+$";
+	private static final String PATRON_SOLO_NUMEROS= "^\\d+$";
+	private static final String PATRON_CORREO= "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
 
 	public final static String VACIO = "";
 	
@@ -26,6 +29,14 @@ public final class UtilTexto {
 	}
 	public boolean contieneSoloLetrasEspacios(final String valor) {
 		return patronEsValido(quitarEspaciosBlancoInicioFin(valor),PATRON_SOLO_LETRAS_ESPACIOS);
+	}
+	
+	public boolean contieneSoloNumeros(final String valor) {
+		return patronEsValido(quitarEspaciosBlancoInicioFin(valor),PATRON_SOLO_NUMEROS);
+	}
+	
+	public boolean cumplePatronCorreo(final String valor) {
+		return patronEsValido(quitarEspaciosBlancoInicioFin(valor),PATRON_CORREO);
 	}
 	
 	

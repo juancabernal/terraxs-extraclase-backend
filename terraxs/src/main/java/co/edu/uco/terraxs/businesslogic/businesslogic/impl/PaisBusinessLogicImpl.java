@@ -96,6 +96,8 @@ public class PaisBusinessLogicImpl implements PaisBusinessLogic {
 		
 		return nuevoId;
 	}
+	
+	
 	@Override
 	public void modificarPaisExistente(UUID id, PaisDomain pais) throws TerraxsException  {
 		var paisEntity = PaisEntityAssembler.getInstance().toEntity(pais); //Magia de traducir de domain -> entity
@@ -122,7 +124,7 @@ public class PaisBusinessLogicImpl implements PaisBusinessLogic {
 		var paisEntities = factory.getPaisDAO().listByFilter(paisFilter);
 		
 		return PaisEntityAssembler.getInstance().toDomain(paisEntities);
-		}
+	}
 	
 
 

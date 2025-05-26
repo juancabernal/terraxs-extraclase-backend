@@ -15,6 +15,10 @@ import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
 import co.edu.uco.terraxs.data.dao.entity.departamento.impl.postgresql.DepartamentoPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
 import co.edu.uco.terraxs.data.dao.entity.pais.impl.postgresql.PaisPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.proveedor.ProveedorDAO;
+import co.edu.uco.terraxs.data.dao.entity.proveedor.impl.postgresql.ProveedorPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tokenconfirmacion.TokenConfirmacionDAO;
+import co.edu.uco.terraxs.data.dao.entity.tokenconfirmacion.impl.postgresql.TokenConfirmacionPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 
@@ -186,6 +190,17 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 		return new CiudadPostgreSQLDAO(conexion);
 	}
 	
+	@Override
+	public ProveedorDAO getProveedorDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new ProveedorPostgreSQLDAO(conexion);
+	}
+	
+	@Override
+	public TokenConfirmacionDAO getTokenConfirmacionDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new TokenConfirmacionPostgreSQLDAO(conexion);
+	}
     
 
 }
