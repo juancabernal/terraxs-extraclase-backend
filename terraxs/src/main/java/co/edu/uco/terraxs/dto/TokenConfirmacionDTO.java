@@ -12,8 +12,7 @@ public final class TokenConfirmacionDTO {
 	private String token;
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaExpiracion;
-	private boolean usado;
-	private EstadoEntity estado;
+	private EstadoDTO estado;
 	private NotificacionDTO notificacion;
 
 	public TokenConfirmacionDTO() {
@@ -21,7 +20,7 @@ public final class TokenConfirmacionDTO {
 		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
-		setUsado(false);
+		setEstado(EstadoDTO.obtenerValorDefecto());
 		setNotificacion(NotificacionDTO.obtenerValorDefecto());
 	}
 
@@ -30,17 +29,17 @@ public final class TokenConfirmacionDTO {
 		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
-		setUsado(false);
+		setEstado(EstadoDTO.obtenerValorDefecto());
 		setNotificacion(NotificacionDTO.obtenerValorDefecto());
 	}
 
 	public TokenConfirmacionDTO(final UUID id, final String token, final LocalDateTime fechaSolicitud,
-			final LocalDateTime fechaExpiracion, final boolean usado, final NotificacionDTO notificacion) {
+			final LocalDateTime fechaExpiracion, final EstadoDTO estado, final NotificacionDTO notificacion) {
 		setId(id);
 		setToken(token);
 		setFechaSolicitud(fechaSolicitud);
 		setFechaExpiracion(fechaExpiracion);
-		setUsado(usado);
+		setEstado(estado);
 		setNotificacion(notificacion);
 	}
 
@@ -49,7 +48,7 @@ public final class TokenConfirmacionDTO {
 		setToken(builder.token);
 		setFechaSolicitud(builder.fechaSolicitud);
 		setFechaExpiracion(builder.fechaExpiracion);
-		setUsado(builder.usado);
+		setEstado(builder.estado);
 		setNotificacion(builder.notificacion);
 	}
 
@@ -93,14 +92,6 @@ public final class TokenConfirmacionDTO {
 		this.fechaExpiracion = UtilFecha.getInstance().obtenerValorDefecto(fechaExpiracion);
 	}
 
-	public boolean isUsado() {
-		return usado;
-	}
-
-	public void setUsado(final boolean usado) {
-		this.usado = usado;
-	}
-
 	public NotificacionDTO getNotificacion() {
 		return notificacion;
 	}
@@ -112,15 +103,15 @@ public final class TokenConfirmacionDTO {
 	@Override
 	public String toString() {
 		return "TokenConfirmacionDTO [id=" + id + ", token=" + token + ", fechaSolicitud=" + fechaSolicitud
-				+ ", fechaExpiracion=" + fechaExpiracion + ", usado=" + usado + ", notificacion=" + notificacion + "]";
+				+ ", fechaExpiracion=" + fechaExpiracion + ", estado=" + estado + ", notificacion=" + notificacion + "]";
 	}
 
-	public EstadoEntity getEstado() {
+	public EstadoDTO getEstado() {
 		return estado;
 	}
 
-	public void setEstado(EstadoEntity estado) {
-		this.estado = estado;
+	public void setEstado(EstadoDTO estadoDTO) {
+		this.estado = estadoDTO;
 	}
 
 	public static class Builder {
@@ -129,7 +120,6 @@ public final class TokenConfirmacionDTO {
 		private String token;
 		private LocalDateTime fechaSolicitud;
 		private LocalDateTime fechaExpiracion;
-		private boolean usado;
 		private EstadoDTO estado;
 		private NotificacionDTO notificacion;
 
@@ -153,10 +143,6 @@ public final class TokenConfirmacionDTO {
 			return this;
 		}
 
-		public Builder usado(final boolean usado) {
-			this.usado = usado;
-			return this;
-		}
 		public Builder estado(final EstadoDTO estado) {
 			this.estado = estado;
 			return this;

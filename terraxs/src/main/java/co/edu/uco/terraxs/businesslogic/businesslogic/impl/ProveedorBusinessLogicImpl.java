@@ -8,6 +8,7 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ProveedorDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoDocumentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
@@ -57,6 +58,13 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 
 	@Override
 	public void elegirCiudad(List<CiudadDomain> ciudad) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void eliminarProveedor(UUID id) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}

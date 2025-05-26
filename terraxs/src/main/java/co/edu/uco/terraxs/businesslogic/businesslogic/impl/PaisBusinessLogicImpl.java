@@ -6,7 +6,7 @@ import java.util.UUID;
 import co.edu.uco.terraxs.businesslogic.businesslogic.PaisBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.entity.PaisEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
-import co.edu.uco.terraxs.crosscutting.excepciones.Business_logicTerraxsException;
+import co.edu.uco.terraxs.crosscutting.excepciones.BusinessLogicTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
@@ -54,18 +54,18 @@ public class PaisBusinessLogicImpl implements PaisBusinessLogic {
 		
 		// nombre pais Obligatorio
 		if(UtilTexto.getInstance().estaVacia(nombrePais)) {
-			throw Business_logicTerraxsException.reportar("el nombre del pais es un dato obligatorio");
+			throw BusinessLogicTerraxsException.reportar("el nombre del pais es un dato obligatorio");
 		}
 		
 		// nombre pais con longitud valida
 		if(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(nombrePais).length()>50) {
-			throw Business_logicTerraxsException.reportar("el nombre del pais supera los 50 caracteres");
+			throw BusinessLogicTerraxsException.reportar("el nombre del pais supera los 50 caracteres");
 
 			
 		}
 		//validar que nombre de pais tenga solo letras
 		if(!UtilTexto.getInstance().contieneSoloLetrasEspacios(nombrePais)){
-			throw Business_logicTerraxsException.reportar("el nombre del pais solo puede contener letras o espacios");
+			throw BusinessLogicTerraxsException.reportar("el nombre del pais solo puede contener letras o espacios");
 
 			
 		}
@@ -79,7 +79,7 @@ public class PaisBusinessLogicImpl implements PaisBusinessLogic {
 		var ListaResultados= factory.getPaisDAO().listByFilter(filtro);
 		//si la lista devolvio resultados, entonces si existe un pais con el mismo nombre
 		if(!ListaResultados.isEmpty()) {
-			throw Business_logicTerraxsException.reportar("Ya existe un pais con el mismo nombre");
+			throw BusinessLogicTerraxsException.reportar("Ya existe un pais con el mismo nombre");
 
 			
 		}

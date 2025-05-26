@@ -11,7 +11,6 @@ public final class TokenConfirmacionEntity {
 	private String token;
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaExpiracion;
-	private boolean usado;
 	private EstadoEntity estado;
 	private NotificacionEntity notificacion; 
 
@@ -20,7 +19,7 @@ public final class TokenConfirmacionEntity {
 		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
-		setUsado(false);
+		setEstado(EstadoEntity.obtenerValorDefecto());
 		setNotificacion(NotificacionEntity.obtenerValorDefecto());
 	}
 
@@ -29,17 +28,17 @@ public final class TokenConfirmacionEntity {
 		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
-		setUsado(false);
+		setEstado(EstadoEntity.obtenerValorDefecto());
 		setNotificacion(NotificacionEntity.obtenerValorDefecto());
 	}
 
 	public TokenConfirmacionEntity(final UUID id, final String token, final LocalDateTime fechaSolicitud,
-			final LocalDateTime fechaExpiracion, final boolean usado, final NotificacionEntity notificacion) {
+			final LocalDateTime fechaExpiracion, final EstadoEntity estado, final NotificacionEntity notificacion) {
 		setId(id);
 		setToken(token);
 		setFechaSolicitud(fechaSolicitud);
 		setFechaExpiracion(fechaExpiracion);
-		setUsado(usado);
+		setEstado(estado);
 		setNotificacion(notificacion);
 	}
 
@@ -83,13 +82,6 @@ public final class TokenConfirmacionEntity {
 		this.fechaExpiracion = UtilFecha.getInstance().obtenerValorDefecto(fechaExpiracion);
 	}
 
-	public boolean isUsado() {
-		return usado;
-	}
-
-	public void setUsado(final boolean usado) {
-		this.usado = usado;
-	}
 
 	public NotificacionEntity getNotificacion() {
 		return notificacion;
@@ -107,8 +99,5 @@ public final class TokenConfirmacionEntity {
 		this.estado = estado;
 	}
 
-	public void setFechaSolicitud(LocalDate localDate) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

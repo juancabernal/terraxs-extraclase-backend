@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.crosscutting.utilitarios.*;
+import co.edu.uco.terraxs.entity.EstadoEntity;
 
 public final class TokenConfirmacionDomain {
 
@@ -10,7 +11,7 @@ public final class TokenConfirmacionDomain {
 	private String token;
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaExpiracion;
-	private boolean usado;
+	private EstadoDomain estado;
 	private NotificacionDomain notificacion; 
 
 	public TokenConfirmacionDomain() {
@@ -18,7 +19,7 @@ public final class TokenConfirmacionDomain {
 		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
-		setUsado(false);
+		setEstado(EstadoDomain.obtenerValorDefecto());
 		setNotificacion(NotificacionDomain.obtenerValorDefecto());
 	}
 
@@ -27,17 +28,17 @@ public final class TokenConfirmacionDomain {
 		setToken(UtilTexto.VACIO);
 		setFechaSolicitud(UtilFecha.getInstance().obtenerFechaHoraActual());
 		setFechaExpiracion(UtilFecha.getInstance().obtenerFechaHoraActual());
-		setUsado(false);
+		setEstado(EstadoDomain.obtenerValorDefecto());
 		setNotificacion(NotificacionDomain.obtenerValorDefecto());
 	}
 
 	public TokenConfirmacionDomain(final UUID id, final String token, final LocalDateTime fechaSolicitud,
-			final LocalDateTime fechaExpiracion, final boolean usado, final NotificacionDomain notificacion) {
+			final LocalDateTime fechaExpiracion, final EstadoDomain estado, final NotificacionDomain notificacion) {
 		setId(id);
 		setToken(token);
 		setFechaSolicitud(fechaSolicitud);
 		setFechaExpiracion(fechaExpiracion);
-		setUsado(usado);
+		setEstado(estado);
 		setNotificacion(notificacion);
 	}
 
@@ -81,13 +82,6 @@ public final class TokenConfirmacionDomain {
 		this.fechaExpiracion = UtilFecha.getInstance().obtenerValorDefecto(fechaExpiracion);
 	}
 
-	public boolean isUsado() {
-		return usado;
-	}
-
-	public void setUsado(final boolean usado) {
-		this.usado = usado;
-	}
 
 	public NotificacionDomain getNotificacion() {
 		return notificacion;
@@ -95,5 +89,13 @@ public final class TokenConfirmacionDomain {
 
 	public void setNotificacion(final NotificacionDomain notificacion) {
 		this.notificacion = NotificacionDomain.obtenerValorDefecto(notificacion);
+	}
+	
+	public EstadoDomain getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoDomain estado) {
+		this.estado = estado;
 	}
 }

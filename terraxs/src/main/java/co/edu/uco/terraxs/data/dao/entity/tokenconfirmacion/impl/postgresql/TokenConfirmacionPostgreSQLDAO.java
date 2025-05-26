@@ -30,18 +30,15 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
     @Override
     public void create(TokenConfirmacionEntity entity) throws TerraxsException {
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("INSERT INTO TokenConfirmacion(id, token, fecha_hora_creacion, fecha_hora_expiracion, usado,estado, notificacion) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        sentenciaSQL.append("INSERT INTO TokenConfirmacion(id, token, fecha_hora_creacion, fecha_hora_expiracion,estado, notificacion) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setObject(1, entity.getId());
             sentenciaPreparada.setString(2, entity.getToken());
-            sentenciaPreparada.setTimestamp(3, Timestamp.valueOf(entity.getFechaSolicitud())); // Usar Timestamp para LocalDateTime
-            sentenciaPreparada.setTimestamp(4, Timestamp.valueOf(entity.getFechaExpiracion())); // Usar Timestamp para LocalDateTime
-            sentenciaPreparada.setBoolean(5, entity.isUsado()); // Usar isUsado
-            sentenciaPreparada.setObject(6, entity.getEstado().getId()); // Asumiendo que EstadoEntity tiene un ID
-
-            
-            sentenciaPreparada.setObject(7, entity.getNotificacion().getId()); // Asumiendo que NotificacionEntity tiene un ID
+            sentenciaPreparada.setTimestamp(3, Timestamp.valueOf(entity.getFechaSolicitud())); 
+            sentenciaPreparada.setTimestamp(4, Timestamp.valueOf(entity.getFechaExpiracion())); 
+            sentenciaPreparada.setObject(5, entity.getEstado().getId()); 
+            sentenciaPreparada.setObject(6, entity.getNotificacion().getId()); 
 
             sentenciaPreparada.executeUpdate();
         } catch (SQLException exception) {
@@ -66,7 +63,7 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
 		var listaResultados=new ArrayList<TokenConfirmacionEntity>();
 		var sentenciaSQL = new StringBuilder();
 		
-		sentenciaSQL.append("SELECT id, token , fecha_hora_creacion, fecha_hora_expiracion, usado, estado,notificacion  FROM tokenConfirmacion ORDER BY token ASC");
+		sentenciaSQL.append("SELECT id, token , fecha_hora_creacion, fecha_hora_expiracion, estado,notificacion  FROM tokenConfirmacion ORDER BY token ASC");
 		
 		try(var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())){
 			
@@ -75,14 +72,7 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
 				
 				while(cursorResultados.next()) {
 					var tokenConfirmacionEntityRetorno = new TokenConfirmacionEntity();
-					tokenConfirmacionEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
-					tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
-					tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime());
-
-					tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime());
-
-					tokenConfirmacionEntityRetorno.setUsado(cursorResultados.getBoolean("usado"));
-
+					
                     EstadoEntity estado = new EstadoEntity();
                     estado.setId(UtilUUID.convertirAUUID(cursorResultados.getString("estado")));
                     tokenConfirmacionEntityRetorno.setEstado(estado);
@@ -91,8 +81,13 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
                     notificacion.setId(UtilUUID.convertirAUUID(cursorResultados.getString("notificacion")));
                     tokenConfirmacionEntityRetorno.setNotificacion(notificacion);
 					
-					
-					
+                    
+					tokenConfirmacionEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+					tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
+					tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime());
+					tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime());
+					tokenConfirmacionEntityRetorno.setEstado(estado);
+					tokenConfirmacionEntityRetorno.setNotificacion(notificacion);		
 					
 					
 					listaResultados.add(tokenConfirmacionEntityRetorno);
@@ -120,27 +115,27 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
     public TokenConfirmacionEntity listById(UUID id) throws TerraxsException {
         TokenConfirmacionEntity tokenConfirmacionEntityRetorno = new TokenConfirmacionEntity();
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("SELECT id, token, fecha_hora_creacion, fecha_hora_expiracion, usado,estado, notificacion FROM TokenConfirmacion WHERE id = ?");
+        sentenciaSQL.append("SELECT id, token, fecha_hora_creacion, fecha_hora_expiracion,estado, notificacion FROM TokenConfirmacion WHERE id = ?");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setObject(1, id);
             try (ResultSet cursorResultados = sentenciaPreparada.executeQuery()) {
 
                 if (cursorResultados.next()) {
-                    tokenConfirmacionEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
-                    tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
-                    tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime()); // Usar getTimestamp
-                    tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime()); // Usar getTimestamp
-                    tokenConfirmacionEntityRetorno.setUsado(cursorResultados.getBoolean("usado")); // Usar isUsado
-                    
-                    
-                    EstadoEntity estado = new EstadoEntity(); // Asumiendo que estadoEntity existe
+                	
+                    EstadoEntity estado = new EstadoEntity(); 
                     estado.setId(UtilUUID.convertirAUUID(cursorResultados.getString("estado")));
                     tokenConfirmacionEntityRetorno.setEstado(estado);
 
-                    NotificacionEntity notificacion = new NotificacionEntity(); // Asumiendo que NotificacionEntity existe
+                    NotificacionEntity notificacion = new NotificacionEntity(); 
                     notificacion.setId(UtilUUID.convertirAUUID(cursorResultados.getString("notificacion")));
                     tokenConfirmacionEntityRetorno.setNotificacion(notificacion);
+                	
+                    tokenConfirmacionEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+                    tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
+                    tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime()); 
+                    tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime()); 
+                    
                 }
             }
         } catch (SQLException exception) {

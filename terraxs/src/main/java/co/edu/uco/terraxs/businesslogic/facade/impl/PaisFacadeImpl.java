@@ -1,5 +1,6 @@
 package co.edu.uco.terraxs.businesslogic.facade.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,9 +9,8 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.dto.PaisDTO
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.impl.PaisBusinessLogicImpl;
 import co.edu.uco.terraxs.businesslogic.facade.PaisFacade;
-import co.edu.uco.terraxs.crosscutting.excepciones.Business_logicTerraxsException;
+import co.edu.uco.terraxs.crosscutting.excepciones.BusinessLogicTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
-import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.PaisDTO;
@@ -32,7 +32,7 @@ public class PaisFacadeImpl implements PaisFacade {
 		try {
 			daoFactory.iniciarTransaccion();
 			
-			var paisDomain = PaisDTOAssembler.getInstance().toDomain(pais); //TODO: Magia de convertir de DTO a Domain
+			var paisDomain = PaisDTOAssembler.getInstance().toDomain(pais);
 			paisBusinessLogic.registrarNuevoPais(paisDomain);
 			
 			daoFactory.confirmarTransaccion();
@@ -43,66 +43,102 @@ public class PaisFacadeImpl implements PaisFacade {
 			daoFactory.cancelarTransaccion();
     		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de registrar la información del nuevo país";
     		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un registrar el nuevo pais. Para tener más detalles revise el log de errores.";
-    		throw Business_logicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+    		throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}finally {
     		daoFactory.cerrarConexion();
     	}
 		
 		
 	}
+
 	@Override
 	public void modificarPaisExistente(UUID id, PaisDTO pais) throws TerraxsException {
-		// TODO Auto-generated method stub
+		try {
+			daoFactory.iniciarTransaccion();
+
+			PaisDomain paisDomain = PaisDTOAssembler.getInstance().toDomain(pais);
+			paisBusinessLogic.modificarPaisExistente(id, paisDomain);
+
+			daoFactory.confirmarTransaccion();
+		} catch (TerraxsException exception) {
+			daoFactory.cancelarTransaccion();
+			throw exception;
+		} catch (Exception exception) {
+			daoFactory.cancelarTransaccion();
+			var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de modificar la información del país";
+			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de modificar un país existente. Para más detalles revise el log de errores.";
+			throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+		} finally {
+			daoFactory.cerrarConexion();
+		}
 		
 	}
 
 	@Override
-	public void darBajaDefinitivamentePaisExistente(UUID id) throws TerraxsException{
-		// TODO Auto-generated method stub
+	public void darBajaDefinitivamentePaisExistente(UUID id) throws TerraxsException {
+		try {
+			daoFactory.iniciarTransaccion();
+
+			paisBusinessLogic.darBajaDefinitivamentePaisExistente(id);
+
+			daoFactory.confirmarTransaccion();
+		} catch (TerraxsException exception) {
+			daoFactory.cancelarTransaccion();
+			throw exception;
+		} catch (Exception exception) {
+			daoFactory.cancelarTransaccion();
+			var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de eliminar la información del país";
+			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de eliminar un país existente. Para más detalles revise el log de errores.";
+			throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+		} finally {
+			daoFactory.cerrarConexion();
+		}
 		
 	}
 
 	@Override
-	public PaisDTO consultarPaisPorId(UUID id) throws TerraxsException{
+	public PaisDTO consultarPaisPorId(UUID id) throws TerraxsException {
+		
+		try {
+			PaisDomain dominioResultado = paisBusinessLogic.consultarPaisPorId(id);
+			return PaisDTOAssembler.getInstance().toDTO(dominioResultado);
+		} catch (TerraxsException exception) {
+			throw exception;
+		} catch (Exception exception) {
+			var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar la información del país con el identificador deseado";
+			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de consultar la información del país. Para más detalles revise el log de errores.";
+			throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+		} finally {
+			daoFactory.cerrarConexion();
+		}
+		
+	}
+
+	@Override
+	public List<PaisDTO> consultarPaises(PaisDTO filtro) throws TerraxsException {
 		try {
 			
-			var listaDominioResultado = paisBusinessLogic.consultarPaisPorId(id);
-			//Magia de convertir Domain a DTO de respuesta
-			return null;
+	        var paisDomainFiltro = PaisDTOAssembler.getInstance().toDomain(filtro);
+	        List<PaisDomain> resultadoDominios = paisBusinessLogic.consultarPaises(paisDomainFiltro);
+	        
+	        List<PaisDTO> resultadoDTOs = new ArrayList<>();
+	        for (PaisDomain dominio : resultadoDominios) {
+	            resultadoDTOs.add(PaisDTOAssembler.getInstance().toDTO(dominio));
+	        }
+
+	        return resultadoDTOs;
 			
-		}catch(TerraxsException exception) {
+		} catch (TerraxsException exception) {
 			throw exception;
-		}catch(Exception exception) {
-    		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de consultar la información del país con el identificador deseado";
-    		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de consultar la información del pais con el identificador deseado. Para tener más detalles revise el log de errores.";
-    		throw Business_logicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-    	}finally {
-    		daoFactory.cerrarConexion();
-    	}
-		
+		} catch (Exception exception) {
+			var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar la información de los países con los filtros deseados";
+			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de consultar los países filtrados. Para más detalles revise el log de errores.";
+			throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+		} finally {
+			daoFactory.cerrarConexion();
+		}
 	}
 
-	@Override
-	public List<PaisDTO> consultarPaises(PaisDTO filtro) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public static PaisDomain convertirDeDTO(final PaisDTO dto) throws TerraxsException {
-		if (UtilObjeto.getInstance().esNulo(dto)) {
-			throw Business_logicTerraxsException.reportar("No es posible convertir un país nulo a dto.");
-		}
-		return new PaisDomain(dto.getId(), dto.getNombre());
-	}
-	
-	
-	public static PaisDTO convertirADTO(final PaisDomain domain) throws TerraxsException {
-		if (UtilObjeto.getInstance().esNulo(domain)) {
-			throw Business_logicTerraxsException.reportar("No es posible convertir un dto de país nulo a dominio.");
-		}
-			return new PaisDTO(domain.getId(), domain.getNombre());
-	}
-	
 
 
 }

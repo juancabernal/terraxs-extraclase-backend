@@ -24,6 +24,8 @@ public interface ProveedorBusinessLogic {
 	void modificarDatosProveedor(UUID id, ProveedorDomain proveedor) throws TerraxsException;
 	
 	void elegirCiudad(List<CiudadDomain> ciudad) throws TerraxsException;
+	
+	void eliminarProveedor(UUID id) throws TerraxsException;
 
 	
 }
