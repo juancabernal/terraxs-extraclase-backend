@@ -17,6 +17,8 @@ public class UsuarioDTO {
 	private String telefono;
 	private boolean correoConfirmado;
 	private boolean telefonoConfirmado;
+	private String password;
+
 
 	public UsuarioDTO() {
 		setId(UtilUUID.obtenerValorDefecto());
@@ -28,6 +30,8 @@ public class UsuarioDTO {
 		setTelefono(UtilTexto.getInstance().obtenerValorDefecto());
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
+		setPassword(UtilTexto.getInstance().obtenerValorDefecto());
+
 	}
 
 	public UsuarioDTO(final UUID id) {
@@ -40,11 +44,13 @@ public class UsuarioDTO {
 		setTelefono(UtilTexto.getInstance().obtenerValorDefecto());
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
+		setPassword(UtilTexto.getInstance().obtenerValorDefecto());
+
 	}
 
 	public UsuarioDTO(final UUID id, final TipoDocumentoDTO tipoDocumento, final String numeroIdentificacion,
 			final String nombres, final String apellidos, final String correo, final String telefono,
-			final boolean correoConfirmado, final boolean telefonoConfirmado) {
+			final boolean correoConfirmado, final boolean telefonoConfirmado, final String password) {
 		setId(id);
 		setTipoDocumento(tipoDocumento);
 		setNumeroIdentificacion(numeroIdentificacion);
@@ -54,6 +60,8 @@ public class UsuarioDTO {
 		setTelefono(telefono);
 		setCorreoConfirmado(correoConfirmado);
 		setTelefonoConfirmado(telefonoConfirmado);
+		setPassword(password);
+
 	}
 
 	private UsuarioDTO(final Builder builder) {
@@ -66,6 +74,8 @@ public class UsuarioDTO {
 		setTelefono(builder.telefono);
 		setCorreoConfirmado(builder.correoConfirmado);
 		setTelefonoConfirmado(builder.telefonoConfirmado);
+		setPassword(builder.password);
+
 	}
 
 	public static UsuarioDTO obtenerValorDefecto() {
@@ -149,6 +159,14 @@ public class UsuarioDTO {
 	public void setTelefonoConfirmado(boolean telefonoConfirmado) {
 		this.telefonoConfirmado = telefonoConfirmado;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(password);
+	}
 
 	public static class Builder {
 		private UUID id;
@@ -160,6 +178,7 @@ public class UsuarioDTO {
 		private String telefono;
 		private boolean correoConfirmado;
 		private boolean telefonoConfirmado;
+		private String password;
 
 		public Builder id(final UUID id) {
 			this.id = id;
@@ -203,6 +222,11 @@ public class UsuarioDTO {
 
 		public Builder telefonoConfirmado(final boolean telefonoConfirmado) {
 			this.telefonoConfirmado = telefonoConfirmado;
+			return this;
+		}
+		
+		public Builder password(final String password) {
+			this.password = password;
 			return this;
 		}
 

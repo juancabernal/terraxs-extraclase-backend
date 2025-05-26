@@ -23,30 +23,32 @@ public class TokenConfirmacionFacadeImpl implements TokenConfirmacionFacade{
 
 
 	@Override
-	public void crearToken(TokenConfirmacionDTO tokenConfirmacion) throws TerraxsException{
+	public void crearToken(TokenConfirmacionDTO tokenConfirmacion) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public boolean validarToken(UUID id, int TokenIngresado) throws TerraxsException{
+	public TokenConfirmacionDTO consultarToken(UUID id) throws TerraxsException {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 
 	@Override
-	public void marcarTokenUsado(UUID id) throws TerraxsException{
+	public void marcarTokenUsado(UUID id, TokenConfirmacionDTO tokenConfirmacion) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public void eliminarToken(UUID id) throws TerraxsException{
+	public void eliminarToken(UUID id) throws TerraxsException {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }

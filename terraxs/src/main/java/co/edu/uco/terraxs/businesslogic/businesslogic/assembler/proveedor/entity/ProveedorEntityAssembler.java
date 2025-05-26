@@ -57,8 +57,8 @@ public class ProveedorEntityAssembler implements EntityAssembler<ProveedorEntity
 				proveedorEntityAEnsamblar.isCorreoConfirmado(),
 				proveedorEntityAEnsamblar.isTelefonoConfirmado(),
 				proveedorEntityAEnsamblar.getDireccionResidencia(),
-				CiudadEntityAssembler.getInstance().toDomain(proveedorEntityAEnsamblar.getCiudad())
-				//proveedorEntityAEnsamblar.getPassword()
+				CiudadEntityAssembler.getInstance().toDomain(proveedorEntityAEnsamblar.getCiudad()),
+				proveedorEntityAEnsamblar.getPassword()
 		);
 	}
 

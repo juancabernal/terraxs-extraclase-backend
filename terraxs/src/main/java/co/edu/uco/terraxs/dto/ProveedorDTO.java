@@ -16,9 +16,9 @@ public class ProveedorDTO extends UsuarioDTO {
 		setCiudad(CiudadDTO.obtenerValorDefecto());
 	}
 	
-	public ProveedorDTO(UUID id, TipoDocumentoDTO tipoDocumento, String numeroIdentificacion, String nombres,
-			String apellidos, String correo, String telefono, boolean correoConfirmado, boolean telefonoConfirmado, String direccionResidencia, CiudadDTO ciudad) {
-		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado);
+	public ProveedorDTO(final UUID id, final TipoDocumentoDTO tipoDocumento, final String numeroIdentificacion, final String nombres,
+			final String apellidos, final String correo, final String telefono, final boolean correoConfirmado, final boolean telefonoConfirmado, final String direccionResidencia, final CiudadDTO ciudad, final String password) {
+		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);
 		setDireccionResidencia(direccionResidencia);
 		setCiudad(ciudad);
 	}

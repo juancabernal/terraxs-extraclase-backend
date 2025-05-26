@@ -14,8 +14,8 @@ public class ProveedorEntity extends UsuarioEntity {
 		setCiudad(CiudadEntity.obtenerValorDefecto());
 	}
 
-	public ProveedorEntity(UUID id, TipoDocumentoEntity tipoDocumento, String numeroIdentificacion, String nombres,
-			String apellidos, String correo, String telefono, boolean correoConfirmado, boolean telefonoConfirmado, String direccionResidencia, CiudadEntity ciudad, String password) {
+	public ProveedorEntity(final UUID id, final TipoDocumentoEntity tipoDocumento, final String numeroIdentificacion, final String nombres,
+			final String apellidos, final String correo, final String telefono, final boolean correoConfirmado, final boolean telefonoConfirmado, final String direccionResidencia, final CiudadEntity ciudad, final String password) {
 		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);
 		setDireccionResidencia(direccionResidencia);
 		setCiudad(ciudad);

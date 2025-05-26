@@ -34,22 +34,24 @@ public class UsuarioDTOAssembler implements DTOAssembler<UsuarioDTO, UsuarioDoma
 						domain.getCorreo(),
 						domain.getTelefono(),
 						domain.isCorreoConfirmado(),
-						domain.isTelefonoConfirmado());
+						domain.isTelefonoConfirmado(),
+						domain.getPassword());
 	}
 
 	@Override
 	public UsuarioDomain toDomain(final UsuarioDTO dto) {
-		var dtoSeguro = UsuarioDTO.obtenerValorDefecto(dto);
+		var usuarioDTOAEnsamblar = UsuarioDTO.obtenerValorDefecto(dto);
 		return new UsuarioDomain(
-				dtoSeguro.getId(),
-				TipoDocumentoDTOAssembler.getInstance().toDomain(dtoSeguro.getTipoDocumento()),
-				dtoSeguro.getNumeroIdentificacion(),
-				dtoSeguro.getNombres(),
-				dtoSeguro.getApellidos(),
-				dtoSeguro.getCorreo(),
-				dtoSeguro.getTelefono(),
-				dtoSeguro.isCorreoConfirmado(),
-				dtoSeguro.isTelefonoConfirmado());
+				usuarioDTOAEnsamblar.getId(),
+				TipoDocumentoDTOAssembler.getInstance().toDomain(usuarioDTOAEnsamblar.getTipoDocumento()),
+				usuarioDTOAEnsamblar.getNumeroIdentificacion(),
+				usuarioDTOAEnsamblar.getNombres(),
+				usuarioDTOAEnsamblar.getApellidos(),
+				usuarioDTOAEnsamblar.getCorreo(),
+				usuarioDTOAEnsamblar.getTelefono(),
+				usuarioDTOAEnsamblar.isCorreoConfirmado(),
+				usuarioDTOAEnsamblar.isTelefonoConfirmado(),
+				usuarioDTOAEnsamblar.getPassword());
 	}
 
 	@Override

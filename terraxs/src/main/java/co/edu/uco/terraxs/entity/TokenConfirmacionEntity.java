@@ -1,9 +1,11 @@
 package co.edu.uco.terraxs.entity;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import co.edu.uco.terraxs.crosscutting.utilitarios.*;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilFecha;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilObjeto;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
 public final class TokenConfirmacionEntity {
 

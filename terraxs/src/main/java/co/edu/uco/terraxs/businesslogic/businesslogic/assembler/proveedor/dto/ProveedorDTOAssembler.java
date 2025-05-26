@@ -25,13 +25,20 @@ public final class ProveedorDTOAssembler implements DTOAssembler<ProveedorDTO, P
 	@Override
 	public ProveedorDTO toDTO(final ProveedorDomain domain) {
 		return UtilObjeto.getInstance().esNulo(domain) ? ProveedorDTO.obtenerValorDefecto()
-						: new ProveedorDTO(domain.getId(), TipoDocumentoDTOAssembler.getInstance().toDTO(domain.getTipoDocumento()), domain.getNumeroIdentificacion(), domain.getNombres(), domain.getApellidos(), domain.getCorreo(), domain.getTelefono(), domain.isCorreoConfirmado(), domain.isTelefonoConfirmado(), domain.getDireccionResidencia(), CiudadDTOAssembler.getInstance().toDTO(domain.getCiudad()));
+						: new ProveedorDTO(domain.getId(), TipoDocumentoDTOAssembler.getInstance().toDTO(domain.getTipoDocumento()), 
+								domain.getNumeroIdentificacion(), domain.getNombres(), domain.getApellidos(), domain.getCorreo(),
+								domain.getTelefono(), domain.isCorreoConfirmado(), domain.isTelefonoConfirmado(), domain.getDireccionResidencia(), 
+								CiudadDTOAssembler.getInstance().toDTO(domain.getCiudad()), domain.getPassword());
 	}
 
 	@Override
 	public ProveedorDomain toDomain(final ProveedorDTO dto) {
 		var proveedorDTOAEnsamblar = ProveedorDTO.obtenerValorDefecto(dto);
-		return new ProveedorDomain(proveedorDTOAEnsamblar.getId(), TipoDocumentoDTOAssembler.getInstance().toDomain(proveedorDTOAEnsamblar.getTipoDocumento()), proveedorDTOAEnsamblar.getNumeroIdentificacion(), proveedorDTOAEnsamblar.getNombres(), proveedorDTOAEnsamblar.getApellidos(), proveedorDTOAEnsamblar.getCorreo(), proveedorDTOAEnsamblar.getTelefono(), proveedorDTOAEnsamblar.isCorreoConfirmado(), proveedorDTOAEnsamblar.isTelefonoConfirmado(), proveedorDTOAEnsamblar.getDireccionResidencia(), CiudadDTOAssembler.getInstance().toDomain(proveedorDTOAEnsamblar.getCiudad()));
+		return new ProveedorDomain(proveedorDTOAEnsamblar.getId(), TipoDocumentoDTOAssembler.getInstance().toDomain(proveedorDTOAEnsamblar.getTipoDocumento()),
+				proveedorDTOAEnsamblar.getNumeroIdentificacion(), proveedorDTOAEnsamblar.getNombres(), proveedorDTOAEnsamblar.getApellidos(), 
+				proveedorDTOAEnsamblar.getCorreo(), proveedorDTOAEnsamblar.getTelefono(), proveedorDTOAEnsamblar.isCorreoConfirmado(), 
+				proveedorDTOAEnsamblar.isTelefonoConfirmado(), proveedorDTOAEnsamblar.getDireccionResidencia(), 
+				CiudadDTOAssembler.getInstance().toDomain(proveedorDTOAEnsamblar.getCiudad()), proveedorDTOAEnsamblar.getPassword());
 	}
 
 	@Override

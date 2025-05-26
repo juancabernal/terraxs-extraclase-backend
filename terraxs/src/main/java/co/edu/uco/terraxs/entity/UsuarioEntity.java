@@ -45,9 +45,9 @@ public class UsuarioEntity {
 		setPassword(UtilTexto.getInstance().obtenerValorDefecto());
 	}
 
-	public UsuarioEntity(UUID id, TipoDocumentoEntity tipoDocumento, String numeroIdentificacion,
+	public UsuarioEntity(final UUID id, final TipoDocumentoEntity tipoDocumento, final String numeroIdentificacion,
 			String nombres, String apellidos, String correo, String telefono,
-			boolean correoConfirmado, boolean telefonoConfirmado, String password) {
+			final boolean correoConfirmado, final boolean telefonoConfirmado, final String password) {
 		setId(id);
 		setTipoDocumento(tipoDocumento);
 		setNumeroIdentificacion(numeroIdentificacion);
