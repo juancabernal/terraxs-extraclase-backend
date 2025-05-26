@@ -53,10 +53,82 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
     }
 
     @Override
-    public List<TokenConfirmacionEntity> listByFilter(TokenConfirmacionEntity filter) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<TokenConfirmacionEntity> listByFilter(TokenConfirmacionEntity filter) throws TerraxsException {
+        var listaResultados = new ArrayList<TokenConfirmacionEntity>();
+        var parametros = new ArrayList<Object>();
+        var sentenciaSQL = new StringBuilder();
+        
+        sentenciaSQL.append("SELECT id, token, fecha_hora_creacion, fecha_hora_expiracion, estado, notificacion ");
+        sentenciaSQL.append("FROM token_confirmacion ");
+        sentenciaSQL.append("WHERE 1=1 ");
+        
+        if (filter != null) {
+            if (!UtilUUID.esValorDefecto(filter.getId())) {
+                sentenciaSQL.append("AND id = ? ");
+                parametros.add(filter.getId());
+            }
+            if (filter.getToken() != null && !filter.getToken().isBlank()) {
+                sentenciaSQL.append("AND token = ? ");
+                parametros.add(filter.getToken());
+            }
+            if (filter.getFechaSolicitud() != null) {
+                sentenciaSQL.append("AND fecha_hora_creacion = ? ");
+                parametros.add(Timestamp.valueOf(filter.getFechaSolicitud()));
+            }
+            if (filter.getFechaExpiracion() != null) {
+                sentenciaSQL.append("AND fecha_hora_expiracion = ? ");
+                parametros.add(Timestamp.valueOf(filter.getFechaExpiracion()));
+            }
+            if (filter.getEstado() != null && !UtilUUID.esValorDefecto(filter.getEstado().getId())) {
+                sentenciaSQL.append("AND estado = ? ");
+                parametros.add(filter.getEstado().getId());
+            }
+            if (filter.getNotificacion() != null && !UtilUUID.esValorDefecto(filter.getNotificacion().getId())) {
+                sentenciaSQL.append("AND notificacion = ? ");
+                parametros.add(filter.getNotificacion().getId());
+            }
+        }
+
+        sentenciaSQL.append("ORDER BY token ASC");
+
+        try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+            for (int i = 0; i < parametros.size(); i++) {
+                sentenciaPreparada.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet cursorResultados = sentenciaPreparada.executeQuery()) {
+                while (cursorResultados.next()) {
+                    var tokenConfirmacionEntityRetorno = new TokenConfirmacionEntity();
+
+                    EstadoEntity estado = new EstadoEntity();
+                    estado.setId(UtilUUID.convertirAUUID(cursorResultados.getString("estado")));
+                    tokenConfirmacionEntityRetorno.setEstado(estado);
+
+                    NotificacionEntity notificacion = new NotificacionEntity();
+                    notificacion.setId(UtilUUID.convertirAUUID(cursorResultados.getString("notificacion")));
+                    tokenConfirmacionEntityRetorno.setNotificacion(notificacion);
+
+                    tokenConfirmacionEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
+                    tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
+                    tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime());
+                    tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime());
+
+                    listaResultados.add(tokenConfirmacionEntityRetorno);
+                }
+            }
+        } catch (SQLException exception) {
+            var mensajeUsuario = "Se ha presentado un problema tratando de consultar los tokens de confirmación con los filtros deseados.";
+            var mensajeTecnico = "Se presentó una excepción de tipo SQLException tratando de hacer un SELECT con filtros en la tabla TokenConfirmacion.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar los tokens de confirmación con los filtros deseados.";
+            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA al hacer SELECT con filtros en la tabla TokenConfirmacion.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
+
+        return listaResultados;
     }
+
 
     @Override
     public List<TokenConfirmacionEntity> listALL() throws TerraxsException {
@@ -135,6 +207,8 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
                     tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
                     tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime()); 
                     tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime()); 
+            		tokenConfirmacionEntityRetorno.setEstado(estado);
+					tokenConfirmacionEntityRetorno.setNotificacion(notificacion);
                     
                 }
             }
@@ -153,18 +227,15 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
     @Override
     public void update(UUID id, TokenConfirmacionEntity entity) throws TerraxsException {
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("UPDATE TokenConfirmacion SET token = ?, fecha_hora_creacion = ?, fecha_hora_expiracion = ?, usado = ?, estado= ?, notificacion = ? WHERE id = ?");
+        sentenciaSQL.append("UPDATE TokenConfirmacion SET token = ?, fecha_hora_creacion = ?, fecha_hora_expiracion = ?, estado= ?, notificacion = ? WHERE id = ?");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setString(1, entity.getToken());
             sentenciaPreparada.setTimestamp(2, Timestamp.valueOf(entity.getFechaSolicitud()));
             sentenciaPreparada.setTimestamp(3, Timestamp.valueOf(entity.getFechaExpiracion()));
-            sentenciaPreparada.setBoolean(4, entity.isUsado());
-            sentenciaPreparada.setObject(5, entity.getEstado().getId());
-
-            
-            sentenciaPreparada.setObject(6, entity.getNotificacion().getId());
-            sentenciaPreparada.setObject(7, id);
+            sentenciaPreparada.setObject(4, entity.getEstado().getId());
+            sentenciaPreparada.setObject(5, entity.getNotificacion().getId());
+            sentenciaPreparada.setObject(6, id);
 
             sentenciaPreparada.executeUpdate();
         } catch (SQLException exception) {

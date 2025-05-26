@@ -9,9 +9,8 @@ public interface TokenConfirmacionFacade {
 	
 	void crearToken(TokenConfirmacionDTO tokenConfirmacion) throws TerraxsException;
 	
-	boolean validarToken(UUID id,int tokenIngresado) throws TerraxsException;
 	
-	void marcarTokenUsado(UUID id) throws TerraxsException;
+	TokenConfirmacionDTO consultarToken(UUID id) throws TerraxsException;
 	
 	void eliminarToken(UUID id) throws TerraxsException;
 	
