@@ -10,7 +10,6 @@ import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.DepartamentoDTO;
-import co.edu.uco.terraxs.dto.PaisDTO;
 
 public class DepartamentoFacadeImpl implements DepartamentoFacade{
 	
@@ -54,9 +53,10 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
 	}
 
 	@Override
-	public void elegirPais(List<PaisDTO> pais) throws TerraxsException{
+	public List<DepartamentoDTO> consultarDepartamentosPorPais(UUID paisId) throws TerraxsException {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
 
 }

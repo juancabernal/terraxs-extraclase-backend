@@ -49,5 +49,23 @@ public class ProveedorDTO extends UsuarioDTO {
 		this.ciudad = CiudadDTO.obtenerValorDefecto(ciudad);		
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+	    return "ProveedorDTO{" +
+	            "id=" + id +
+	            ", tipoDocumento=" + (tipoDocumento != null ? tipoDocumento.getNombre() : null) +
+	            ", numeroIdentificacion='" + numeroIdentificacion + '\'' +
+	            ", nombres='" + nombres + '\'' +
+	            ", apellidos='" + apellidos + '\'' +
+	            ", correo='" + correo + '\'' +
+	            ", telefono='" + telefono + '\'' +
+	            ", correoConfirmado=" + correoConfirmado +
+	            ", telefonoConfirmado=" + telefonoConfirmado +
+	            ", direccionResidencia='" + direccionResidencia + '\'' +
+	            ", ciudad=" + (ciudad != null ? ciudad.getNombre() : null) +
+	            '}';
+	}
+
 }
 

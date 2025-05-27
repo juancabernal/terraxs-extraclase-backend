@@ -8,16 +8,16 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 
 public class UsuarioDTO {
 
-	private UUID id;
-	private TipoDocumentoDTO tipoDocumento;
-	private String numeroIdentificacion;
-	private String nombres;
-	private String apellidos;
-	private String correo;
-	private String telefono;
-	private boolean correoConfirmado;
-	private boolean telefonoConfirmado;
-	private String password;
+	protected UUID id;
+	protected TipoDocumentoDTO tipoDocumento;
+	protected String numeroIdentificacion;
+	protected String nombres;
+	protected String apellidos;
+	protected String correo;
+	protected String telefono;
+	protected boolean correoConfirmado;
+	protected boolean telefonoConfirmado;
+	protected String password;
 
 
 	public UsuarioDTO() {

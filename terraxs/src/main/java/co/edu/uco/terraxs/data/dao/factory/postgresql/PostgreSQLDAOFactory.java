@@ -46,7 +46,7 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 	@Override
     protected void abrirConexion()  throws TerraxsException{
 		
-		var baseDatos="DOOTERRAXSDB";
+		var baseDatos="DOO2025TERRAXS";
 		var servidor="ORION.UCO.EDU.CO";
 		
     	try {
@@ -60,10 +60,12 @@ public class PostgreSQLDAOFactory extends DAOFactory {
     		this.conexionEstaAbierta = true;
 
     	}catch(SQLException exception) {
+    		exception.printStackTrace();
     		var mensajeUsuario="Se ha presentado un problema tratando de obtener la conexión con la fuente de datos para llevar a cabo la operación deseada.";
     		var mensajeTecnico="Se presentó una excepción de tipo SQLException tratando de obtener la conexión con la base de datos "+ baseDatos +" en el servidor "+ servidor +" Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}catch(Exception exception) {
+    		exception.printStackTrace();
     		var mensajeUsuario="Se ha presentado un problema INESPERADO tratando de obtener la conexión con la fuente de datos para llevar a cabo la operación deseada.";
     		var mensajeTecnico="Se presentó una excepción NO CONTROLADA de tipo Exception tratando de obtener la conexión con la base de datos "+ baseDatos +" en el servidor "+ servidor +" Para tener más detalles revise el log de errores.";
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);

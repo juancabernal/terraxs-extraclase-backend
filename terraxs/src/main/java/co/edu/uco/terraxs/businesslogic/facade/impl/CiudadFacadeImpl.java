@@ -10,7 +10,6 @@ import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 import co.edu.uco.terraxs.data.dao.factory.Factory;
 import co.edu.uco.terraxs.dto.CiudadDTO;
-import co.edu.uco.terraxs.dto.DepartamentoDTO;
 
 public class CiudadFacadeImpl implements CiudadFacade {
 	
@@ -30,7 +29,7 @@ public class CiudadFacadeImpl implements CiudadFacade {
 	}
 
 	@Override
-	public void modificarCiduadExistente(UUID id, CiudadDTO ciudad) throws TerraxsException{
+	public void modificarCiudadExistente(UUID id, CiudadDTO ciudad) throws TerraxsException{
 		// TODO Auto-generated method stub
 		
 	}
@@ -54,9 +53,10 @@ public class CiudadFacadeImpl implements CiudadFacade {
 	}
 
 	@Override
-	public void elegirDepartamento(List<DepartamentoDTO> pais) throws TerraxsException{
+	public List<CiudadDTO> consultarCiudadesPorDepartamento(UUID departamentoId) throws TerraxsException {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
 
 }

@@ -38,7 +38,6 @@ public class ProveedorFacadeImpl implements ProveedorFacade{
 		
 		try {
 			daoFactory.iniciarTransaccion();
-			
 			var proveedorDomain = ProveedorDTOAssembler.getInstance().toDomain(proveedor);
 			proveedorBusinessLogic.registrarProveedor(proveedorDomain);
 			

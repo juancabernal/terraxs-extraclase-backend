@@ -15,7 +15,7 @@ public interface ProveedorBusinessLogic {
 	
 	boolean confirmarDatosProveedor(ProveedorDomain proveedor, TokenConfirmacionDomain token) throws TerraxsException;
 	
-	void elegirTipoDocumento(List<TipoDocumentoDomain> tipoDocumento) throws TerraxsException;
+	TipoDocumentoDomain elegirTipoDocumento(UUID idTipoDocumento) throws TerraxsException;
 	
 	ProveedorDomain consultarProveedorPorId(UUID id) throws TerraxsException;
 	
@@ -23,9 +23,8 @@ public interface ProveedorBusinessLogic {
 	
 	void modificarDatosProveedor(UUID id, ProveedorDomain proveedor) throws TerraxsException;
 	
-	void elegirCiudad(List<CiudadDomain> ciudad) throws TerraxsException;
+	CiudadDomain elegirCiudad(UUID idCiudad) throws TerraxsException;
 	
 	void eliminarProveedor(UUID id) throws TerraxsException;
-
 	
 }

@@ -30,11 +30,11 @@ public class ProveedorPostgreSQLDAO implements ProveedorDAO {
 	public void create(ProveedorEntity entity) throws TerraxsException {
 		var sentenciaSQL = new StringBuilder();
 		sentenciaSQL.append(
-				"INSERT INTO proveedor(id,tipo_documento_id,numero_identificacion,nombres,apellidos,correo,telefono,correo_confirmado,telefono_confirmado, direccion_residencia, ciudad, password) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+				"INSERT INTO proveedor(id,tipo_documento_id,numero_identificacion,nombres,apellidos,correo,telefono,correo_confirmado,telefono_confirmado, direccion_residencia, ciudad_id, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
 
 		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
 			sentenciaPreparada.setObject(1, entity.getId());
-			sentenciaPreparada.setObject(2, entity.getTipoDocumento());
+			sentenciaPreparada.setObject(2, entity.getTipoDocumento().getId());
 			sentenciaPreparada.setObject(3, entity.getNumeroIdentificacion());
 			sentenciaPreparada.setObject(4, entity.getNombres());
 			sentenciaPreparada.setObject(5, entity.getApellidos());
@@ -43,12 +43,12 @@ public class ProveedorPostgreSQLDAO implements ProveedorDAO {
 			sentenciaPreparada.setObject(8, entity.isCorreoConfirmado());
 			sentenciaPreparada.setObject(9, entity.isTelefonoConfirmado());
 			sentenciaPreparada.setObject(10, entity.getDireccionResidencia());
-			sentenciaPreparada.setObject(11, entity.getCiudad());
+			sentenciaPreparada.setObject(11, entity.getCiudad().getId());
 			sentenciaPreparada.setObject(12, entity.getPassword());
 
 			sentenciaPreparada.executeUpdate();
 		} catch (SQLException exception) {
-
+			exception.printStackTrace();
 			var mensajeUsuario = "Se ha presentado un problema tratando de registrar la información del nuevo proveedor";
 			var mensajeTecnico = "Se presentó una excepción de tipo SQLException tratando de hacer un INSERT en la tabla proveedor. Para tener más detalles revise el log de errores.";
 			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
@@ -60,112 +60,7 @@ public class ProveedorPostgreSQLDAO implements ProveedorDAO {
 
 	}
 
-	@Override
-	public List<ProveedorEntity> listByFilter(ProveedorEntity filter) throws TerraxsException {
-		var sentenciaSQL = new StringBuilder();
 
-		sentenciaSQL.append(
-				"SELECT pd.id, td.nombre, pd.numero_identificacion, pd.nombres, pd.apellidos, pd.correo, pd.telefono, pd.correo_confirmado, pd.telefono_confirmado, pd.direccion_residencia, c.nombre ")
-				.append("FROM proveedor pd ").append("JOIN tipo_documento td ON pd.tipo_documento_id = td.id")
-				.append("JOIN ciudad c ON pd.ciudad_id = c.id ")
-				.append("JOIN departamento d ON c.departamento_id = d.id ").append("JOIN pais p ON d.pais_id = p.id ")
-				.append("WHERE 1=1 ");
-
-		final List<ProveedorEntity> proveedores = new ArrayList<>();
-		final List<Object> parametros = new ArrayList<>();
-
-		if (filter != null) {
-			if (filter.getId() != null) {
-				sentenciaSQL.append(" AND pd.id = ?");
-				parametros.add(filter.getId());
-			}
-			if (filter.getTipoDocumento() != null && filter.getTipoDocumento().getId() != null) {
-				sentenciaSQL.append(" AND td.id = ?");
-				parametros.add(filter.getTipoDocumento().getId());
-			}
-			if (filter.getNumeroIdentificacion() != null && !filter.getNumeroIdentificacion().isBlank()) {
-				sentenciaSQL.append(" AND pd.numero_identificacion ILIKE ?");
-				parametros.add("%" + filter.getNumeroIdentificacion().trim() + "%");
-			}
-			if (filter.getNombres() != null && !filter.getNombres().isBlank()) {
-				sentenciaSQL.append(" AND pd.nombres ILIKE ?");
-				parametros.add("%" + filter.getNombres().trim() + "%");
-			}
-			if (filter.getApellidos() != null && !filter.getApellidos().isBlank()) {
-				sentenciaSQL.append(" AND pd.apellidos ILIKE ?");
-				parametros.add("%" + filter.getApellidos().trim() + "%");
-			}
-			if (filter.getCorreo() != null && !filter.getCorreo().isBlank()) {
-				sentenciaSQL.append(" AND pd.correo ILIKE ?");
-				parametros.add("%" + filter.getCorreo().trim() + "%");
-			}
-			if (filter.getTelefono() != null && !filter.getTelefono().isBlank()) {
-				sentenciaSQL.append(" AND pd.telefono ILIKE ?");
-				parametros.add("%" + filter.getTelefono().trim() + "%");
-			}
-			if (filter.getDireccionResidencia() != null && !filter.getDireccionResidencia().isBlank()) {
-				sentenciaSQL.append(" AND pd.apellidos ILIKE ?");
-				parametros.add("%" + filter.getDireccionResidencia().trim() + "%");
-			}
-			if (filter.getCiudad() != null && filter.getCiudad().getId() != null) {
-				sentenciaSQL.append(" AND c.id = ?");
-				parametros.add(filter.getCiudad().getId());
-			}
-		}
-
-		try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
-			for (int i = 0; i < parametros.size(); i++) {
-				sentenciaPreparada.setObject(i + 1, parametros.get(i));
-			}
-
-			try (ResultSet resultado = sentenciaPreparada.executeQuery()) {
-				while (resultado.next()) {
-					var tipoDocumento = new TipoDocumentoEntity();
-					tipoDocumento.setId(UtilUUID.convertirAUUID(resultado.getString("tipo_documento_id")));
-					tipoDocumento.setNombre(resultado.getString("tipo_documento"));
-
-					var pais = new PaisEntity();
-					pais.setId(UtilUUID.convertirAUUID(resultado.getString("pais_id")));
-					pais.setNombre(resultado.getString("pais"));
-
-					var departamento = new DepartamentoEntity();
-					departamento.setId(UtilUUID.convertirAUUID(resultado.getString("departamento_id")));
-					departamento.setNombre(resultado.getString("departamento"));
-					departamento.setPais(pais);
-
-					var ciudad = new CiudadEntity();
-					ciudad.setId(UtilUUID.convertirAUUID(resultado.getString("ciudad_id")));
-					ciudad.setNombre(resultado.getString("ciudad"));
-					ciudad.setDepartamento(departamento);
-
-					var proveedor = new ProveedorEntity();
-					proveedor.setId(UtilUUID.convertirAUUID(resultado.getString("id")));
-					proveedor.setTipoDocumento(tipoDocumento);
-					proveedor.setNumeroIdentificacion(resultado.getString("numero_identificacion"));
-					proveedor.setNombres(resultado.getString("nombres"));
-					proveedor.setApellidos(resultado.getString("apellidos"));
-					proveedor.setCorreo(resultado.getString("correo"));
-					proveedor.setTelefono(resultado.getString("telefono"));
-					proveedor.setCorreoConfirmado(resultado.getBoolean("correo_confirmado"));
-					proveedor.setTelefonoConfirmado(resultado.getBoolean("telefono_confirmado"));
-					proveedor.setDireccionResidencia(resultado.getString("direccion_residencia"));
-					proveedor.setCiudad(ciudad);
-
-					proveedores.add(proveedor);
-				}
-			}
-		} catch (SQLException exception) {
-			var mensajeUsuario = "Se ha presentado un problema tratando de consultar los proveedores con los filtros deseados";
-			var mensajeTecnico = "Se presentó una SQLException al consultar la tabla proveedor. Verifique sintaxis o conexión.";
-			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-		} catch (Exception exception) {
-			var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar los proveedores con los filtros deseados";
-			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA al consultar proveedores con filtros.";
-			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-		}
-		return proveedores;
-
-	}
 
 	@Override
 	public List<ProveedorEntity> listALL() throws TerraxsException {
@@ -222,101 +117,224 @@ public class ProveedorPostgreSQLDAO implements ProveedorDAO {
 
 		return proveedores;
 	}
+	
+	@Override
+	public List<ProveedorEntity> listByFilter(ProveedorEntity filter) throws TerraxsException {
+	    var sentenciaSQL = new StringBuilder();
+	    sentenciaSQL.append("SELECT ")
+	        .append("pd.id AS proveedor_id, ")
+	        .append("td.id AS tipo_documento_id, td.nombre AS tipo_documento, ")
+	        .append("pd.numero_identificacion, pd.nombres, pd.apellidos, pd.correo, pd.telefono, ")
+	        .append("pd.correo_confirmado, pd.telefono_confirmado, pd.direccion_residencia, ")
+	        .append("c.id AS ciudad_id, c.nombre AS ciudad, ")
+	        .append("d.id AS departamento_id, d.nombre AS departamento, ")
+	        .append("p.id AS pais_id, p.nombre AS pais ")
+	        .append("FROM proveedor pd ")
+	        .append("JOIN tipo_documento td ON pd.tipo_documento_id = td.id ")
+	        .append("JOIN ciudad c ON pd.ciudad_id = c.id ")
+	        .append("JOIN departamento d ON c.departamento_id = d.id ")
+	        .append("JOIN pais p ON d.pais_id = p.id ")
+	        .append("WHERE 1=1 ");
+
+	    final List<ProveedorEntity> proveedores = new ArrayList<>();
+	    final List<Object> parametros = new ArrayList<>();
+
+	    if (filter != null) {
+	        if (filter.getId() != null) {
+	            sentenciaSQL.append(" AND pd.id = ?");
+	            parametros.add(filter.getId());
+	        }
+	        if (filter.getTipoDocumento() != null && filter.getTipoDocumento().getId() != null) {
+	            sentenciaSQL.append(" AND td.id = ?");
+	            parametros.add(filter.getTipoDocumento().getId());
+	        }
+	        if (filter.getNumeroIdentificacion() != null && !filter.getNumeroIdentificacion().isBlank()) {
+	            sentenciaSQL.append(" AND pd.numero_identificacion ILIKE ?");
+	            parametros.add("%" + filter.getNumeroIdentificacion().trim() + "%");
+	        }
+	        if (filter.getNombres() != null && !filter.getNombres().isBlank()) {
+	            sentenciaSQL.append(" AND pd.nombres ILIKE ?");
+	            parametros.add("%" + filter.getNombres().trim() + "%");
+	        }
+	        if (filter.getApellidos() != null && !filter.getApellidos().isBlank()) {
+	            sentenciaSQL.append(" AND pd.apellidos ILIKE ?");
+	            parametros.add("%" + filter.getApellidos().trim() + "%");
+	        }
+	        if (filter.getCorreo() != null && !filter.getCorreo().isBlank()) {
+	            sentenciaSQL.append(" AND pd.correo ILIKE ?");
+	            parametros.add("%" + filter.getCorreo().trim() + "%");
+	        }
+	        if (filter.getTelefono() != null && !filter.getTelefono().isBlank()) {
+	            sentenciaSQL.append(" AND pd.telefono ILIKE ?");
+	            parametros.add("%" + filter.getTelefono().trim() + "%");
+	        }
+	        if (filter.getDireccionResidencia() != null && !filter.getDireccionResidencia().isBlank()) {
+	            sentenciaSQL.append(" AND pd.direccion_residencia ILIKE ?");
+	            parametros.add("%" + filter.getDireccionResidencia().trim() + "%");
+	        }
+	        if (filter.getCiudad() != null && filter.getCiudad().getId() != null) {
+	            sentenciaSQL.append(" AND c.id = ?");
+	            parametros.add(filter.getCiudad().getId());
+	        }
+	    }
+
+	    try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+	        for (int i = 0; i < parametros.size(); i++) {
+	            sentenciaPreparada.setObject(i + 1, parametros.get(i));
+	        }
+
+	        try (ResultSet resultado = sentenciaPreparada.executeQuery()) {
+	            while (resultado.next()) {
+	                var tipoDocumento = new TipoDocumentoEntity();
+	                tipoDocumento.setId(UtilUUID.convertirAUUID(resultado.getString("tipo_documento_id")));
+	                tipoDocumento.setNombre(resultado.getString("tipo_documento"));
+
+	                var pais = new PaisEntity();
+	                pais.setId(UtilUUID.convertirAUUID(resultado.getString("pais_id")));
+	                pais.setNombre(resultado.getString("pais"));
+
+	                var departamento = new DepartamentoEntity();
+	                departamento.setId(UtilUUID.convertirAUUID(resultado.getString("departamento_id")));
+	                departamento.setNombre(resultado.getString("departamento"));
+	                departamento.setPais(pais);
+
+	                var ciudad = new CiudadEntity();
+	                ciudad.setId(UtilUUID.convertirAUUID(resultado.getString("ciudad_id")));
+	                ciudad.setNombre(resultado.getString("ciudad"));
+	                ciudad.setDepartamento(departamento);
+
+	                var proveedor = new ProveedorEntity();
+	                proveedor.setId(UtilUUID.convertirAUUID(resultado.getString("proveedor_id")));
+	                proveedor.setTipoDocumento(tipoDocumento);
+	                proveedor.setNumeroIdentificacion(resultado.getString("numero_identificacion"));
+	                proveedor.setNombres(resultado.getString("nombres"));
+	                proveedor.setApellidos(resultado.getString("apellidos"));
+	                proveedor.setCorreo(resultado.getString("correo"));
+	                proveedor.setTelefono(resultado.getString("telefono"));
+	                proveedor.setCorreoConfirmado(resultado.getBoolean("correo_confirmado"));
+	                proveedor.setTelefonoConfirmado(resultado.getBoolean("telefono_confirmado"));
+	                proveedor.setDireccionResidencia(resultado.getString("direccion_residencia"));
+	                proveedor.setCiudad(ciudad);
+
+	                proveedores.add(proveedor);
+	            }
+	        }
+	    } catch (SQLException exception) {
+	        var mensajeUsuario = "Se ha presentado un problema tratando de consultar los proveedores con los filtros deseados";
+	        var mensajeTecnico = "Se presentó una SQLException al consultar la tabla proveedor. Verifique sintaxis o conexión.";
+	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    } catch (Exception exception) {
+	        var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar los proveedores";
+	        var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception consultando la tabla proveedor.";
+	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    }
+
+	    return proveedores;
+	}
+
 
 	@Override
 	public ProveedorEntity listById(UUID id) throws TerraxsException {
-		var proveedorEntityRetorno = new ProveedorEntity();
-		var sentenciaSQL = new StringBuilder();
-		sentenciaSQL.append(
-				"SELECT pd.id, td.nombre, pd.numero_identificacion, pd.nombres, pd.apellidos, pd.correo, pd.telefono, pd.correo_confirmado, pd.telefono_confirmado, pd.direccion_residencia, c.nombre ")
-				.append("FROM proveedor pd ").append("JOIN tipo_documento td ON pd.tipo_documento_id = td.id")
-				.append("JOIN ciudad c ON pd.ciudad_id = c.id ")
-				.append("JOIN departamento d ON c.departamento_id = d.id ").append("JOIN pais p ON d.pais_id = p.id ")
-				.append("WHERE 1=1 ").append("WHERE pd.id = ?");
+	    var proveedorEntityRetorno = new ProveedorEntity();
+	    var sentenciaSQL = new StringBuilder();
+	    sentenciaSQL.append(
+	            "SELECT pd.id AS proveedor_id, td.id AS tipo_documento_id, td.nombre AS tipo_documento, ")
+	            .append("pd.numero_identificacion, pd.nombres, pd.apellidos, pd.correo, pd.telefono, ")
+	            .append("pd.correo_confirmado, pd.telefono_confirmado, pd.direccion_residencia, ")
+	            .append("c.id AS ciudad_id, c.nombre AS ciudad, ")
+	            .append("d.id AS departamento_id, d.nombre AS departamento, ")
+	            .append("p.id AS pais_id, p.nombre AS pais ")
+	            .append("FROM proveedor pd ")
+	            .append("JOIN tipo_documento td ON pd.tipo_documento_id = td.id ")
+	            .append("JOIN ciudad c ON pd.ciudad_id = c.id ")
+	            .append("JOIN departamento d ON c.departamento_id = d.id ")
+	            .append("JOIN pais p ON d.pais_id = p.id ")
+	            .append("WHERE pd.id = ?");
 
-		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
-			sentenciaPreparada.setObject(1, id.toString());
+	    try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+	        sentenciaPreparada.setObject(1, id);
 
-			try (var cursorResultados = sentenciaPreparada.executeQuery()) {
-				if (cursorResultados.next()) {
+	        try (var cursorResultados = sentenciaPreparada.executeQuery()) {
+	            if (cursorResultados.next()) {
+	                var tipoDocumento = new TipoDocumentoEntity();
+	                tipoDocumento.setId(UtilUUID.convertirAUUID(cursorResultados.getString("tipo_documento_id")));
+	                tipoDocumento.setNombre(cursorResultados.getString("tipo_documento"));
 
-					var tipoDocumento = new TipoDocumentoEntity();
-					tipoDocumento.setId(UtilUUID.convertirAUUID(cursorResultados.getString("tipo_documento_id")));
-					tipoDocumento.setNombre(cursorResultados.getString("tipo_documento"));
+	                var pais = new PaisEntity();
+	                pais.setId(UtilUUID.convertirAUUID(cursorResultados.getString("pais_id")));
+	                pais.setNombre(cursorResultados.getString("pais"));
 
-					var pais = new PaisEntity();
-					pais.setId(UtilUUID.convertirAUUID(cursorResultados.getString("pais_id")));
-					pais.setNombre(cursorResultados.getString("pais"));
+	                var departamento = new DepartamentoEntity();
+	                departamento.setId(UtilUUID.convertirAUUID(cursorResultados.getString("departamento_id")));
+	                departamento.setNombre(cursorResultados.getString("departamento"));
+	                departamento.setPais(pais);
 
-					var departamento = new DepartamentoEntity();
-					departamento.setId(UtilUUID.convertirAUUID(cursorResultados.getString("departamento_id")));
-					departamento.setNombre(cursorResultados.getString("departamento"));
-					departamento.setPais(pais);
+	                var ciudad = new CiudadEntity();
+	                ciudad.setId(UtilUUID.convertirAUUID(cursorResultados.getString("ciudad_id")));
+	                ciudad.setNombre(cursorResultados.getString("ciudad"));
+	                ciudad.setDepartamento(departamento);
 
-					var ciudad = new CiudadEntity();
-					ciudad.setId(UtilUUID.convertirAUUID(cursorResultados.getString("ciudad_id")));
-					ciudad.setNombre(cursorResultados.getString("ciudad"));
-					ciudad.setDepartamento(departamento);
+	                proveedorEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("proveedor_id")));
+	                proveedorEntityRetorno.setTipoDocumento(tipoDocumento);
+	                proveedorEntityRetorno.setNumeroIdentificacion(cursorResultados.getString("numero_identificacion"));
+	                proveedorEntityRetorno.setNombres(cursorResultados.getString("nombres"));
+	                proveedorEntityRetorno.setApellidos(cursorResultados.getString("apellidos"));
+	                proveedorEntityRetorno.setCorreo(cursorResultados.getString("correo"));
+	                proveedorEntityRetorno.setTelefono(cursorResultados.getString("telefono"));
+	                proveedorEntityRetorno.setCorreoConfirmado(cursorResultados.getBoolean("correo_confirmado"));
+	                proveedorEntityRetorno.setTelefonoConfirmado(cursorResultados.getBoolean("telefono_confirmado"));
+	                proveedorEntityRetorno.setDireccionResidencia(cursorResultados.getString("direccion_residencia"));
+	                proveedorEntityRetorno.setCiudad(ciudad);
+	            }
+	        }
+	    } catch (SQLException exception) {
+	        var mensajeUsuario = "Se ha presentado un problema tratando de consultar la información del proveedor con el identificador deseado";
+	        var mensajeTecnico = "Se presentó una excepción de tipo SQLException tratando de hacer un SELECT en la tabla proveedor por id. Para tener más detalles revise el log de errores.";
+	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    } catch (Exception exception) {
+	        var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar la información del proveedor con el identificador deseado";
+	        var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un SELECT en la tabla proveedor por id. Para tener más detalles revise el log de errores.";
+	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    }
 
-					proveedorEntityRetorno.setId(UtilUUID.convertirAUUID(cursorResultados.getString("id")));
-					proveedorEntityRetorno.setTipoDocumento(tipoDocumento);
-					proveedorEntityRetorno.setNumeroIdentificacion(cursorResultados.getString("numero_identificacion"));
-					proveedorEntityRetorno.setNombres(cursorResultados.getString("nombres"));
-					proveedorEntityRetorno.setApellidos(cursorResultados.getString("apellidos"));
-					proveedorEntityRetorno.setCorreo(cursorResultados.getString("correo"));
-					proveedorEntityRetorno.setTelefono(cursorResultados.getString("telefono"));
-					proveedorEntityRetorno.setCorreoConfirmado(cursorResultados.getBoolean("correo_confirmado"));
-					proveedorEntityRetorno.setTelefonoConfirmado(cursorResultados.getBoolean("telefono_confirmado"));
-					proveedorEntityRetorno.setDireccionResidencia(cursorResultados.getString("direccion_residencia"));
-					proveedorEntityRetorno.setCiudad(ciudad);
-				}
-			}
-		} catch (SQLException exception) {
-			var mensajeUsuario = "Se ha presentado un problema tratando de consultar la información del proveedor con el identificador deseado";
-			var mensajeTecnico = "Se presentó una excepción de tipo SQLException tratando de hacer un SELECT en la tabla proveedor por id. Para tener más detalles revise el log de errores.";
-			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-		} catch (Exception exception) {
-			var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar la información del proveedor con el identificador deseado";
-			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un SELECT en la tabla proveedor por id. Para tener más detalles revise el log de errores.";
-			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-		}
-
-		return proveedorEntityRetorno;
+	    return proveedorEntityRetorno;
 	}
+
 
 	@Override
 	public void update(UUID id, ProveedorEntity entity) throws TerraxsException {
 
-		var sentenciaSQL = new StringBuilder();
-		sentenciaSQL.append(
-				"UPDATE proveedor SET tipo_documento_id = ?, numero_identificacion = ?, nombres = ?, apellidos = ?, correo = ?, telefono = ?, correo_confirmado = ?, telefono_confirmado = ?, direccion_residencia = ?, ciudad = ? password = ? WHERE id = ?");
+	    var sentenciaSQL = new StringBuilder();
+	    sentenciaSQL.append("UPDATE proveedor SET tipo_documento_id = ?, numero_identificacion = ?, nombres = ?, apellidos = ?, correo = ?, telefono = ?, correo_confirmado = ?, telefono_confirmado = ?, direccion_residencia = ?, ciudad_id = ?, password = ? WHERE id = ?");
 
-		try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
-			sentenciaPreparada.setObject(2, entity.getId());
-			sentenciaPreparada.setObject(1, entity.getTipoDocumento().getId());
-			sentenciaPreparada.setObject(2, entity.getNumeroIdentificacion());
-			sentenciaPreparada.setObject(3, entity.getNombres());
-			sentenciaPreparada.setObject(4, entity.getApellidos());
-			sentenciaPreparada.setObject(5, entity.getCorreo());
-			sentenciaPreparada.setObject(6, entity.getTelefono());
-			sentenciaPreparada.setObject(7, entity.isCorreoConfirmado());
-			sentenciaPreparada.setObject(8, entity.isTelefonoConfirmado());
-			sentenciaPreparada.setObject(9, entity.getDireccionResidencia());
-			sentenciaPreparada.setObject(10, entity.getPassword());
-			sentenciaPreparada.setObject(11, id);
+	    try (var sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+	        sentenciaPreparada.setObject(1, entity.getTipoDocumento().getId());
+	        sentenciaPreparada.setObject(2, entity.getNumeroIdentificacion());
+	        sentenciaPreparada.setObject(3, entity.getNombres());
+	        sentenciaPreparada.setObject(4, entity.getApellidos());
+	        sentenciaPreparada.setObject(5, entity.getCorreo());
+	        sentenciaPreparada.setObject(6, entity.getTelefono());
+	        sentenciaPreparada.setObject(7, entity.isCorreoConfirmado());
+	        sentenciaPreparada.setObject(8, entity.isTelefonoConfirmado());
+	        sentenciaPreparada.setObject(9, entity.getDireccionResidencia());
+	        sentenciaPreparada.setObject(10, entity.getCiudad().getId());
+	        sentenciaPreparada.setObject(11, entity.getPassword());
+	        sentenciaPreparada.setObject(12, id);
 
-			sentenciaPreparada.executeUpdate();
-		} catch (SQLException exception) {
-			var mensajeUsuario = "Se ha presentado un problema tratando de modificar la información del proveedor";
-			var mensajeTecnico = "Se presentó una excepción de tipo SQLException tratando de hacer un UPDATE en la tabla proveedor. Para más detalles revise el log de errores.";
-			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-		} catch (Exception exception) {
-			var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de modificar la información del proveedor";
-			var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un UPDATE en la tabla proveedor. Para más detalles revise el log de errores.";
-			throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
-		}
-
+	        sentenciaPreparada.executeUpdate();
+	    } catch (SQLException exception) {
+	    	exception.printStackTrace();
+	        var mensajeUsuario = "Se ha presentado un problema tratando de modificar la información del proveedor";
+	        var mensajeTecnico = "Se presentó una excepción de tipo SQLException tratando de hacer un UPDATE en la tabla proveedor. Para más detalles revise el log de errores.";
+	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    } catch (Exception exception) {
+	    	exception.printStackTrace();
+	        var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de modificar la información del proveedor";
+	        var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception tratando de hacer un UPDATE en la tabla proveedor. Para más detalles revise el log de errores.";
+	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    }
 	}
+
 
 	@Override
 	public void delete(UUID id) throws TerraxsException {

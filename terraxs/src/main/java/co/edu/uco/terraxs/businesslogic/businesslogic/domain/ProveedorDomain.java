@@ -17,7 +17,7 @@ public class ProveedorDomain extends UsuarioDomain {
 	public ProveedorDomain(final UUID id, final TipoDocumentoDomain tipoDocumento, final String numeroIdentificacion, final String nombres,
 			final String apellidos, final String correo, final String telefono, final boolean correoConfirmado, final boolean telefonoConfirmado, final String direccionResidencia, final CiudadDomain ciudad, final String password) {
 		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);
-		setDireccionResidencia(UtilTexto.getInstance().obtenerValorDefecto());
+		setDireccionResidencia(direccionResidencia);
 		setCiudad(ciudad);
 	}
 

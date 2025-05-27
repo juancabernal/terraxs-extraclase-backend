@@ -11,7 +11,7 @@ public interface CiudadFacade {
 
 	void registrarNuevaCiudad(CiudadDTO ciudad) throws TerraxsException;
 
-	void modificarCiduadExistente(UUID id, CiudadDTO ciudad) throws TerraxsException;
+	void modificarCiudadExistente(UUID id, CiudadDTO ciudad) throws TerraxsException;
 
 	void darBajaDefinitivamenteCiudadExistente(UUID id) throws TerraxsException;
 

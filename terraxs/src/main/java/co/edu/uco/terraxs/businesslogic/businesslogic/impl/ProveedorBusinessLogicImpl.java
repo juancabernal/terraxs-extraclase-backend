@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.ProveedorBusinessLogic;
+import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.departamento.entity.DepartamentoEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.proveedor.entity.ProveedorEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ProveedorDomain;
@@ -48,14 +49,38 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		//6. generar identificador nuevo proveedor
 		var id= generarIdentificadorNuevoProveedor();
 		
-		//7. recrear el domain con el id generado
+		// 7. Hashear la contraseña
+	    var passwordHasheada = UtilPassword.getInstance().encriptarPassword(proveedor.getPassword());
+
+	    // 8. Crear nuevo domain con el id generado y la contraseña hasheada
+	    var proveedorDomainAcrear = new ProveedorDomain(
+	        id,
+	        proveedor.getTipoDocumento(),
+	        proveedor.getNumeroIdentificacion(),
+	        proveedor.getNombres(),
+	        proveedor.getApellidos(),
+	        proveedor.getCorreo(),
+	        proveedor.getTelefono(),
+	        proveedor.isCorreoConfirmado(),
+	        proveedor.isTelefonoConfirmado(),
+	        proveedor.getDireccionResidencia(),
+	        proveedor.getCiudad(),
+	        passwordHasheada 
+	    );
+
+	    // 9. Crear entidad y persistir
+	    var proveedorEntity = ProveedorEntityAssembler.getInstance().toEntity(proveedorDomainAcrear);
+	    factory.getProveedorDAO().create(proveedorEntity);
+
+		
+		/*//7. recrear el domain con el id generado
 		var proveedorDomainAcrear= new ProveedorDomain(id,proveedor.getTipoDocumento(),proveedor.getNumeroIdentificacion(),proveedor.getNombres(),
 				proveedor.getApellidos(), proveedor.getCorreo(), proveedor.getTelefono(), proveedor.isCorreoConfirmado(), proveedor.isTelefonoConfirmado(),
 				proveedor.getDireccionResidencia(), proveedor.getCiudad(), proveedor.getPassword());
 		
 		//8. creamos el proveedor siempre y cuando se hayan creado todas las reglas
 		var proveedorEntity =  ProveedorEntityAssembler.getInstance().toEntity(proveedorDomainAcrear);
-		factory.getProveedorDAO().create(proveedorEntity);
+		factory.getProveedorDAO().create(proveedorEntity);*/
 		
 	}
 	
@@ -67,12 +92,12 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		validarIntegridadApellidosProveedor(proveedor.getApellidos());
 		validarIntegridadCorreoProveedor(proveedor.getCorreo());
 		validarIntegridadTelefonoProveedor(proveedor.getTelefono());
-		validarIntegridadCorreoConfirmadoProveedor(proveedor.isCorreoConfirmado());
-		validarIntegridadTelefonoConfirmadoProveedor(proveedor.isTelefonoConfirmado());
+		/*validarIntegridadCorreoConfirmadoProveedor(proveedor.isCorreoConfirmado());
+		validarIntegridadTelefonoConfirmadoProveedor(proveedor.isTelefonoConfirmado());*/
 		validarIntegridadDireccionResidenciaProveedor(proveedor.getDireccionResidencia());
 		validarIntegridadCiudadProveedor(proveedor.getCiudad());
 		validarIntegridadPasswordProveedor(proveedor.getPassword());
-		
+
 	}
 	
 	
@@ -128,7 +153,7 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		}
 	}
 
-	private void validarIntegridadCorreoConfirmadoProveedor(boolean correoConfirmado) throws TerraxsException {
+	/*private void validarIntegridadCorreoConfirmadoProveedor(boolean correoConfirmado) throws TerraxsException {
 		if (!correoConfirmado) {
 			throw BusinessLogicTerraxsException.reportar("El correo electrónico del proveedor debe estar confirmado.");
 		}
@@ -138,8 +163,8 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		if (!telefonoConfirmado) {
 			throw BusinessLogicTerraxsException.reportar("El teléfono del proveedor debe estar confirmado.");
 		}
-	}
-
+	}*/
+	
 	private void validarIntegridadDireccionResidenciaProveedor(String direccionResidencia) throws TerraxsException {
 		if (UtilTexto.getInstance().estaVacia(direccionResidencia)) {
 			throw BusinessLogicTerraxsException.reportar("La dirección de residencia del proveedor es obligatoria.");
@@ -241,15 +266,34 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	}
 
 	@Override
-	public void elegirTipoDocumento(List<TipoDocumentoDomain> tipoDocumento)  throws TerraxsException{
-		// TODO Auto-generated method stub
-		
+	public TipoDocumentoDomain elegirTipoDocumento(UUID idTipoDocumento) throws TerraxsException {
+		if (UtilUUID.esValorDefecto(idTipoDocumento)) {
+			throw BusinessLogicTerraxsException.reportar("El identificador del tipo de documento es obligatorio y no puede ser por defecto.");
+		}
+
+		var entidad = factory.getTipoDocumentoDAO().listById(idTipoDocumento);
+
+		if (UtilObjeto.getInstance().esNulo(entidad) || UtilUUID.esValorDefecto(entidad.getId())) {
+			throw BusinessLogicTerraxsException.reportar("No existe un tipo de documento con el ID especificado.");
+		}
+
+		return new TipoDocumentoDomain(entidad.getId(), entidad.getNombre());
 	}
+
 	
 	@Override
-	public void elegirCiudad(List<CiudadDomain> ciudad) throws TerraxsException {
-		// TODO Auto-generated method stub
-		
+	public CiudadDomain elegirCiudad(UUID idCiudad) throws TerraxsException {
+		if (UtilUUID.esValorDefecto(idCiudad)) {
+			throw BusinessLogicTerraxsException.reportar("El identificador de la ciudad es obligatorio y no puede ser por defecto.");
+		}
+
+		var entidad = factory.getCiudadDAO().listById(idCiudad);
+
+		if (UtilObjeto.getInstance().esNulo(entidad) || UtilUUID.esValorDefecto(entidad.getId())) {
+			throw BusinessLogicTerraxsException.reportar("No existe una ciudad con el ID especificado.");
+		}
+
+		return new CiudadDomain(entidad.getId(), entidad.getNombre(), DepartamentoEntityAssembler.getInstance().toDomain(entidad.getDepartamento()));
 	}
 
 
@@ -277,5 +321,6 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	public void eliminarProveedor(UUID id) throws TerraxsException {
 		factory.getProveedorDAO().delete(id);
 	}
+
 
 }
