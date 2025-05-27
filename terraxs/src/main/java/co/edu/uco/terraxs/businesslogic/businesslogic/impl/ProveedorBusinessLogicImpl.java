@@ -171,8 +171,8 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		if (UtilTexto.getInstance().estaVacia(password)) {
 			throw BusinessLogicTerraxsException.reportar("La contraseña del proveedor es obligatoria.");
 		}
-		if (password.length() < 8 || password.length() > 50) {
-			throw BusinessLogicTerraxsException.reportar("La contraseña debe tener entre 8 y 50 caracteres.");
+		if (password.length() < 8 || password.length() > 20) {
+			throw BusinessLogicTerraxsException.reportar("La contraseña debe tener entre 8 y 0 caracteres.");
 		}
 		if (!UtilPassword.getInstance().cumplePatronPasswordSeguro(password)) {
 			throw BusinessLogicTerraxsException.reportar("La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales.");

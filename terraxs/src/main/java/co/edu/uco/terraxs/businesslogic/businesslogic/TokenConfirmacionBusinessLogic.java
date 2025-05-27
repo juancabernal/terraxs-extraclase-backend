@@ -10,7 +10,7 @@ public interface TokenConfirmacionBusinessLogic {
 	
 	void crearToken(TokenConfirmacionDomain tokenConfirmacion) throws TerraxsException;
 	
-	TokenConfirmacionDTO consultarToken(UUID id) throws TerraxsException;
+	TokenConfirmacionDomain consultarToken(UUID id) throws TerraxsException;
 	
 	void marcarTokenUsado(UUID id, TokenConfirmacionDomain tokenConfirmacion) throws TerraxsException;
 
