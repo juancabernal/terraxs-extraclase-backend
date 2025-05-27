@@ -3,6 +3,7 @@ package co.edu.uco.terraxs.businesslogic.facade;
 import java.util.List;
 import java.util.UUID;
 
+import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DepartamentoDomain;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.dto.DepartamentoDTO;
 import co.edu.uco.terraxs.dto.PaisDTO;
@@ -19,6 +20,6 @@ public interface DepartamentoFacade {
 
 	List<DepartamentoDTO> consultarDepartamentos(DepartamentoDTO filtro) throws TerraxsException;
 	
-	void elegirPais(List<PaisDTO> pais) throws TerraxsException;
+	List<DepartamentoDTO> consultarDepartamentosPorPais(UUID paisId) throws TerraxsException;
 	
 }

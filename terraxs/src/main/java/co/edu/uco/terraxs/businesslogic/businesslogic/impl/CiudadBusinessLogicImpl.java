@@ -5,11 +5,11 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.CiudadBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.ciudad.entity.CiudadEntityAssembler;
-import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.entity.PaisEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
-import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DepartamentoDomain;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
+import co.edu.uco.terraxs.entity.CiudadEntity;
+import co.edu.uco.terraxs.entity.DepartamentoEntity;
 
 public class CiudadBusinessLogicImpl implements CiudadBusinessLogic{
 	
@@ -21,22 +21,25 @@ public class CiudadBusinessLogicImpl implements CiudadBusinessLogic{
 
 
 	@Override
-	public void registrarNuevaCiudad(CiudadDomain ciudad) {
-		// TODO Auto-generated method stub
+	public void registrarNuevaCiudad(CiudadDomain ciudad) throws TerraxsException {
+		var ciudadEntity =  CiudadEntityAssembler.getInstance().toEntity(ciudad);
+		factory.getCiudadDAO().create(ciudadEntity);
+		
 		
 	}
 
+
 	@Override
-	public void modificarCiduadExistente(UUID id, CiudadDomain ciudad) {
-		// TODO Auto-generated method stub
+	public void modificarCiudadExistente(UUID id, CiudadDomain ciudad) throws TerraxsException {
+		var ciudadEntity = CiudadEntityAssembler.getInstance().toEntity(ciudad); //Magia de traducir de domain -> entity
+		factory.getCiudadDAO().update(id, ciudadEntity);
+	}
+	@Override
+	public void darBajaDefinitivamenteCiudadExistente(UUID id) throws TerraxsException {
+		factory.getCiudadDAO().delete(id);
 		
 	}
 
-	@Override
-	public void darBajaDefinitivamenteCiudadExistente(UUID id) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public CiudadDomain consultarCiudadPorId(UUID id) throws TerraxsException {
@@ -46,16 +49,25 @@ public class CiudadBusinessLogicImpl implements CiudadBusinessLogic{
 	}
 
 	@Override
+
 	public List<CiudadDomain> consultarCiudades(CiudadDomain filtro) throws TerraxsException {
 		var ciudadFilter = CiudadEntityAssembler.getInstance().toEntity(filtro);
 		var ciudadEntities = factory.getCiudadDAO().listByFilter(ciudadFilter);
 		return CiudadEntityAssembler.getInstance().toDomain(ciudadEntities);
 	}
 
-	@Override
-	public void elegirDepartamento(List<DepartamentoDomain> pais) {
-		// TODO Auto-generated method stub
-		
+
+	public List<CiudadDomain> consultarCiudadesPorDepartamento(UUID departamentoId) throws TerraxsException {
+	    var departamentoEntity = DepartamentoEntity.obtenerValorDefecto();
+	    departamentoEntity.setId(departamentoId);
+	    
+	    var ciudadFiltro = CiudadEntity.obtenerValorDefecto();
+	    ciudadFiltro.setDepartamento(departamentoEntity);
+	    
+	    var ciudadesEntity = factory.getCiudadDAO().listByFilter(ciudadFiltro);
+	    
+	    return CiudadEntityAssembler.getInstance().toDomain(ciudadesEntity);
+
 	}
 
 }

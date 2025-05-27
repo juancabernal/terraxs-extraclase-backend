@@ -30,7 +30,7 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
     @Override
     public void create(TokenConfirmacionEntity entity) throws TerraxsException {
         var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("INSERT INTO TokenConfirmacion(id, token, fecha_hora_creacion, fecha_hora_expiracion,estado, notificacion) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        sentenciaSQL.append("INSERT INTO token_confirmacion(id, token, fecha_hora_creacion, fecha_hora_expiracion,estado, notificacion) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
             sentenciaPreparada.setObject(1, entity.getId());
@@ -158,8 +158,7 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
 					tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
 					tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime());
 					tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime());
-					tokenConfirmacionEntityRetorno.setEstado(estado);
-					tokenConfirmacionEntityRetorno.setNotificacion(notificacion);		
+	
 					
 					
 					listaResultados.add(tokenConfirmacionEntityRetorno);
@@ -207,8 +206,7 @@ public class TokenConfirmacionPostgreSQLDAO implements TokenConfirmacionDAO {
                     tokenConfirmacionEntityRetorno.setToken(cursorResultados.getString("token"));
                     tokenConfirmacionEntityRetorno.setFechaSolicitud(cursorResultados.getTimestamp("fecha_hora_creacion").toLocalDateTime()); 
                     tokenConfirmacionEntityRetorno.setFechaExpiracion(cursorResultados.getTimestamp("fecha_hora_expiracion").toLocalDateTime()); 
-            		tokenConfirmacionEntityRetorno.setEstado(estado);
-					tokenConfirmacionEntityRetorno.setNotificacion(notificacion);
+            	
                     
                 }
             }
