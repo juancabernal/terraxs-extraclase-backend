@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.ProveedorBusinessLogic;
-import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.entity.PaisEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.proveedor.entity.ProveedorEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
-import co.edu.uco.terraxs.businesslogic.businesslogic.domain.PaisDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.ProveedorDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoDocumentoDomain;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
@@ -18,7 +16,6 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilPassword;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
-import co.edu.uco.terraxs.entity.PaisEntity;
 import co.edu.uco.terraxs.entity.ProveedorEntity;
 
 public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
@@ -47,9 +44,6 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		
 		//5. validar que el teléfono del proveedor no existe
 		validarNoExistaProveedorConMismoTelefono(proveedor.getTelefono());
-		
-		//5. validar que el teléfono del proveedor no existe
-		//confirmarDatosProveedor(proveedor.g);
 		
 		//6. generar identificador nuevo proveedor
 		var id= generarIdentificadorNuevoProveedor();

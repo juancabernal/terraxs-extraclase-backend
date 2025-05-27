@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.TipoEstadoBusinessLogic;
+import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.tipoestado.entity.TipoEstadoEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TipoEstadoDomain;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class TipoEstadoBusinessLogicImpl implements TipoEstadoBusinessLogic{
@@ -17,15 +19,16 @@ public class TipoEstadoBusinessLogicImpl implements TipoEstadoBusinessLogic{
 
 
 	@Override
-	public TipoEstadoDomain consultarTipoEstadoPorId(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+	public TipoEstadoDomain consultarTipoEstadoPorId(UUID id) throws TerraxsException {
+		var tipoEstadoEntity = factory.getTipoEstadoDAO().listById(id);
+		return  TipoEstadoEntityAssembler.getInstance().toDomain(tipoEstadoEntity);
 	}
 
 	@Override
-	public List<TipoEstadoDomain> consultarEstados(TipoEstadoDomain filtro) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TipoEstadoDomain> consultarEstados(TipoEstadoDomain filtro) throws TerraxsException{
+		var tipoEstadoFilter = TipoEstadoEntityAssembler.getInstance().toEntity(filtro);
+		var tipoEstadoEntities = factory.getTipoEstadoDAO().listByFilter(tipoEstadoFilter);
+		return TipoEstadoEntityAssembler.getInstance().toDomain(tipoEstadoEntities);
 	}
 
 }

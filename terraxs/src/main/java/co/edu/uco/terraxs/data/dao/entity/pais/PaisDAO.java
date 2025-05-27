@@ -9,9 +9,6 @@ import co.edu.uco.terraxs.data.dao.entity.DeleteDAO;
 import co.edu.uco.terraxs.entity.PaisEntity;
 
 
-
-
-
 public interface PaisDAO extends CreateDAO<PaisEntity>, RetrieveDAO<PaisEntity, UUID>,UpdateDAO<PaisEntity,UUID>,DeleteDAO<UUID>  {
 	
 

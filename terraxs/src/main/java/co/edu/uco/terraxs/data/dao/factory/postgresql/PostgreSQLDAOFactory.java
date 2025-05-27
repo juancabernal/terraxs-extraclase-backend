@@ -1,11 +1,8 @@
 package co.edu.uco.terraxs.data.dao.factory.postgresql;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
-import org.springframework.boot.jdbc.DataSourceBuilder;
 
 import co.edu.uco.terraxs.crosscutting.excepciones.DataTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
@@ -13,10 +10,20 @@ import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
 import co.edu.uco.terraxs.data.dao.entity.ciudad.impl.postgresql.CiudadPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
 import co.edu.uco.terraxs.data.dao.entity.departamento.impl.postgresql.DepartamentoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.estado.EstadoDAO;
+import co.edu.uco.terraxs.data.dao.entity.estado.impl.postgresql.EstadoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.notificacion.NotificacionDAO;
+import co.edu.uco.terraxs.data.dao.entity.notificacion.impl.postgresql.NotificacionPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
 import co.edu.uco.terraxs.data.dao.entity.pais.impl.postgresql.PaisPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.entity.proveedor.ProveedorDAO;
 import co.edu.uco.terraxs.data.dao.entity.proveedor.impl.postgresql.ProveedorPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipodocumento.TipoDocumentoDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipodocumento.impl.postgresql.TipoDocumentoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipoestado.TipoEstadoDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipoestado.impl.postgresql.TipoEstadoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tiponotificacion.TipoNotificacionDAO;
+import co.edu.uco.terraxs.data.dao.entity.tiponotificacion.impl.postgresql.TipoNotificacionPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.entity.tokenconfirmacion.TokenConfirmacionDAO;
 import co.edu.uco.terraxs.data.dao.entity.tokenconfirmacion.impl.postgresql.TokenConfirmacionPostgreSQLDAO;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
@@ -25,27 +32,16 @@ import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class PostgreSQLDAOFactory extends DAOFactory {
 
-	private final DataSource dataSource;
 	private Connection conexion;
 	private boolean transaccionEstaIniciada;
 	private boolean conexionEstaAbierta;
 	
 	public PostgreSQLDAOFactory() throws TerraxsException {
-	    this(DataSourceBuilder.create()
-	            .url("jdbc:postgresql://localhost:5432/DOO2025TERRAXS")
-	            .username("postgres")
-	            .password("1036778928")
-	            .driverClassName("org.postgresql.Driver")
-	            .build());
-	}
-
-
-	public PostgreSQLDAOFactory(final DataSource dataSource) throws TerraxsException {
-		this.dataSource = dataSource;
 		abrirConexion();
 		this.transaccionEstaIniciada = false;
 		this.conexionEstaAbierta = true;
 	}
+
 
 	@Override
     protected void abrirConexion()  throws TerraxsException{
@@ -54,7 +50,14 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 		var servidor="ORION.UCO.EDU.CO";
 		
     	try {
-            this.conexion = dataSource.getConnection();
+    		var url = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.url");
+    		var usuario = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.username");
+    		var clave = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.password");
+    		var driver = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.driver-class-name");
+
+    		Class.forName(driver);
+    		this.conexion = DriverManager.getConnection(url, usuario, clave);
+    		this.conexionEstaAbierta = true;
 
     	}catch(SQLException exception) {
     		var mensajeUsuario="Se ha presentado un problema tratando de obtener la conexión con la fuente de datos para llevar a cabo la operación deseada.";
@@ -202,6 +205,36 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 		return new TokenConfirmacionPostgreSQLDAO(conexion);
 	}
     
+	@Override
+	public EstadoDAO getEstadoDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new EstadoPostgreSQLDAO(conexion);
+	}
+	
+	@Override
+	public TipoEstadoDAO getTipoEstadoDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new TipoEstadoPostgreSQLDAO(conexion);
+	}
+	
+	@Override
+	public NotificacionDAO getNotificacionDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new NotificacionPostgreSQLDAO(conexion);
+	}
+	
+	@Override
+	public TipoNotificacionDAO getTipoNotificacionDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new TipoNotificacionPostgreSQLDAO(conexion);
+	}
+	
+	@Override
+	public TipoDocumentoDAO getTipoDocumentoDAO() throws TerraxsException{
+		 asegurarConexionAbierta();
+		return new TipoDocumentoPostgreSQLDAO(conexion);
+	}
+	
 
 }
 
