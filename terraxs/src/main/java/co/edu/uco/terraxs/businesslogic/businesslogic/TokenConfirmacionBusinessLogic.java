@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.TokenConfirmacionDomain;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
-import co.edu.uco.terraxs.dto.TokenConfirmacionDTO;
 
 public interface TokenConfirmacionBusinessLogic {
 	
