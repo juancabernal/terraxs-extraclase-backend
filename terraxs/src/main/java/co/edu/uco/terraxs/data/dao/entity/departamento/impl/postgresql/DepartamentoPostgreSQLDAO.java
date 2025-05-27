@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import co.edu.uco.terraxs.crosscutting.excepciones.DataTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
+import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
 import co.edu.uco.terraxs.entity.DepartamentoEntity;
@@ -58,11 +59,11 @@ public class DepartamentoPostgreSQLDAO implements DepartamentoDAO {
 	    final List<Object> parametros = new ArrayList<>();
 
 	    if (filter != null) {
-	        if (filter.getId() != null) {
+	        if (!UtilUUID.esValorDefecto(filter.getId())) {
 	            sentenciaSQL.append(" AND d.id = ?");
 	            parametros.add(filter.getId());
 	        }
-	        if (filter.getNombre() != null && !filter.getNombre().isBlank()) {
+	        if (!UtilTexto.getInstance().estaVacia(filter.getNombre())) {
 	            sentenciaSQL.append(" AND d.nombre ILIKE ?");
 	            parametros.add("%" + filter.getNombre().trim() + "%");
 	        }

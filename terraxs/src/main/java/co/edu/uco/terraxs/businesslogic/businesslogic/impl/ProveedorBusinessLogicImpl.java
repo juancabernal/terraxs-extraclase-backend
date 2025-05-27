@@ -49,9 +49,9 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		validarNoExistaProveedorConMismoTelefono(proveedor.getTelefono());
 		
 		//5. validar que el teléfono del proveedor no existe
-		confirmarDatosProveedor(proveedor.g);
+		//confirmarDatosProveedor(proveedor.g);
 		
-		//6. generar identificador nuevo pais
+		//6. generar identificador nuevo proveedor
 		var id= generarIdentificadorNuevoProveedor();
 		
 		//7. recrear el domain con el id generado
@@ -59,7 +59,7 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 				proveedor.getApellidos(), proveedor.getCorreo(), proveedor.getTelefono(), proveedor.isCorreoConfirmado(), proveedor.isTelefonoConfirmado(),
 				proveedor.getDireccionResidencia(), proveedor.getCiudad(), proveedor.getPassword());
 		
-		//8. creamos el pais siempre y cuando se hayan creado todas las reglas
+		//8. creamos el proveedor siempre y cuando se hayan creado todas las reglas
 		var proveedorEntity =  ProveedorEntityAssembler.getInstance().toEntity(proveedorDomainAcrear);
 		factory.getProveedorDAO().create(proveedorEntity);
 		
@@ -84,15 +84,15 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	
 	
 	private void validarIntegridadNombresProveedor(String nombreProveedor) throws TerraxsException {
-		// nombre pais Obligatorio
+		// nombre proveedor Obligatorio
 		if(UtilTexto.getInstance().estaVacia(nombreProveedor)) {
 			throw BusinessLogicTerraxsException.reportar("el nombre del proveedor es un dato obligatorio");
 		}
-		// nombre pais con longitud valida
+		// nombre proveedor con longitud valida
 		if(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(nombreProveedor).length()>40) {
 			throw BusinessLogicTerraxsException.reportar("el nombre del proveedor supera los 40 caracteres");
 		}
-		//validar que nombre de pais tenga solo letras
+		//validar que nombre de proveedor tenga solo letras
 		if(!UtilTexto.getInstance().contieneSoloLetrasEspacios(nombreProveedor)){
 			throw BusinessLogicTerraxsException.reportar("el nombre del proveedor sólo puede contener letras o espacios");	
 		}
