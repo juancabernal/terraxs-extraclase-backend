@@ -19,6 +19,6 @@ public interface CiudadFacade {
 
 	List<CiudadDTO> consultarCiudades(CiudadDTO filtro) throws TerraxsException;
 	
-	void elegirDepartamento(List<DepartamentoDTO> pais) throws TerraxsException;
+	List<CiudadDTO> consultarCiudadesPorDepartamento(UUID departamentoId) throws TerraxsException;
 	
 }

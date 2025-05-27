@@ -11,7 +11,7 @@ public interface CiudadBusinessLogic {
 	
 	void registrarNuevaCiudad(CiudadDomain ciudad) throws TerraxsException;
 
-	void modificarCiduadExistente(UUID id, CiudadDomain ciudad) throws TerraxsException;
+	void modificarCiudadExistente(UUID id, CiudadDomain ciudad) throws TerraxsException;
 
 	void darBajaDefinitivamenteCiudadExistente(UUID id) throws TerraxsException;
 
@@ -19,6 +19,6 @@ public interface CiudadBusinessLogic {
 
 	List<CiudadDomain> consultarCiudades(CiudadDomain filtro) throws TerraxsException;
 	
-	void elegirDepartamento(List<DepartamentoDomain> pais) throws TerraxsException;
+	List<CiudadDomain> consultarCiudadesPorDepartamento(UUID departamentoId) throws TerraxsException;
 
 }

@@ -19,7 +19,7 @@ public interface DepartamentoBusinessLogic {
 
 	List<DepartamentoDomain> consultarDepartamentos(DepartamentoDomain filtro) throws TerraxsException;
 	
-	void elegirPais(List<PaisDomain> pais) throws TerraxsException;
+	List<DepartamentoDomain> consultarDepartamentosPorPais(UUID paisId) throws TerraxsException;
 
 }
 
