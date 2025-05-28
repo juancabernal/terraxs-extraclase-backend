@@ -30,7 +30,7 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	public ProveedorBusinessLogicImpl(DAOFactory factory) {
 		this.factory=factory;
 	}
-
+ 
 
 	@Override
 	public void registrarProveedor(ProveedorDomain proveedor)  throws TerraxsException{
