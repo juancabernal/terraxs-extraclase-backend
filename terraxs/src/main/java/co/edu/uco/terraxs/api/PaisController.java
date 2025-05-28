@@ -21,7 +21,6 @@ import co.edu.uco.terraxs.dto.PaisDTO;
 
 @RestController
 @RequestMapping("/api/v1/paises")
-
 public class PaisController {
 	private PaisFacade paisFachada;
 	

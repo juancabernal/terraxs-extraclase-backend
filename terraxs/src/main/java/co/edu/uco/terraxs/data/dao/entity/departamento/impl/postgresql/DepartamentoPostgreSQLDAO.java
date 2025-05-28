@@ -45,33 +45,35 @@ public class DepartamentoPostgreSQLDAO implements DepartamentoDAO {
     		throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
     	}
 		
-	}	@Override
+	}
+	
+	@Override
 	public List<DepartamentoEntity> listByFilter(final DepartamentoEntity filter) throws TerraxsException {
 
-	    var sentenciaSQL = new StringBuilder();
-
+	    final var sentenciaSQL = new StringBuilder();
 	    sentenciaSQL.append("SELECT d.id, d.nombre, p.id AS pais_id, p.nombre AS pais_nombre ")
 	                .append("FROM departamento d ")
-	                .append("JOIN pais p ON d.id_pais = p.id ")
-	                .append("WHERE 1=1 ");
+	                .append("JOIN pais p ON d.id_pais = p.id ");
 
 	    final List<DepartamentoEntity> departamentos = new ArrayList<>();
 	    final List<Object> parametros = new ArrayList<>();
 
+	    String clausulaWhere = "";
+	    
 	    if (filter != null) {
 	        if (!UtilUUID.esValorDefecto(filter.getId())) {
-	            sentenciaSQL.append(" AND d.id = ?");
+	            clausulaWhere = "WHERE d.id = ?";
 	            parametros.add(filter.getId());
-	        }
-	        if (!UtilTexto.getInstance().estaVacia(filter.getNombre())) {
-	            sentenciaSQL.append(" AND d.nombre ILIKE ?");
+	        } else if (!UtilTexto.getInstance().estaVacia(filter.getNombre())) {
+	            clausulaWhere = "WHERE d.nombre ILIKE ?";
 	            parametros.add("%" + filter.getNombre().trim() + "%");
-	        }
-	        if (filter.getPais() != null && filter.getPais().getId() != null) {
-	            sentenciaSQL.append(" AND p.id = ?");
+	        } else if (filter.getPais() != null && !UtilUUID.esValorDefecto(filter.getPais().getId())) {
+	            clausulaWhere = "WHERE p.id = ?";
 	            parametros.add(filter.getPais().getId());
 	        }
 	    }
+
+	    sentenciaSQL.append(clausulaWhere);
 
 	    try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
 	        for (int i = 0; i < parametros.size(); i++) {
@@ -93,17 +95,18 @@ public class DepartamentoPostgreSQLDAO implements DepartamentoDAO {
 	            }
 	        }
 	    } catch (SQLException exception) {
-	        var mensajeUsuario = "Se ha presentado un problema tratando de consultar los departamentos con los filtros deseados";
-	        var mensajeTecnico = "SQLException al consultar la tabla departamento con filtros. Revise la sintaxis SQL o parámetros.";
+	        var mensajeUsuario = "Se ha presentado un problema tratando de consultar los departamentos con el filtro deseado";
+	        var mensajeTecnico = "SQLException al consultar la tabla departamento con un filtro. Revise la sintaxis SQL o parámetros.";
 	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
 	    } catch (Exception exception) {
-	        var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar los departamentos con los filtros deseados";
-	        var mensajeTecnico = "Excepción NO CONTROLADA al consultar la tabla departamento con filtros.";
+	        var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar los departamentos con el filtro deseado";
+	        var mensajeTecnico = "Excepción NO CONTROLADA al consultar la tabla departamento con filtro.";
 	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
 	    }
 
 	    return departamentos;
 	}
+
 	
 	@Override
 	public List<DepartamentoEntity> listALL() throws TerraxsException {

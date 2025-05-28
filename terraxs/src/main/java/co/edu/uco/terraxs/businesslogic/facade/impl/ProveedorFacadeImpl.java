@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.ProveedorBusinessLogic;
+import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.departamento.dto.DepartamentoDTOAssembler;
+import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.departamento.entity.DepartamentoEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.pais.dto.PaisDTOAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.proveedor.dto.ProveedorDTOAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.tokenconfirmacion.dto.TokenConfirmacionDTOAssembler;
@@ -80,12 +82,57 @@ public class ProveedorFacadeImpl implements ProveedorFacade{
 	        daoFactory.cerrarConexion();
 	    }
 	}
+	
+	@Override
+	public void elegirCiudad(List<CiudadDTO> ciudades) throws TerraxsException {
+	    try {
+	        daoFactory.iniciarTransaccion();
+
+	        for (CiudadDTO dto : ciudades) {
+	            var domain = proveedorBusinessLogic.elegirCiudad(dto.getId());
+	            dto.setNombre(domain.getNombre()); // Actualiza nombre desde la BD
+	            dto.setDepartamento(DepartamentoDTOAssembler.getInstance().toDTO(domain.getDepartamento())); // Actualiza el departamento
+	        }
+
+	        daoFactory.confirmarTransaccion();
+	    } catch (TerraxsException exception) {
+	        daoFactory.cancelarTransaccion();
+	        throw exception;
+	    } catch (Exception exception) {
+	        daoFactory.cancelarTransaccion();
+	        var mensajeUsuario = "Se presentó un problema al seleccionar la ciudad.";
+	        var mensajeTecnico = "Error inesperado al intentar elegir ciudad.";
+	        throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    } finally {
+	        daoFactory.cerrarConexion();
+	    }
+	}
+
 
 	@Override
-	public void elegirTipoDocumento(List<TipoDocumentoDTO> tipoDocumento) throws TerraxsException{
-		// TODO Auto-generated method stub
-		
+	public void elegirTipoDocumento(List<TipoDocumentoDTO> tiposDocumento) throws TerraxsException {
+	    try {
+	        daoFactory.iniciarTransaccion();
+
+	        for (TipoDocumentoDTO dto : tiposDocumento) {
+	            var domain = proveedorBusinessLogic.elegirTipoDocumento(dto.getId());
+	            dto.setNombre(domain.getNombre()); // Actualiza el DTO con el nombre real
+	        }
+
+	        daoFactory.confirmarTransaccion();
+	    } catch (TerraxsException exception) {
+	        daoFactory.cancelarTransaccion();
+	        throw exception;
+	    } catch (Exception exception) {
+	        daoFactory.cancelarTransaccion();
+	        var mensajeUsuario = "Se presentó un problema al seleccionar el tipo de documento.";
+	        var mensajeTecnico = "Error inesperado al intentar elegir tipo de documento.";
+	        throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    } finally {
+	        daoFactory.cerrarConexion();
+	    }
 	}
+
 
 	@Override
 	public ProveedorDTO consultarProveedorPorId(UUID id) throws TerraxsException{
@@ -153,11 +200,7 @@ public class ProveedorFacadeImpl implements ProveedorFacade{
 		}
 	}
 
-	@Override
-	public void elegirCiudad(List<CiudadDTO> ciudad) throws TerraxsException{
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void eliminarProveedor(UUID id) throws TerraxsException {

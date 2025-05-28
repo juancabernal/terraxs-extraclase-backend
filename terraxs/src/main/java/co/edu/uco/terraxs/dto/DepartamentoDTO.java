@@ -68,5 +68,14 @@ public final class DepartamentoDTO {
 		this.pais = PaisDTO.obtenerValorDefecto(pais);
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		return "DepartamentoDTO{" +
+				"id=" + id +
+				", nombre='" + nombre + '\'' +
+				", pais=" + (pais != null ? pais.getNombre() : null) +
+				'}';
+	}
 
 }

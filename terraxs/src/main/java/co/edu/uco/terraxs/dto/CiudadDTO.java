@@ -64,5 +64,14 @@ public final class CiudadDTO {
 		this.departamento = DepartamentoDTO.obtenerValorDefecto(departamento);
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		return "CiudadDTO{" +
+				"id=" + id +
+				", nombre='" + nombre + '\'' +
+				", departamento=" + (departamento != null ? departamento.getNombre() : null) +
+				'}';
+	}
 
 }

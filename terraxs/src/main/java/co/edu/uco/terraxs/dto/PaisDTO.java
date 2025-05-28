@@ -57,7 +57,10 @@ public final class PaisDTO {
 
 	@Override
 	public String toString() {
-		return "PaisDTO [id=" + id + ", nombre=" + nombre + "]";
+	    return "PaisDTO{" +
+	            "id=" + id +
+	            ", nombre='" + nombre + '\'' +
+	            '}';
 	}
 
 	public static class Builder {
