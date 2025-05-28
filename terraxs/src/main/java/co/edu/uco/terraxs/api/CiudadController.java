@@ -25,26 +25,6 @@ public class CiudadController {
 	public CiudadController() throws TerraxsException {
 		ciudadFachada = new CiudadFacadeImpl();
 	}
-	
-	
-	@GetMapping("/dummy")
-	public CiudadDTO getDummy() {
-		return new CiudadDTO();
-		
-	}
-	
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<CiudadDTO>  consultar(@PathVariable("id") UUID id) throws TerraxsException {
-		var ciudad=ciudadFachada.consultarCiudadPorId(id) ;
-		return new ResponseEntity<>(ciudad,HttpStatus.OK) ;
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<CiudadDTO>> consultar() throws TerraxsException {
-		var lista=ciudadFachada.consultarCiudades(getDummy());
-		return new ResponseEntity<>(lista,HttpStatus.OK) ;
-	}
 
 	@GetMapping("/por-departamento/{departamentoId}")
 	public ResponseEntity<List<CiudadDTO>> consultarPorDepartamento(@PathVariable("departamentoId") UUID departamentoId) throws TerraxsException {

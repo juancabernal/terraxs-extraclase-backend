@@ -34,16 +34,6 @@ public class TipoDocumentoController {
 		
 	}
 	
-	
-
-	@GetMapping("/{id}")
-	public ResponseEntity<TipoDocumentoDTO>  consultar(@PathVariable("id") UUID id) throws TerraxsException {
-		var tipoDocumento=tipoDocumentoFachada.consultarTipoDocumentoPorId(id) ;
-		return new ResponseEntity<>(tipoDocumento,HttpStatus.OK) ;
-
-		
-		
-	}
 	@GetMapping
 	public ResponseEntity<List<TipoDocumentoDTO>> consultar() throws TerraxsException {
 		var lista=tipoDocumentoFachada.consultarTiposDocumento(getDummy());

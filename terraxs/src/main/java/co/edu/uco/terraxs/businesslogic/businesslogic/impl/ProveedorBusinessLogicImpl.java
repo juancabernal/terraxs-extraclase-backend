@@ -96,6 +96,7 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	
 	private void validarIntegridadInformacionRegistrarNuevoProveedor(ProveedorDomain proveedor) throws TerraxsException {
 		validarIntegridadTipoDocumentoProveedor(proveedor.getTipoDocumento());
+		validarIntegridadNumeroIdentificacionProveedor(proveedor.getNumeroIdentificacion());
 		validarIntegridadNombresProveedor(proveedor.getNombres());
 		validarIntegridadApellidosProveedor(proveedor.getApellidos());
 		validarIntegridadCorreoProveedor(proveedor.getCorreo());
@@ -110,18 +111,34 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	
 	
 	
+	private void validarIntegridadNumeroIdentificacionProveedor(String numeroIdentificacionProveedor) throws TerraxsException {
+		if(UtilTexto.getInstance().estaVacia(numeroIdentificacionProveedor)) {
+			throw BusinessLogicTerraxsException.reportar("El numero de identificación es un dato obligatorio");
+		}
+		if(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(numeroIdentificacionProveedor).length()>20) {
+			throw BusinessLogicTerraxsException.reportar("El número de identificación no puede superar los 20 caracteres");
+		}
+		if(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(numeroIdentificacionProveedor).length()<5) {
+			throw BusinessLogicTerraxsException.reportar("El número de identificación no puede ser inferior a 5 caracteres");
+		}
+		if(!UtilTexto.getInstance().contieneSoloNumeros(numeroIdentificacionProveedor)){
+			throw BusinessLogicTerraxsException.reportar("El número de identificación del proveedor sólo puede contener caracteres numéricos");	
+		}
+	}
+	
+	
 	private void validarIntegridadNombresProveedor(String nombreProveedor) throws TerraxsException {
-		// nombre proveedor Obligatorio
 		if(UtilTexto.getInstance().estaVacia(nombreProveedor)) {
-			throw BusinessLogicTerraxsException.reportar("el nombre del proveedor es un dato obligatorio");
+			throw BusinessLogicTerraxsException.reportar("El nombre del proveedor es un dato obligatorio");
 		}
-		// nombre proveedor con longitud valida
 		if(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(nombreProveedor).length()>40) {
-			throw BusinessLogicTerraxsException.reportar("el nombre del proveedor supera los 40 caracteres");
+			throw BusinessLogicTerraxsException.reportar("El nombre del proveedor no puede superar los 40 caracteres");
 		}
-		//validar que nombre de proveedor tenga solo letras
+		if(UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(nombreProveedor).length()<3) {
+			throw BusinessLogicTerraxsException.reportar("El nombre del proveedor no puede ser inferior a 3 caracteres");
+		}
 		if(!UtilTexto.getInstance().contieneSoloLetrasEspacios(nombreProveedor)){
-			throw BusinessLogicTerraxsException.reportar("el nombre del proveedor sólo puede contener letras o espacios");	
+			throw BusinessLogicTerraxsException.reportar("El nombre del proveedor sólo puede contener letras o espacios");	
 		}
 	}
 	
@@ -129,8 +146,11 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		if (UtilTexto.getInstance().estaVacia(apellidosProveedor)) {
 			throw BusinessLogicTerraxsException.reportar("El apellido del proveedor es un dato obligatorio.");
 		}
-		if (UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(apellidosProveedor).length() > 40) {
-			throw BusinessLogicTerraxsException.reportar("El apellido del proveedor supera los 40 caracteres.");
+		if (UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(apellidosProveedor).length() > 30) {
+			throw BusinessLogicTerraxsException.reportar("El apellido del proveedor no puede superar los 30 caracteres.");
+		}
+		if (UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(apellidosProveedor).length() < 3) {
+			throw BusinessLogicTerraxsException.reportar("El apellido del proveedor no puede ser inferior a 3 caracteres.");
 		}
 		if (!UtilTexto.getInstance().contieneSoloLetrasEspacios(apellidosProveedor)) {
 			throw BusinessLogicTerraxsException.reportar("El apellido del proveedor solo puede contener letras o espacios.");
@@ -146,6 +166,9 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		}
 		if (correoProveedor.length() > 100) {
 			throw BusinessLogicTerraxsException.reportar("El correo electrónico no debe superar los 100 caracteres.");
+		}
+		if (correoProveedor.length() < 10) {
+			throw BusinessLogicTerraxsException.reportar("El correo electrónico no debe ser inferios a los 10 caracteres.");
 		}
 	}
 
@@ -180,6 +203,9 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		if (direccionResidencia.length() > 100) {
 			throw BusinessLogicTerraxsException.reportar("La dirección de residencia no puede superar los 100 caracteres.");
 		}
+		if (direccionResidencia.length() < 10) {
+			throw BusinessLogicTerraxsException.reportar("La dirección de residencia no puede ser inferior a 10 caracteres.");
+		}
 	}
 
 	private void validarIntegridadCiudadProveedor(CiudadDomain ciudad) throws TerraxsException {
@@ -198,8 +224,8 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		if (UtilTexto.getInstance().estaVacia(password)) {
 			throw BusinessLogicTerraxsException.reportar("La contraseña del proveedor es obligatoria.");
 		}
-		if (password.length() < 8 || password.length() > 20) {
-			throw BusinessLogicTerraxsException.reportar("La contraseña debe tener entre 8 y 0 caracteres.");
+		if (password.length() < 8 || password.length() > 30) {
+			throw BusinessLogicTerraxsException.reportar("La contraseña debe tener entre 8 y 30 caracteres.");
 		}
 		if (!UtilPassword.getInstance().cumplePatronPasswordSeguro(password)) {
 			throw BusinessLogicTerraxsException.reportar("La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales.");

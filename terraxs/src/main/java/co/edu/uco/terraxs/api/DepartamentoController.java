@@ -25,26 +25,10 @@ public class DepartamentoController {
 		departamentoFachada = new DepartamentoFacadeImpl();
 	}
 
-	@GetMapping("/dummy")
-	public DepartamentoDTO getDummy() {
-		return new DepartamentoDTO();
-	}
-
-	@GetMapping("/{id}")
-	public ResponseEntity<DepartamentoDTO> consultar(@PathVariable("id") UUID id) throws TerraxsException {
-		var departamento = departamentoFachada.consultarDepartamentoPorId(id);
-		return new ResponseEntity<>(departamento, HttpStatus.OK);
-	}
-
 	@GetMapping
 	public ResponseEntity<List<DepartamentoDTO>> consultar() throws TerraxsException {
 		var lista = departamentoFachada.consultarDepartamentos();
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
-	@GetMapping("/por-pais/{paisId}")
-	public ResponseEntity<List<DepartamentoDTO>> consultarPorPais(@PathVariable("paisId") UUID paisId) throws TerraxsException {
-		var departamentos = departamentoFachada.consultarDepartamentosPorPais(paisId);
-		return new ResponseEntity<>(departamentos, HttpStatus.OK);
-	}
 }
