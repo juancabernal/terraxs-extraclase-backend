@@ -39,7 +39,7 @@ public class DepartamentoBusinessLogicImpl implements DepartamentoBusinessLogic{
 	}
 
 	@Override
-	public List<DepartamentoDomain> consultarDepartamentos(DepartamentoDomain filtro) throws TerraxsException {
+	public List<DepartamentoDomain> consultarDepartamentosPorFiltro(DepartamentoDomain filtro) throws TerraxsException {
 		var departamentoFilter = DepartamentoEntityAssembler.getInstance().toEntity(filtro);
 		var departamentoEntities = factory.getDepartamentoDAO().listByFilter(departamentoFilter);
 		
@@ -72,6 +72,17 @@ public class DepartamentoBusinessLogicImpl implements DepartamentoBusinessLogic{
 	    
 	    return DepartamentoEntityAssembler.getInstance().toDomain(departamentosEntity);
 	}
+
+
+	@Override
+	public List<DepartamentoDomain> consultarDepartamentos() throws TerraxsException {
+
+		var departamentosEntity = factory.getDepartamentoDAO().listALL();
+
+		return DepartamentoEntityAssembler.getInstance().toDomain(departamentosEntity);
+
+	}
+
 
 
 

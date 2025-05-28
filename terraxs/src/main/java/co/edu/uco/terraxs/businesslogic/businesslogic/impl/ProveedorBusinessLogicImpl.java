@@ -31,30 +31,16 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	@Override
 	public void registrarProveedor(ProveedorDomain proveedor)  throws TerraxsException{
 		
-		//1. se debe asegurar que los datos sean validos a nivel de tipo de dato, longitud,obligatoriedad,formato,rango
-		validarIntegridadInformacionRegistrarNuevoProveedor(proveedor);
-		
-		//2. validar que el id del proveedor no existe
-		validarNoExistaProveedorConMismoId(proveedor.getId());
-		
-		//3. validar que el numero de identificación del proveedor no existe
-		validarNoExistaProveedorConMismoNumeroIdentificacion(proveedor.getNumeroIdentificacion());
-		
-		//4. validar que el correo electrónico del proveedor no existe
-		validarNoExistaProveedorConMismoCorreo(proveedor.getCorreo());
-		
-		//5. validar que el teléfono del proveedor no existe
-		validarNoExistaProveedorConMismoTelefono(proveedor.getTelefono());
-		
-		//6. generar identificador nuevo proveedor
-		var id= generarIdentificadorNuevoProveedor();
-		
-		// 7. Hashear la contraseña
-	    var passwordHasheada = UtilPassword.getInstance().encriptarPassword(proveedor.getPassword());
-
-	    // 8. Crear nuevo domain con el id generado y la contraseña hasheada
-	    var proveedorDomainAcrear = new ProveedorDomain(
-	        id,
+	    // 1. Generar identificador nuevo proveedor ANTES de cualquier validación
+	    var idGenerado = generarIdentificadorNuevoProveedor();
+	    
+	    // 2. Validar que el id generado no exista (esto es una doble verificación, pero por seguridad)
+	    validarNoExistaProveedorConMismoId(idGenerado);
+	    
+	    // 3. Actualizar el ID del proveedor (dependiendo de si ProveedorDomain tiene setter o no)
+	    // Si ProveedorDomain es inmutable, crear nuevo objeto con id generado:
+	    proveedor = new ProveedorDomain(
+	        idGenerado,
 	        proveedor.getTipoDocumento(),
 	        proveedor.getNumeroIdentificacion(),
 	        proveedor.getNombres(),
@@ -65,24 +51,46 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	        proveedor.isTelefonoConfirmado(),
 	        proveedor.getDireccionResidencia(),
 	        proveedor.getCiudad(),
-	        passwordHasheada 
+	        proveedor.getPassword()
 	    );
-
-	    // 9. Crear entidad y persistir
+	    
+	    // 4. Validar integridad de la información (ahora con ID actualizado)
+	    validarIntegridadInformacionRegistrarNuevoProveedor(proveedor);
+	    
+	    // 5. Validar que no exista otro proveedor con el mismo número de identificación
+	    validarNoExistaProveedorConMismoNumeroIdentificacion(proveedor.getNumeroIdentificacion());
+	    
+	    // 6. Validar que no exista otro proveedor con el mismo correo electrónico
+	    validarNoExistaProveedorConMismoCorreo(proveedor.getCorreo());
+	    
+	    // 7. Validar que no exista otro proveedor con el mismo teléfono
+	    validarNoExistaProveedorConMismoTelefono(proveedor.getTelefono());
+	    
+	    // 8. Hashear la contraseña
+	    var passwordHasheada = UtilPassword.getInstance().encriptarPassword(proveedor.getPassword());
+	    
+	    // 9. Crear nuevo domain con el id generado y la contraseña hasheada (ya que la password cambia)
+	    var proveedorDomainAcrear = new ProveedorDomain(
+	        idGenerado,
+	        proveedor.getTipoDocumento(),
+	        proveedor.getNumeroIdentificacion(),
+	        proveedor.getNombres(),
+	        proveedor.getApellidos(),
+	        proveedor.getCorreo(),
+	        proveedor.getTelefono(),
+	        proveedor.isCorreoConfirmado(),
+	        proveedor.isTelefonoConfirmado(),
+	        proveedor.getDireccionResidencia(),
+	        proveedor.getCiudad(),
+	        passwordHasheada
+	    );
+	    
+	    // 10. Crear entidad y persistir
 	    var proveedorEntity = ProveedorEntityAssembler.getInstance().toEntity(proveedorDomainAcrear);
 	    factory.getProveedorDAO().create(proveedorEntity);
-
-		
-		/*//7. recrear el domain con el id generado
-		var proveedorDomainAcrear= new ProveedorDomain(id,proveedor.getTipoDocumento(),proveedor.getNumeroIdentificacion(),proveedor.getNombres(),
-				proveedor.getApellidos(), proveedor.getCorreo(), proveedor.getTelefono(), proveedor.isCorreoConfirmado(), proveedor.isTelefonoConfirmado(),
-				proveedor.getDireccionResidencia(), proveedor.getCiudad(), proveedor.getPassword());
-		
-		//8. creamos el proveedor siempre y cuando se hayan creado todas las reglas
-		var proveedorEntity =  ProveedorEntityAssembler.getInstance().toEntity(proveedorDomainAcrear);
-		factory.getProveedorDAO().create(proveedorEntity);*/
-		
 	}
+		
+	
 	
 	
 	

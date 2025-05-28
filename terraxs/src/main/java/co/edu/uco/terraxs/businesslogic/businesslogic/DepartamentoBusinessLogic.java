@@ -17,9 +17,12 @@ public interface DepartamentoBusinessLogic {
 
 	DepartamentoDomain consultarDepartamentoPorId(UUID id) throws TerraxsException;
 
-	List<DepartamentoDomain> consultarDepartamentos(DepartamentoDomain filtro) throws TerraxsException;
+	List<DepartamentoDomain> consultarDepartamentosPorFiltro(DepartamentoDomain filtro) throws TerraxsException;
 	
 	List<DepartamentoDomain> consultarDepartamentosPorPais(UUID paisId) throws TerraxsException;
+	
+	List<DepartamentoDomain> consultarDepartamentos() throws TerraxsException;
+
 
 }
 

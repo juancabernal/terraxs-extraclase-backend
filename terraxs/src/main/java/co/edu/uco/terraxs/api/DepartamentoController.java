@@ -38,7 +38,7 @@ public class DepartamentoController {
 
 	@GetMapping
 	public ResponseEntity<List<DepartamentoDTO>> consultar() throws TerraxsException {
-		var lista = departamentoFachada.consultarDepartamentos(getDummy());
+		var lista = departamentoFachada.consultarDepartamentos();
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 

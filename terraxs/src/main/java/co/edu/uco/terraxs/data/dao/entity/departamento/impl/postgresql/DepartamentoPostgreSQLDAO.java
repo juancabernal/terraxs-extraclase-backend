@@ -107,12 +107,16 @@ public class DepartamentoPostgreSQLDAO implements DepartamentoDAO {
 	    return departamentos;
 	}
 
-	
 	@Override
 	public List<DepartamentoEntity> listALL() throws TerraxsException {
 
 	    final List<DepartamentoEntity> departamentos = new ArrayList<>();
-	    final String sentenciaSQL = "SELECT d.id, d.nombre, p.nombre FROM departamento d JOIN pais p ON d.pais_id = p.id ";
+	    final String sentenciaSQL = """
+	        SELECT d.id AS departamento_id, d.nombre AS departamento_nombre, 
+	               p.id AS pais_id, p.nombre AS pais_nombre 
+	        FROM departamento d 
+	        JOIN pais p ON d.pais_id = p.id
+	    """;
 
 	    try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL);
 	         ResultSet resultado = sentenciaPreparada.executeQuery()) {
@@ -123,25 +127,24 @@ public class DepartamentoPostgreSQLDAO implements DepartamentoDAO {
 	            pais.setNombre(resultado.getString("pais_nombre"));
 
 	            var departamento = new DepartamentoEntity();
-	            departamento.setId(UtilUUID.convertirAUUID(resultado.getString("id")));
-	            departamento.setNombre(resultado.getString("nombre"));
+	            departamento.setId(UtilUUID.convertirAUUID(resultado.getString("departamento_id")));
+	            departamento.setNombre(resultado.getString("departamento_nombre"));
 	            departamento.setPais(pais);
 
 	            departamentos.add(departamento);
 	        }
 	    } catch (SQLException exception) {
-	        var mensajeUsuario = "Se ha presentado un problema tratando de consultar todos los departamentos";
-	        var mensajeTecnico = "SQLException al ejecutar SELECT en la tabla departamento. Revise la conexión o estructura.";
+	        var mensajeUsuario = "Se ha presentado un problema tratando de consultar todos los departamentos.";
+	        var mensajeTecnico = "SQLException al ejecutar SELECT en la tabla departamento. Verifique la estructura de la consulta.";
 	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
 	    } catch (Exception exception) {
-	        var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar todos los departamentos";
+	        var mensajeUsuario = "Se ha presentado un problema inesperado tratando de consultar todos los departamentos.";
 	        var mensajeTecnico = "Excepción NO CONTROLADA al consultar todos los registros de la tabla departamento.";
 	        throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
 	    }
 
 	    return departamentos;
 	}
-
 
 
 	@Override

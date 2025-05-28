@@ -46,40 +46,42 @@ public class CiudadPostgreSQLDAO implements CiudadDAO {
             throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
         }
     }
-
     @Override
     public List<CiudadEntity> listByFilter(final CiudadEntity filter) throws TerraxsException {
 
-        var sentenciaSQL = new StringBuilder();
+        final var sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("""
-            SELECT c.id AS ciudad_id, c.nombre AS ciudad_nombre,
-                   d.id AS departamento_id, d.nombre AS departamento_nombre,
-                   p.id AS pais_id, p.nombre AS pais_nombre
+            SELECT 
+                c.id AS ciudad_id, c.nombre AS ciudad_nombre,
+                d.id AS departamento_id, d.nombre AS departamento_nombre,
+                p.id AS pais_id, p.nombre AS pais_nombre
             FROM ciudad c
-            JOIN departamento d ON c.departamento = d.id
-            JOIN pais p ON d.pais = p.id
-            WHERE 1=1
+            JOIN departamento d ON c.departamento_id = d.id
+            JOIN pais p ON d.pais_id = p.id
+            WHERE 1 = 1
         """);
 
         final List<CiudadEntity> ciudades = new ArrayList<>();
         final List<Object> parametros = new ArrayList<>();
 
         if (filter != null) {
-            if (!UtilUUID.esValorDefecto(filter.getId())) {
+            if (filter.getId() != null && !filter.getId().equals(UtilUUID.obtenerValorDefecto())) {
                 sentenciaSQL.append(" AND c.id = ?");
                 parametros.add(filter.getId());
             }
-            if (!UtilTexto.getInstance().estaVacia(filter.getNombre())) {
+            if (filter.getNombre() != null && !filter.getNombre().isBlank()) {
                 sentenciaSQL.append(" AND c.nombre ILIKE ?");
                 parametros.add("%" + filter.getNombre().trim() + "%");
             }
-            if (filter.getDepartamento() != null && filter.getDepartamento().getId() != null) {
+            if (filter.getDepartamento() != null && filter.getDepartamento().getId() != null
+                    && !filter.getDepartamento().getId().equals(UtilUUID.obtenerValorDefecto())) {
                 sentenciaSQL.append(" AND d.id = ?");
                 parametros.add(filter.getDepartamento().getId());
             }
         }
 
         try (PreparedStatement sentenciaPreparada = conexion.prepareStatement(sentenciaSQL.toString())) {
+
             for (int i = 0; i < parametros.size(); i++) {
                 sentenciaPreparada.setObject(i + 1, parametros.get(i));
             }
@@ -104,12 +106,12 @@ public class CiudadPostgreSQLDAO implements CiudadDAO {
                 }
             }
         } catch (SQLException exception) {
-            var mensajeUsuario = "Se ha presentado un problema tratando de consultar las ciudades con los filtros deseados";
-            var mensajeTecnico = "Se presentó una SQLException al consultar la tabla ciudad usando filtros. Revise la sintaxis SQL o los parámetros.";
+            var mensajeUsuario = "Se presentó un problema consultando las ciudades con los filtros proporcionados.";
+            var mensajeTecnico = "SQLException en la consulta a la tabla ciudad con filtros.";
             throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
         } catch (Exception exception) {
-            var mensajeUsuario = "Se ha presentado un problema INESPERADO tratando de consultar las ciudades con los filtros deseados";
-            var mensajeTecnico = "Se presentó una excepción NO CONTROLADA de tipo Exception al consultar la tabla ciudad usando filtros.";
+            var mensajeUsuario = "Se presentó un problema inesperado al consultar las ciudades.";
+            var mensajeTecnico = "Excepción no controlada en CiudadPostgreSQLDAO.listByFilter.";
             throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
         }
 

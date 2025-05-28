@@ -1,8 +1,11 @@
-package co.edu.uco.terraxs.data.dao.factory.postgresql;
+/*package co.edu.uco.terraxs.data.dao.factory.postgresql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import co.edu.uco.terraxs.crosscutting.excepciones.DataTerraxsException;
 import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
@@ -32,32 +35,56 @@ import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
 
 public class PostgreSQLDAOFactory extends DAOFactory {
 
-	private Connection conexion;
-	private boolean transaccionEstaIniciada;
-	private boolean conexionEstaAbierta;
-	
-	public PostgreSQLDAOFactory() throws TerraxsException {
-		abrirConexion();
-		this.transaccionEstaIniciada = false;
-		this.conexionEstaAbierta = true;
-	}
+    private HikariDataSource dataSource;
+    private Connection conexion;
+    private boolean transaccionEstaIniciada;
+    private boolean conexionEstaAbierta;
 
+    public PostgreSQLDAOFactory() throws TerraxsException {
+        configurarDataSource();
+        abrirConexion();
+        this.transaccionEstaIniciada = false;
+        this.conexionEstaAbierta = true;
+    }
 
-	@Override
-    protected void abrirConexion()  throws TerraxsException{
-		
+    private void configurarDataSource() throws TerraxsException {
+        try {
+            var url = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.url");
+            var usuario = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.username");
+            var clave = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.password");
+            var driver = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.driver-class-name");
+
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(url);
+            config.setUsername(usuario);
+            config.setPassword(clave);
+            config.setDriverClassName(driver);
+
+            // Opciones adicionales recomendadas:
+            config.setMaximumPoolSize(10);
+            config.setMinimumIdle(2);
+            config.setConnectionTimeout(30000); // 30 segundos
+            config.setIdleTimeout(600000);      // 10 minutos
+            config.setMaxLifetime(1800000);     // 30 minutos
+
+            this.dataSource = new HikariDataSource(config);
+
+        } catch (Exception exception) {
+            var mensajeUsuario = "Se ha presentado un problema configurando el pool de conexiones.";
+            var mensajeTecnico = "Excepción al configurar HikariCP DataSource.";
+            throw DataTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+        }
+    }
+
+    @Override
+    protected void abrirConexion() throws TerraxsException {
+    	
 		var baseDatos="DOO2025TERRAXS";
 		var servidor="ORION.UCO.EDU.CO";
 		
-    	try {
-    		var url = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.url");
-    		var usuario = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.username");
-    		var clave = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.password");
-    		var driver = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.driver-class-name");
-
-    		Class.forName(driver);
-    		this.conexion = DriverManager.getConnection(url, usuario, clave);
-    		this.conexionEstaAbierta = true;
+        try {
+            this.conexion = dataSource.getConnection();
+            this.conexionEstaAbierta = true;
 
     	}catch(SQLException exception) {
     		exception.printStackTrace();
@@ -238,7 +265,202 @@ public class PostgreSQLDAOFactory extends DAOFactory {
 	}
 	
 
+}*/
+
+package co.edu.uco.terraxs.data.dao.factory.postgresql;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import co.edu.uco.terraxs.crosscutting.excepciones.DataTerraxsException;
+import co.edu.uco.terraxs.crosscutting.excepciones.TerraxsException;
+import co.edu.uco.terraxs.data.dao.entity.ciudad.CiudadDAO;
+import co.edu.uco.terraxs.data.dao.entity.ciudad.impl.postgresql.CiudadPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.departamento.DepartamentoDAO;
+import co.edu.uco.terraxs.data.dao.entity.departamento.impl.postgresql.DepartamentoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.estado.EstadoDAO;
+import co.edu.uco.terraxs.data.dao.entity.estado.impl.postgresql.EstadoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.notificacion.NotificacionDAO;
+import co.edu.uco.terraxs.data.dao.entity.notificacion.impl.postgresql.NotificacionPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.pais.PaisDAO;
+import co.edu.uco.terraxs.data.dao.entity.pais.impl.postgresql.PaisPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.proveedor.ProveedorDAO;
+import co.edu.uco.terraxs.data.dao.entity.proveedor.impl.postgresql.ProveedorPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipodocumento.TipoDocumentoDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipodocumento.impl.postgresql.TipoDocumentoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipoestado.TipoEstadoDAO;
+import co.edu.uco.terraxs.data.dao.entity.tipoestado.impl.postgresql.TipoEstadoPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tiponotificacion.TipoNotificacionDAO;
+import co.edu.uco.terraxs.data.dao.entity.tiponotificacion.impl.postgresql.TipoNotificacionPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.entity.tokenconfirmacion.TokenConfirmacionDAO;
+import co.edu.uco.terraxs.data.dao.entity.tokenconfirmacion.impl.postgresql.TokenConfirmacionPostgreSQLDAO;
+import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
+
+public class PostgreSQLDAOFactory extends DAOFactory {
+
+    private HikariDataSource dataSource;
+    private final ThreadLocal<Connection> conexionActual = new ThreadLocal<>();
+
+    public PostgreSQLDAOFactory() throws TerraxsException {
+        configurarDataSource();
+    }
+
+    private void configurarDataSource() throws TerraxsException {
+        try {
+            var url = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.url");
+            var usuario = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.username");
+            var clave = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.password");
+            var driver = PropiedadesBaseDatos.obtenerPropiedad("spring.datasource.driver-class-name");
+
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(url);
+            config.setUsername(usuario);
+            config.setPassword(clave);
+            config.setDriverClassName(driver);
+            config.setMaximumPoolSize(10);
+            config.setMinimumIdle(2);
+            config.setConnectionTimeout(30000);
+            config.setIdleTimeout(600000);
+            config.setMaxLifetime(1800000);
+
+            this.dataSource = new HikariDataSource(config);
+
+        } catch (Exception e) {
+            throw DataTerraxsException.reportar("Error configurando el pool de conexiones.", "Excepción en HikariCP", e);
+        }
+    }
+
+    private Connection obtenerConexionInterna() throws SQLException {
+        Connection conn = conexionActual.get();
+        if (conn == null || conn.isClosed()) {
+            conn = dataSource.getConnection();
+            conexionActual.set(conn);
+        }
+        return conn;
+    }
+
+    @Override
+    public void abrirConexion() throws TerraxsException {
+        try {
+            obtenerConexionInterna();
+        } catch (SQLException e) {
+            throw DataTerraxsException.reportar(
+                "Error al abrir conexión con la base de datos.",
+                "SQLException al abrir conexión.",
+                e
+            );
+        }
+    }
+
+    @Override
+    public void cerrarConexion() throws TerraxsException {
+        try {
+            Connection conn = conexionActual.get();
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+            conexionActual.remove();
+        } catch (SQLException e) {
+            throw DataTerraxsException.reportar("Error cerrando conexión.", "SQLException al cerrar conexión.", e);
+        }
+    }
+
+    @Override
+    public void iniciarTransaccion() throws TerraxsException {
+        try {
+            Connection conn = obtenerConexionInterna();
+            conn.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw DataTerraxsException.reportar("Error iniciando transacción.", "SQLException al iniciar transacción.", e);
+        }
+    }
+
+    @Override
+    public void confirmarTransaccion() throws TerraxsException {
+        try {
+            Connection conn = conexionActual.get();
+            if (conn != null) {
+                conn.commit();
+            }
+        } catch (SQLException e) {
+            throw DataTerraxsException.reportar("Error confirmando transacción.", "SQLException en commit().", e);
+        }
+    }
+
+    @Override
+    public void cancelarTransaccion() throws TerraxsException {
+        try {
+            Connection conn = conexionActual.get();
+            if (conn != null) {
+                conn.rollback();
+            }
+        } catch (SQLException e) {
+            throw DataTerraxsException.reportar("Error cancelando transacción.", "SQLException en rollback().", e);
+        }
+    }
+
+    @Override
+    public CiudadDAO getCiudadDAO() throws TerraxsException {
+        return new CiudadPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public DepartamentoDAO getDepartamentoDAO() throws TerraxsException {
+        return new DepartamentoPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public EstadoDAO getEstadoDAO() throws TerraxsException {
+        return new EstadoPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public TipoEstadoDAO getTipoEstadoDAO() throws TerraxsException {
+        return new TipoEstadoPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public PaisDAO getPaisDAO() throws TerraxsException {
+        return new PaisPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public ProveedorDAO getProveedorDAO() throws TerraxsException {
+        return new ProveedorPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public TipoDocumentoDAO getTipoDocumentoDAO() throws TerraxsException {
+        return new TipoDocumentoPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public NotificacionDAO getNotificacionDAO() throws TerraxsException {
+        return new NotificacionPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public TipoNotificacionDAO getTipoNotificacionDAO() throws TerraxsException {
+        return new TipoNotificacionPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    @Override
+    public TokenConfirmacionDAO getTokenConfirmacionDAO() throws TerraxsException {
+        return new TokenConfirmacionPostgreSQLDAO(obtenerConexionSegura());
+    }
+
+    private Connection obtenerConexionSegura() throws TerraxsException {
+        try {
+            return obtenerConexionInterna();
+        } catch (SQLException e) {
+            throw DataTerraxsException.reportar("No se pudo obtener conexión segura.", "SQLException", e);
+        }
+    }
 }
+
 
 
 

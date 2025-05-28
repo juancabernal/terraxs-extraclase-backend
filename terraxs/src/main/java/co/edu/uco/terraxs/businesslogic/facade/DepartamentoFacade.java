@@ -18,8 +18,10 @@ public interface DepartamentoFacade {
 
 	DepartamentoDTO consultarDepartamentoPorId(UUID id) throws TerraxsException;
 
-	List<DepartamentoDTO> consultarDepartamentos(DepartamentoDTO filtro) throws TerraxsException;
+	List<DepartamentoDTO> consultarDepartamentos() throws TerraxsException;
 	
 	List<DepartamentoDTO> consultarDepartamentosPorPais(UUID paisId) throws TerraxsException;
+
+	List<DepartamentoDTO> consultarDepartamentosPorFiltro(DepartamentoDTO filtro) throws TerraxsException;
 	
 }

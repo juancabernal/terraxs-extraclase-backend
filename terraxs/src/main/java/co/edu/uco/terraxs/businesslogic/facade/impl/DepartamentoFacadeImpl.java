@@ -59,12 +59,37 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
 			daoFactory.cerrarConexion();
 		}
 	}
+	
 
 	@Override
-	public List<DepartamentoDTO> consultarDepartamentos(DepartamentoDTO filtro) throws TerraxsException {
+	public List<DepartamentoDTO> consultarDepartamentos() throws TerraxsException {
+	    try {
+	        List<DepartamentoDomain> dominios = departamentoBusinessLogic.consultarDepartamentos();
+
+	        List<DepartamentoDTO> resultado = new ArrayList<>();
+	        for (DepartamentoDomain domain : dominios) {
+	            resultado.add(DepartamentoDTOAssembler.getInstance().toDTO(domain));
+	        }
+
+	        return resultado;
+
+	    } catch (TerraxsException exception) {
+	        throw exception;
+	    } catch (Exception exception) {
+	        var mensajeUsuario = "Se presentó un problema inesperado consultando todos los departamentos.";
+	        var mensajeTecnico = "Excepción no controlada al consultar todos los departamentos. Ver logs.";
+	        throw BusinessLogicTerraxsException.reportar(mensajeUsuario, mensajeTecnico, exception);
+	    } finally {
+	        daoFactory.cerrarConexion();
+	    }
+	}
+
+
+	@Override
+	public List<DepartamentoDTO> consultarDepartamentosPorFiltro(DepartamentoDTO filtro) throws TerraxsException {
 		try {
 			var filtroDomain = DepartamentoDTOAssembler.getInstance().toDomain(filtro);
-			List<DepartamentoDomain> dominios = departamentoBusinessLogic.consultarDepartamentos(filtroDomain);
+			List<DepartamentoDomain> dominios = departamentoBusinessLogic.consultarDepartamentosPorFiltro(filtroDomain);
 
 			List<DepartamentoDTO> resultado = new ArrayList<>();
 			for (DepartamentoDomain domain : dominios) {
