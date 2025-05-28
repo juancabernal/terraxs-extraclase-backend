@@ -27,6 +27,7 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 		this.factory=factory;
 	}
 
+	
 
 	@Override
 	public void registrarProveedor(ProveedorDomain proveedor)  throws TerraxsException{
