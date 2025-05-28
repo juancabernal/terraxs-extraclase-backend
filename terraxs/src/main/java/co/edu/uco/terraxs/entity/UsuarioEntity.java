@@ -124,6 +124,7 @@ public class UsuarioEntity {
 	public void setTelefono(String telefono) {
 		this.telefono = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(telefono);
 	}
+	
 
 	public boolean isCorreoConfirmado() {
 		return correoConfirmado;
