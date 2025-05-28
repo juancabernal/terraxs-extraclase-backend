@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import co.edu.uco.terraxs.businesslogic.businesslogic.ProveedorBusinessLogic;
+import co.edu.uco.terraxs.businesslogic.businesslogic.TipoDocumentoBusinessLogic;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.departamento.entity.DepartamentoEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.assembler.proveedor.entity.ProveedorEntityAssembler;
 import co.edu.uco.terraxs.businesslogic.businesslogic.domain.CiudadDomain;
@@ -17,7 +18,10 @@ import co.edu.uco.terraxs.crosscutting.utilitarios.UtilPassword;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilTexto;
 import co.edu.uco.terraxs.crosscutting.utilitarios.UtilUUID;
 import co.edu.uco.terraxs.data.dao.factory.DAOFactory;
+import co.edu.uco.terraxs.data.dao.factory.Factory;
+import co.edu.uco.terraxs.entity.CiudadEntity;
 import co.edu.uco.terraxs.entity.ProveedorEntity;
+import co.edu.uco.terraxs.entity.TipoDocumentoEntity;
 
 public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	
@@ -209,12 +213,28 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	}
 
 	private void validarIntegridadCiudadProveedor(CiudadDomain ciudad) throws TerraxsException {
+		
+		var filtro = new CiudadEntity();
+		filtro.setId(ciudad.getId());
+		var listaResultados = factory.getCiudadDAO().listByFilter(filtro);
+		if (listaResultados.isEmpty()) {
+			throw BusinessLogicTerraxsException.reportar("No existe la ciudad ingresada");
+		}
+		
 		if (UtilObjeto.getInstance().esNulo(ciudad) || UtilUUID.esValorDefecto(ciudad.getId())) {
 			throw BusinessLogicTerraxsException.reportar("La ciudad del proveedor es obligatoria y debe ser válida.");
 		}
 	}
 
 	private void validarIntegridadTipoDocumentoProveedor(TipoDocumentoDomain tipoDocumento) throws TerraxsException {
+		
+		var filtro = new TipoDocumentoEntity();
+		filtro.setId(tipoDocumento.getId());
+		var listaResultados = factory.getTipoDocumentoDAO().listByFilter(filtro);
+		if (listaResultados.isEmpty()) {
+			throw BusinessLogicTerraxsException.reportar("No existe el tipo de documento ingresado");
+		}
+		
 		if (UtilObjeto.getInstance().esNulo(tipoDocumento) || UtilUUID.esValorDefecto(tipoDocumento.getId())) {
 			throw BusinessLogicTerraxsException.reportar("El tipo de documento del proveedor es obligatorio y debe ser válido.");
 		}

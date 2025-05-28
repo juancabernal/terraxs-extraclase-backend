@@ -131,6 +131,7 @@ public class TipoDocumentoPostgreSQLDAO implements TipoDocumentoDAO {
 					entity.setNombre(cursorResultados.getString("nombre"));
 				}
 			}
+			
 		} catch (SQLException exception) {
 			var mensajeUsuario = "Se ha presentado un problema consultando el tipo de documento por ID";
 			var mensajeTecnico = "SQLException al hacer SELECT por ID en tipo_documento";
