@@ -9,7 +9,6 @@ import co.edu.uco.terraxs.businesslogic.businesslogic.domain.DetallePagoDomain;
 
 public interface DetallePagoBusinessLogic {
 	
-	void registrarNuevoDetallePago(DetallePagoDomain detallePago) throws TerraxsException; 
 	
 	DetallePagoDomain consultarDetallePagoPorId(UUID id) throws TerraxsException;
 

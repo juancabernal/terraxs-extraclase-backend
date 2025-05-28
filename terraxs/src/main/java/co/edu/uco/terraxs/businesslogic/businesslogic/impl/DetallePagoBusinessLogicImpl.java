@@ -17,11 +17,6 @@ public class DetallePagoBusinessLogicImpl implements DetallePagoBusinessLogic{
 	}
 
 
-	@Override
-	public void registrarNuevoDetallePago(DetallePagoDomain detallePago) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public DetallePagoDomain consultarDetallePagoPorId(UUID id) {
