@@ -165,7 +165,7 @@ public class UsuarioDTO {
 	}
 
 	public void setPassword(String password) {
-		this.password = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(password);
+		this.password = password;
 	}
 
 	public static class Builder {
