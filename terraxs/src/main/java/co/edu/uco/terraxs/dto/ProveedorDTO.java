@@ -18,7 +18,7 @@ public class ProveedorDTO extends UsuarioDTO {
 	
 	public ProveedorDTO(final UUID id, final TipoDocumentoDTO tipoDocumento, final String numeroIdentificacion, final String nombres,
 			final String apellidos, final String correo, final String telefono, final boolean correoConfirmado, final boolean telefonoConfirmado, final String direccionResidencia, final CiudadDTO ciudad, final String password) {
-		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);
+		super(id, tipoDocumento, numeroIdentificacion, nombres, apellidos, correo, telefono, correoConfirmado,telefonoConfirmado, password);  //agregar ,confirmPassword
 		setDireccionResidencia(direccionResidencia);
 		setCiudad(ciudad);
 	}

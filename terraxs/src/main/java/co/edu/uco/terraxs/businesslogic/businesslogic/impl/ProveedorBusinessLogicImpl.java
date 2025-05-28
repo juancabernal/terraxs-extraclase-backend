@@ -66,6 +66,9 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	    // 7. Validar que no exista otro proveedor con el mismo teléfono
 	    validarNoExistaProveedorConMismoTelefono(proveedor.getTelefono());
 	    
+		//validarCoinicidenciaContraseña(proveedor.getPassword(),proveedor.getConfirmPassword())
+
+	    
 	    // 8. Hashear la contraseña
 	    var passwordHasheada = UtilPassword.getInstance().encriptarPassword(proveedor.getPassword());
 	    
@@ -219,6 +222,13 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 			throw BusinessLogicTerraxsException.reportar("El tipo de documento del proveedor es obligatorio y debe ser válido.");
 		}
 	}
+	
+	/*private void validarCoincidenciaContrasena(String password, String confirmPassword) {
+	    if (!password.equals(confirmPassword)) {
+	        throw new TerraxsException("La contraseña y su confirmación no coinciden.");
+	    }
+	}*/
+
 
 	private void validarIntegridadPasswordProveedor(String password) throws TerraxsException {
 		if (UtilTexto.getInstance().estaVacia(password)) {

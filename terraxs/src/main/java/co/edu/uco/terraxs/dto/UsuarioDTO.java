@@ -18,6 +18,9 @@ public class UsuarioDTO {
 	protected boolean correoConfirmado;
 	protected boolean telefonoConfirmado;
 	protected String password;
+	//protected String confirmPassword; // <-- NUEVO campo solo en el DTO
+
+
 
 
 	public UsuarioDTO() {
@@ -31,6 +34,8 @@ public class UsuarioDTO {
 		setCorreoConfirmado(false);
 		setTelefonoConfirmado(false);
 		setPassword(UtilTexto.getInstance().obtenerValorDefecto());
+		//setConfirmPassword(UtilTexto.getInstance().obtenerValorDefecto());
+
 
 	}
 
@@ -50,7 +55,7 @@ public class UsuarioDTO {
 
 	public UsuarioDTO(final UUID id, final TipoDocumentoDTO tipoDocumento, final String numeroIdentificacion,
 			final String nombres, final String apellidos, final String correo, final String telefono,
-			final boolean correoConfirmado, final boolean telefonoConfirmado, final String password) {
+			final boolean correoConfirmado, final boolean telefonoConfirmado, final String password) {//agregar confirmPassword
 		setId(id);
 		setTipoDocumento(tipoDocumento);
 		setNumeroIdentificacion(numeroIdentificacion);
@@ -61,6 +66,7 @@ public class UsuarioDTO {
 		setCorreoConfirmado(correoConfirmado);
 		setTelefonoConfirmado(telefonoConfirmado);
 		setPassword(password);
+		//setConfirmPassword(confirmPassword)
 
 	}
 
@@ -165,9 +171,19 @@ public class UsuarioDTO {
 	}
 
 	public void setPassword(String password) {
-		this.password = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(password);
+		this.password = password;
+	}
+	
+	
+	
+	/*public String getConfirmPassword() {
+		return confirmPassword;
 	}
 
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	} */
+	
 	public static class Builder {
 		private UUID id;
 		private TipoDocumentoDTO tipoDocumento;

@@ -146,7 +146,8 @@ public class UsuarioEntity {
 	}
 
 	public void setPassword(String password) {
-		this.password = UtilTexto.getInstance().quitarEspaciosBlancoInicioFin(password);
+		this.password = password;
 	}
+
 	
 }
