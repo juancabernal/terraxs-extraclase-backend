@@ -16,11 +16,7 @@ public class DetallePedidoBusinessLogicImpl implements DetallePedidoBusinessLogi
 	}
 
 
-	@Override
-	public void registrarNuevoDetallePedido(DetallePedidoDomain detallePedido) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public DetallePedidoDomain consultarDetallePedidoPorId(UUID id) {

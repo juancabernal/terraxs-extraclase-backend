@@ -22,8 +22,7 @@ La carga inicial incluye:
 - **Java 24**
 - **Spring Boot**
 - **Maven**
-- Preparado para integración con:
-  - Base de datos PostgreSQL
+- Integración con base de datos **PostgreSQL**
 
 ---
 
