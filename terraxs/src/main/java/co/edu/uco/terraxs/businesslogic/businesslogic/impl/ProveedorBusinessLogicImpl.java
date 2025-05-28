@@ -114,7 +114,7 @@ public class ProveedorBusinessLogicImpl implements ProveedorBusinessLogic{
 	}
 	
 	
-	
+	 
 	private void validarIntegridadNumeroIdentificacionProveedor(String numeroIdentificacionProveedor) throws TerraxsException {
 		if(UtilTexto.getInstance().estaVacia(numeroIdentificacionProveedor)) {
 			throw BusinessLogicTerraxsException.reportar("El numero de identificación es un dato obligatorio");
