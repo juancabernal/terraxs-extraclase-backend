@@ -172,12 +172,16 @@ public class UsuarioDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+
+		
 	}
 	
 	
 	
 	/*public String getConfirmPassword() {
 		return confirmPassword;
+=======
+>>>>>>> branch 'main' of https://github.com/juancabernal/terraxs-extraclase-backend.git
 	}
 
 	public void setConfirmPassword(String confirmPassword) {
